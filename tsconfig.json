@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "esModuleInterop": true,
+        "strict": true,
+        "lib": ["dom", "es7"],
+        "locale": "pl",
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
+    },
+    "include": ["./src/**/*"]
+}

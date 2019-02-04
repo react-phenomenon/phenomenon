@@ -1,0 +1,21 @@
+{
+    "defaultSeverity": "error",
+    "extends": ["tslint-config-airbnb", "tslint-react", "tslint-config-prettier"],
+    "jsRules": {},
+    "rules": {
+        "variable-name": false,
+        "function-name": false,
+        "jsx-no-lambda": false,
+        "import-name": false,
+        "object-shorthand-properties-first": false,
+        "one-variable-per-declaration": false,
+        "jsx-boolean-value": false,
+        "no-console": true,
+        "interface-name": [true, "always-prefix"],
+        "no-suspicious-comment": true,
+        "linebreak-style": [true, "LF"],
+        "member-access": true,
+        "ordered-imports": true
+    },
+    "rulesDirectory": []
+}
