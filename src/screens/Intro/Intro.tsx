@@ -1,19 +1,14 @@
-import React from 'react'
-import { Code, Comment, Frag } from '../../components/Code'
+import React, { useEffect } from 'react'
+import { useKeyPress } from '../../hooks/useKeyPress'
+import { useRouter } from '../../hooks/useRouter'
 
-export const Intro = () => (
-    <Code
-        code="
-            if ($IF) {
-                $RETURN_NULL $COMMENT
-            }
+export const Intro = () => {
+    const { history } = useRouter()
+    const nextPage = useKeyPress(' ', 'ArrowRight', 'd', 'Enter')
 
-            $END
-        "
-    >
-        <Frag id="IF" code="dupa === false" index={1} />
-        <Frag id="RETURN_NULL" code="return null;" index={2} />
-        <Frag id="COMMENT" code={<Comment>Some 💩</Comment>} index={3} />
-        <Frag id="END" code="return true;" index={4} />
-    </Code>
-)
+    useEffect(() => {
+        if (nextPage) history.push('/slides')
+    }, [nextPage])
+
+    return <h1>Hello there!</h1>
+}
