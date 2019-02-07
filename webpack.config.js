@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const DashboardPlugin = require('webpack-dashboard/plugin')
 
 module.exports = {
     entry: './src/index.tsx',
@@ -26,5 +27,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src', 'index.html'),
         }),
+        new DashboardPlugin(),
     ],
 }

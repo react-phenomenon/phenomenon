@@ -691,6 +691,11 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
+"@rehooks/component-size@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@rehooks/component-size/-/component-size-1.0.2.tgz#b93d5f39bc9f47a6c0feb39690ae07156bc65863"
+  integrity sha512-bjuKCFEIr1eDNvK/ET2SWl/xCKloywupJyfKQqZ6GaEKhnlCI2YV10rv9wTNrbSnzoHraktig9YYC0e69RowLA==
+
 "@types/history@*":
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
