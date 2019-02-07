@@ -1,15 +1,12 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { LandingPageScreen } from './screens/LandingPageScreen';
-import { store } from './store';
+import React from 'react'
+import { Route } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
+import { Intro } from './screens/Intro'
 
 export const App = () => (
-    <Provider store={store}>
-        <BrowserRouter>
-            <>
-                <Route path="/" exact component={LandingPageScreen} />
-            </>
-        </BrowserRouter>
-    </Provider>
-);
+    <BrowserRouter>
+        <>
+            <Route path="/" exact component={Intro} />
+        </>
+    </BrowserRouter>
+)

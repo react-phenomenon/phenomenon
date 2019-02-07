@@ -3,22 +3,29 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Life sync</title>
+        <title>oak</title>
         <style>
-            body {
-                font-family: Arial, Helvetica, sans-serif;
+            body,
+            html {
+                height: 100%;
                 margin: 0;
-                box-sizing: border-box;
+                overflow: hidden;
+                font-size: 16px;
+                line-height: 1.6;
+                background-color: #282c34;
+                color: aliceblue;
             }
-            *,
-            *::before,
-            *::after {
-                box-sizing: inherit;
+
+            pre {
+                background-color: #20242b;
+                padding: 2em;
+                max-width: 60em;
+                margin: 2em auto;
+                border-radius: 0.5em;
             }
         </style>
     </head>
     <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="App"></div>
+        <div id="app"></div>
     </body>
 </html>

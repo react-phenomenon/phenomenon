@@ -15,7 +15,7 @@
         "no-suspicious-comment": true,
         "linebreak-style": [true, "LF"],
         "member-access": true,
-        "ordered-imports": true
+        "ordered-imports": false
     },
     "rulesDirectory": []
 }
