@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Intro } from './screens/Intro'
 
 export const App = () => (
-    <BrowserRouter>
+    <BrowserRouter basename="oak">
         <>
             <Route path="/" exact component={Intro} />
         </>

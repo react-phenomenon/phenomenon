@@ -1,13 +1,15 @@
 {
     "name": "oak",
     "version": "1.0.0",
-    "main": "index.js",
+    "homepage": "http://kacperkozak.github.io/oak",
     "private": true,
     "scripts": {
-        "build": "webpack --mode production",
+        "build": "webpack --mode development",
         "start": "webpack-dev-server --mode development",
         "lint": "tslint --project . src/**/*.tsx src/**/*.ts",
-        "lint-fix": "tslint --fix --project . src/**/*.tsx src/**/*.ts"
+        "lint:fix": "tslint --fix --project . src/**/*.tsx src/**/*.ts",
+        "predeploy": "yarn build",
+        "deploy": "gh-pages -d dist"
     },
     "dependencies": {
         "@types/lodash": "^4.14.120",
@@ -31,6 +33,7 @@
         "babel-core": "^6.26.3",
         "babel-loader": "^8.0.5",
         "babel-preset-react": "^6.24.1",
+        "gh-pages": "^2.0.1",
         "html-webpack-plugin": "^3.2.0",
         "prettier": "^1.16.0",
         "source-map-loader": "^0.2.4",
