@@ -4,7 +4,7 @@
     "homepage": "http://kacperkozak.github.io/oak",
     "private": true,
     "scripts": {
-        "build": "webpack --mode development",
+        "build": "webpack --mode production",
         "start": "webpack-dev-server --mode development",
         "lint": "tslint --project . src/**/*.tsx src/**/*.ts",
         "lint:fix": "tslint --fix --project . src/**/*.tsx src/**/*.ts",
