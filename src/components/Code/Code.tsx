@@ -6,10 +6,10 @@ import { stripIndent } from './lib/stripIndent'
 
 type CodeProps = {
     code: string
-    children: ReactNode
+    children?: ReactNode
 }
 
-const reg = /\$([A-Z_]*)/g
+const reg = /\$([A-Z0-9_]*)/g
 
 export const Code = (props: CodeProps) => {
     const slide = useSlides()
@@ -21,7 +21,6 @@ export const Code = (props: CodeProps) => {
     return (
         <div>
             <pre>{out}</pre>
-            {slide}
         </div>
     )
 }

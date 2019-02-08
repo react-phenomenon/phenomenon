@@ -1,21 +1,76 @@
 import React from 'react'
 import { Code, Comment, Frag } from '../../components/Code'
 
-export const Slides = () => (
-    <div>
-        <Code
-            code="
-                if ($IF) {
-                    $RETURN_NULL $COMMENT
-                }
+export const Slides = () => {
+    let i = 0
+    return (
+        <div>
+            <Code
+                code="
+                    if ($IF) {
+                        $COMMENT
+                        $IN_IF
+                    }
 
-                $END
-            "
-        >
-            <Frag id="IF" code="dupa === false" index={1} />
-            <Frag id="RETURN_NULL" code="return null;" index={2} />
-            <Frag id="COMMENT" code={<Comment>Some 💩</Comment>} index={3} />
-            <Frag id="END" code="return true;" index={4} />
-        </Code>
-    </div>
-)
+                    $END2
+                    $END
+                "
+            >
+                <Frag id="IF" index={++i} code="someIs === false" />
+                <Frag
+                    id="IN_IF"
+                    index={++i}
+                    code="
+                        if(!then) {
+                            return null;
+                        }
+
+                        return some.toString($OPTIONS);
+                    "
+                />
+                <Frag id="COMMENT" index={++i} code={<Comment>Some 💩</Comment>} />
+                <Frag id="END" index={++i} code="return true;" />
+                <Frag id="END2" index={++i} code="return kupa;" />
+            </Code>
+            <Code
+                code={`
+                    .button {$BTN}
+                `}
+            >
+                <Frag
+                    id="BTN"
+                    index={++i}
+                    code="
+                        background: red;
+
+                        &:hover {
+                            background: #abc123;
+                        }
+                    "
+                    block
+                    indent={1}
+                />
+            </Code>
+            <Code
+                code={`
+                    <Code
+                        code="
+                            <MainElement>
+                                <h1>Hello there!</h1>
+                                $ MY_FRAG
+                                $ BUTTON
+                            </MainElement>
+                        "
+                    >
+                        <Frag id="MY_FRAG" code="Hello React!" />
+                        <Frag id="BUTTON" code="
+                            <button onClick={() => alert('click')}>
+                                Alert!
+                            </button>
+                        " />
+                    </Code>
+            `}
+            />
+        </div>
+    )
+}
