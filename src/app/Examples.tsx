@@ -1,7 +1,9 @@
 import React from 'react'
-import { Code, Comment, Frag } from '../../components/Code'
+import { Code, Comment } from '../components/Code'
+import { Frag } from '../components/Frag'
+import { End } from '../components/End'
 
-export const Slides = () => {
+export const Examples = () => {
     let i = 0
     return (
         <div>
@@ -24,7 +26,7 @@ export const Slides = () => {
                         if(!then) {
                             return null;
                         }
-
+                        
                         return some.toString($OPTIONS);
                     "
                 />
@@ -71,6 +73,8 @@ export const Slides = () => {
                     </Code>
             `}
             />
+
+            <End step={++i} />
         </div>
     )
 }

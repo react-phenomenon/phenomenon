@@ -1,5 +1,5 @@
-import React, { ReactNode, useState, useEffect } from 'react'
-import { useKeyPress } from '../../hooks/useKeyPress'
+import React, { ReactNode } from 'react'
+import { useGlobalState } from '../../state'
 import { findFragments } from './lib/findFragments'
 import { stringReplace } from './lib/stringReplace'
 import { stripIndent } from './lib/stripIndent'
@@ -12,9 +12,9 @@ type CodeProps = {
 const reg = /\$([A-Z0-9_]*)/g
 
 export const Code = (props: CodeProps) => {
-    const slide = useSlides()
+    const [step] = useGlobalState('currentStep')
 
-    const fragments = findFragments(props.children, slide)
+    const fragments = findFragments(props.children, step)
     const code = stripIndent(props.code)
     const out = stringReplace(code, reg, id => fragments[id])
 
@@ -23,17 +23,4 @@ export const Code = (props: CodeProps) => {
             <pre>{out}</pre>
         </div>
     )
-}
-
-const useSlides = () => {
-    const nextPress = useKeyPress(' ', 'ArrowRight', 'd')
-    const prevPress = useKeyPress('Backspace', 'ArrowLeft', 'a')
-    const [slide, setSlide] = useState(0)
-
-    useEffect(() => {
-        if (nextPress) setSlide(slide + 1)
-        if (prevPress) setSlide(slide - 1)
-    }, [nextPress, prevPress])
-
-    return slide
 }

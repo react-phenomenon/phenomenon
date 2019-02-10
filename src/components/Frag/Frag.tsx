@@ -26,7 +26,7 @@ export const Frag = (props: FragProps) => {
             style={{
                 width: width ? (props.show ? width : 0) : undefined,
                 height: height ? (props.show ? height : 0) : undefined,
-                position: height ? 'relative' : undefined,
+                // position: height ? 'relative' : undefined,
             }}
         >
             {typeof props.code === 'string'
@@ -46,5 +46,4 @@ const Element = styled.code<{ show?: boolean; block?: boolean }>`
     color: #abc123;
     opacity: ${p => (p.show ? 1 : 0)};
     position: ${p => (p.show ? 'relative' : 'absolute')};
-    transform: scale(${p => (p.show ? 1 : 0.5)});
 `

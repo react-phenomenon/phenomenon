@@ -1,7 +1,7 @@
 import React, { ReactNode, Children } from 'react'
 import { Fragments } from '../../../types/Fragments'
 import { stripIndent } from './stripIndent'
-import { FragProps } from '../Frag'
+import { FragProps } from '../../Frag/Frag'
 
 export const findFragments = (children: ReactNode, slide: number): Fragments => {
     const fragments: Fragments = {}
