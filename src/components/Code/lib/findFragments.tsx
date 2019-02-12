@@ -6,7 +6,7 @@ import { FragProps } from '../../Frag/Frag'
 export const findFragments = (children: ReactNode, slide: number): Fragments => {
     const fragments: Fragments = {}
 
-    Children.forEach(children, el => {
+    Children.forEach(children, (el, index) => {
         const element = el as any
         const Frag = element.type
         const props: FragProps = element.props
@@ -15,7 +15,9 @@ export const findFragments = (children: ReactNode, slide: number): Fragments => 
         const { code, ...otherProps } = props
         const stripedCode = typeof code === 'string' ? stripIndent(code) : code
 
-        fragments[props.id] = <Frag {...otherProps} code={stripedCode} show={show} />
+        fragments[props.id] = (
+            <Frag key={props.id + index + code} {...otherProps} code={stripedCode} show={show} />
+        )
     })
 
     return fragments
