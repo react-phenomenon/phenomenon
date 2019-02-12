@@ -8,7 +8,7 @@ export const Examples = () => {
     return (
         <div>
             <Code
-                code="
+                code={`
                     if ($IF) {
                         $COMMENT
                         $IN_IF
@@ -16,19 +16,19 @@ export const Examples = () => {
 
                     $END2
                     $END
-                "
+                `}
             >
                 <Frag id="IF" index={++i} code="someIs === false" />
                 <Frag
                     id="IN_IF"
                     index={++i}
-                    code="
+                    code={`
                         if(!then) {
                             return null;
                         }
                         
                         return some.toString($OPTIONS);
-                    "
+                    `}
                 />
                 <Frag id="COMMENT" index={++i} code={<Comment>Some 💩</Comment>} />
                 <Frag id="END" index={++i} code="return true;" />
@@ -42,13 +42,13 @@ export const Examples = () => {
                 <Frag
                     id="BTN"
                     index={++i}
-                    code="
+                    code={`
                         background: red;
 
                         &:hover {
                             background: #abc123;
                         }
-                    "
+                    `}
                     block
                     indent={1}
                 />
@@ -71,7 +71,7 @@ export const Examples = () => {
                             </button>
                         " />
                     </Code>
-            `}
+                `}
             />
 
             <End step={++i} />
