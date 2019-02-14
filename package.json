@@ -9,7 +9,7 @@
     "lint": "tslint --project . src/**/*.tsx src/**/*.ts",
     "lint:fix": "tslint --fix --project . src/**/*.tsx src/**/*.ts",
     "predeploy": "rm -rf dist && yarn build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@rehooks/component-size": "^1.0.2",
