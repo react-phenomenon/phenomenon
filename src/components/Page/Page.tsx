@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react'
+import React, { ReactType } from 'react'
 import { useGlobalState } from '../../state'
 
 export type PageProps = {
     name: string
-    children?: ReactNode
+    component: ReactType
 }
 
 export const Page = (props: PageProps) => {
@@ -11,5 +11,9 @@ export const Page = (props: PageProps) => {
 
     if (props.name !== currentPage) return null
 
-    return <div>{props.children}</div>
+    return (
+        <div>
+            <props.component />
+        </div>
+    )
 }

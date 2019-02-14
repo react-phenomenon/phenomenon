@@ -15,15 +15,9 @@ export const App = () => {
 
     return (
         <Slides>
-            <Page name="intro">
-                <Intro />
-            </Page>
-            <Page name="examples">
-                <Examples />
-            </Page>
-            <Page name="end">
-                <TheEnd />
-            </Page>
+            <Page name="intro" component={Intro} />
+            <Page name="examples" component={Examples} />
+            <Page name="end" component={TheEnd} />
         </Slides>
     )
 }
