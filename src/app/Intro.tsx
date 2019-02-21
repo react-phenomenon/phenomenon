@@ -17,7 +17,7 @@ export const Intro = () => {
             easing: 'easeOutExpo',
             direction: 'alternate',
             autoplay: true,
-        } as any)
+        })
 
         timeline
             .add({
