@@ -3,7 +3,8 @@ import { useGlobalState } from '../../state'
 
 export type PageProps = {
     name: string
-    component: ReactType
+    component: ReactType<{}>
+    page: any
 }
 
 export const Page = (props: PageProps) => {
@@ -13,7 +14,7 @@ export const Page = (props: PageProps) => {
 
     return (
         <div>
-            <props.component />
+            <props.component register={props.page.addStep} />
         </div>
     )
 }

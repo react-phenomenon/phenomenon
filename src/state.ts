@@ -1,7 +1,12 @@
-import { createGlobalState } from 'react-hooks-global-state'
+import { createStore } from 'react-hooks-global-state'
+
+interface Page {
+    title?: string
+    totalTime: number
+}
 
 export interface State {
-    pages: string[]
+    pages: Page[]
     currentPage: string | null
     currentStep: number
 }
@@ -12,8 +17,21 @@ const initialState: State = {
     currentStep: 0,
 }
 
-const store = createGlobalState(initialState)
+type Action = { type: 'increment' } | { type: 'decrement' }
 
-const { GlobalStateProvider, useGlobalState } = store
+const reducer = (state: State, action: Action) => {
+    switch (action.type) {
+        case 'increment':
+            return { ...state, currentStep: state.currentStep + 1 }
+        case 'decrement':
+            return { ...state, currentStep: state.currentStep - 1 }
+        default:
+            return state
+    }
+}
 
-export { GlobalStateProvider, useGlobalState }
+const store = createStore(reducer, initialState)
+
+const { GlobalStateProvider, useGlobalState, dispatch } = store
+
+export { GlobalStateProvider, useGlobalState, dispatch }

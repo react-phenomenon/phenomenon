@@ -3,7 +3,7 @@ import { Code, Comment } from '../components/Code'
 import { Frag } from '../components/Frag'
 import { End } from '../components/End'
 
-export const Examples = () => {
+export const Examples = (props: any) => {
     let i = 0
     return (
         <div>
@@ -17,6 +17,7 @@ export const Examples = () => {
                     $END2
                     $END
                 `}
+                step={props.addStep(i, 1000)} //TODO
             >
                 <Frag id="IF" index={++i} code="someIs === false" />
                 <Frag

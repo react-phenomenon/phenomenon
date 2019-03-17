@@ -22,15 +22,40 @@ PoAK → Presentation of Amazing Knowledge
     <FlowStep name="Calculate" />
     <FlowStep name="Render" />
 </Flow>
+
+// Console
+<Console prompt="➜ Projects/oak git:(master) ">
+    <ConsoleCmd name="pwd" />
+    <ConsoleOutput string="/home/Kacper/Projects/oak" />
+    <ConsoleCmd name="rm -rf ./" />
+    <ConsoleOutput string="" />
+</Console>
 ```
 
-## Presentation state
+## Presentation global state
 
-```js
-const state = {
-    pages: ['Intro', 'Example', 'End'],
-    currentPage: 'Example',
-    currentStep: 3,
+```ts
+interface State {
+    timeStamp: number // Current position
+    step: number // One click timeStamp += step
+    isAutoPlay: boolean // Components should play entire animation when timeStamp >= start, because one click will change timeStamp by entire step this will be false when seeking or rendering frame by frame
+    isPreFlight: boolean // When doing pre-render of entire presentation and finding end
+    pages: {
+        title?: string
+        totalTime: number
+    }[]
+}
+
+interface Timeline {
+    // Register
+    addPage(): PageID
+    addStep(index: number, duration: number): { id: StepID; shouldStart: boolean }
+    addStep(start: number, stop: number): { id: StepID; shouldStart: boolean }
+    shouldStart(id: StepID): boolean
+    theEnd()
+    // Control
+    nextStep()
+    seek(timeStamp: number)
 }
 ```
 
