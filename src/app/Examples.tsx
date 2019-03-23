@@ -1,13 +1,13 @@
 import React from 'react'
-import { Code, Comment } from '../components/Code'
-import { Frag } from '../components/Frag'
-import { End } from '../components/End'
+// import { Code, Comment } from '../components/Code'
+// import { Frag } from '../components/Frag'
+// import { End } from '../components/End'
 
-export const Examples = (props: any) => {
-    let i = 0
+export const Examples = (_props: any) => {
+    // const i = 0
     return (
         <div>
-            <Code
+            {/* <Code
                 code={`
                     if ($IF) {
                         $COMMENT
@@ -17,7 +17,7 @@ export const Examples = (props: any) => {
                     $END2
                     $END
                 `}
-                step={props.addStep(i, 1000)} //TODO
+                step={props.addStep(i, 1000)} //TODO step and time
             >
                 <Frag id="IF" index={++i} code="someIs === false" />
                 <Frag
@@ -75,7 +75,7 @@ export const Examples = (props: any) => {
                 `}
             />
 
-            <End step={++i} />
+            <End step={++i} /> */}
         </div>
     )
 }

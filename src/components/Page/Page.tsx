@@ -1,20 +1,16 @@
-import React, { ReactType } from 'react'
-import { useGlobalState } from '../../state'
+import React, { ReactType, memo } from 'react'
 
 export type PageProps = {
+    component: ReactType<any>
     name: string
-    component: ReactType<{}>
-    page: any
+    registerPage: any
 }
 
-export const Page = (props: PageProps) => {
-    const [currentPage] = useGlobalState('currentPage')
-
-    if (props.name !== currentPage) return null
-
+export const Page = memo((props: PageProps) => {
+    const page = props.registerPage(props.name)
     return (
         <div>
-            <props.component register={props.page.addStep} />
+            <props.component key={page.name} addStep={page.addStep} end={page.end} />
         </div>
     )
-}
+})
