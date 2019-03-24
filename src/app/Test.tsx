@@ -12,7 +12,7 @@ export const Test = (props: TestProps) => {
             <h2>TEST {a}</h2>
             <button onClick={() => setA(Math.random())}>xxx</button>
             {props.addStep(1)}
-            {[2, 3, 4].map(i => (
+            {[5, 6, 7].map(i => (
                 <div key={i}>{props.addStep(i)}</div>
             ))}
             {props.addStep(10)}

@@ -1,16 +1,34 @@
-import React, { ReactType, memo } from 'react'
+import React, { ReactType, useCallback, useContext } from 'react'
+import { SlidesContext } from '../Slides'
 
 export type PageProps = {
     component: ReactType<any>
     name: string
-    registerPage: any
 }
 
-export const Page = memo((props: PageProps) => {
-    const page = props.registerPage(props.name)
-    return (
-        <div>
-            <props.component key={page.name} addStep={page.addStep} end={page.end} />
-        </div>
+// const initialState = {
+//     addStep: (_index: number, _duration = 1000) => {},
+// }
+
+// export const PageContext = createContext(initialState)
+
+export const Page = (props: PageProps) => {
+    const { addPage, addPageStep } = useContext(SlidesContext)
+    console.log(`Page.addPage(${props.name})`)
+
+    addPage(props.name)
+
+    const addStep = useCallback(
+        (index: number, duration = 1000) => {
+            console.log(`Page.addPageStep(${props.name}, ${index}, ${duration})`)
+            addPageStep(props.name, index, duration)
+        },
+        [props.name],
     )
-})
+
+    return (
+        // <PageContext.Provider value={initialState}>
+        <props.component key={props.name} addStep={addStep} end={() => 'end'} />
+        // </PageContext.Provider>
+    )
+}
