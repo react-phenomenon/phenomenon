@@ -1,4 +1,4 @@
-import React, { ReactType, useCallback, useContext } from 'react'
+import React, { ReactType, useCallback, useContext, useMemo } from 'react'
 import { SlidesContext } from '../Slides'
 
 export type PageProps = {
@@ -26,9 +26,10 @@ export const Page = (props: PageProps) => {
         [props.name],
     )
 
-    return (
+    return useMemo(
         // <PageContext.Provider value={initialState}>
-        <props.component key={props.name} addStep={addStep} end={() => 'end'} />
+        () => <props.component key={props.name} addStep={addStep} end={() => 'end'} />,
         // </PageContext.Provider>
+        [],
     )
 }
