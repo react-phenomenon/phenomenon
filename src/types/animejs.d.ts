@@ -99,11 +99,11 @@ declare module 'animejs' {
         animations: ReadonlyArray<object>
     }
 
-    interface AnimeTimelineAnimParams extends AnimeAnimParams {
+    export interface AnimeTimelineAnimParams extends AnimeAnimParams {
         offset: number | string | FunctionBasedParamter
     }
 
-    interface AnimeTimelineInstance extends AnimeInstance {
+    export interface AnimeTimelineInstance extends AnimeInstance {
         add(params: AnimeAnimParams, offset?: number | string): AnimeTimelineInstance
     }
 

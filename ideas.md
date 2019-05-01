@@ -48,9 +48,7 @@ interface State {
 
 interface Timeline {
     // Register
-    addPage(): PageID
-    addStep(index: number, duration: number): { id: StepID; shouldStart: boolean }
-    addStep(start: number, stop: number): { id: StepID; shouldStart: boolean }
+    addStep(index: number, duration: number, type?: string): { id: StepID; shouldStart: boolean }
     shouldStart(id: StepID): boolean
     theEnd()
     // Control
@@ -94,4 +92,21 @@ interface Timeline {
     />
     <End index={++i} />
 </Code>
+```
+
+```js
+[1] → Slide in
+[1, 1] → Code in
+[1, 1, 1] → Frag in
+[1, 1, -1] → Frag out
+[1, 1, 2] → Frag in
+[1, 1, 3] → Frag in
+[1, -1] → Code out
+[-1] → Slide out
+
+[2] → Slide in
+[-2] → Slide out
+
+[3] → Slide in
+[-3] → Slide out
 ```
