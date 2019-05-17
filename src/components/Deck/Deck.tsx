@@ -1,9 +1,9 @@
-import React, { FC, useRef, useState, useEffect } from "react";
-import { Timeline, TimelineContext } from "../../lib/Timeline";
+import React, { FC, useRef, useState, useEffect } from 'react'
+import { Timeline, TimelineContext } from '../../lib/Timeline'
 
 export const Deck: FC = props => {
-    const timelineRef = useRef(new Timeline());
-    const timeline = timelineRef.current;
+    const timelineRef = useRef(new Timeline())
+    const timeline = timelineRef.current
     const [rdy, setRdy] = useState(false)
 
     useEffect(() => {
@@ -28,13 +28,11 @@ export const Deck: FC = props => {
             <button onClick={() => timeline.line!.pause()}>pause</button>
 
             <ol style={{ position: 'absolute', right: 10, top: 10 }}>
-                {timeline.steps.map(step => (
-                    <li key={step.id.toString()}>{step.id.join('-')}</li>
+                {timeline.steps.map((step, i) => (
+                    <li key={step.id.toString() + i}>{step.id.join('.')}</li>
                 ))}
             </ol>
-            <TimelineContext.Provider value={timeline}>
-                {props.children}
-            </TimelineContext.Provider>
+            <TimelineContext.Provider value={timeline}>{props.children}</TimelineContext.Provider>
         </div>
     )
 }

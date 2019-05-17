@@ -35,7 +35,7 @@ declare module 'animejs' {
         | 'easeInOutElastic'
     type DirectionOptions = 'reverse' | 'alternate' | 'normal'
 
-    interface AnimeInstanceParams {
+    export interface AnimeInstanceParams {
         loop?: number | boolean
         autoplay?: boolean
         direction?: DirectionOptions | string
@@ -46,7 +46,7 @@ declare module 'animejs' {
         complete?: AnimeCallbackFunction
     }
 
-    interface AnimeAnimParams {
+    export interface AnimeAnimParams {
         targets: AnimeTarget | ReadonlyArray<AnimeTarget>
 
         duration?: number | FunctionBasedParamter
@@ -63,11 +63,11 @@ declare module 'animejs' {
         [AnyAnimatedProperty: string]: any
     }
 
-    interface AnimeParams extends AnimeInstanceParams, AnimeAnimParams {
+    export interface AnimeParams extends AnimeInstanceParams, AnimeAnimParams {
         // Just need this to merge both Params interfaces.
     }
 
-    interface AnimeInstance {
+    export interface AnimeInstance {
         play(): void
         pause(): void
         restart(): void
