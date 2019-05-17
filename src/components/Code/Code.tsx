@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react'
-import { useGlobalState } from '../../state'
 import { findFragments } from './lib/findFragments'
 import { stringReplace } from './lib/stringReplace'
 import { stripIndent } from './lib/stripIndent'
@@ -12,7 +11,7 @@ type CodeProps = {
 const reg = /\$([A-Z0-9_]*)/g
 
 export const Code = (props: CodeProps) => {
-    const [step] = useGlobalState('currentStep')
+    const step = 0
 
     const fragments = findFragments(props.children, step)
     const code = stripIndent(props.code)
