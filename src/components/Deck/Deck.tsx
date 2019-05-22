@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Timeline, TimelineContext } from '../../lib/Timeline';
-import { Controls } from '../Controls';
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { Timeline, TimelineContext } from '../../lib/Timeline'
+import { Controls } from '../Controls'
 
 export const Deck: FC = props => {
     const timelineRef = useRef(new Timeline())
@@ -14,9 +14,9 @@ export const Deck: FC = props => {
     }, [])
 
     return (
-        <div>
+        <>
             {rdy && <Controls timeline={timeline} />}
             <TimelineContext.Provider value={timeline}>{props.children}</TimelineContext.Provider>
-        </div>
+        </>
     )
 }

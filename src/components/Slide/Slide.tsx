@@ -13,7 +13,7 @@ export const Slide: FC<{ index: number }> = props => {
                 targets: ref.current,
                 easing: 'easeInOutQuad',
                 opacity: [0, 1],
-                translateX: 0,
+                translateX: [250, 0],
             }
         })
         timeline.addStep([-props.index, 0], () => {
@@ -29,7 +29,7 @@ export const Slide: FC<{ index: number }> = props => {
     return (
         <SubSteps id={[props.index]}>
             <Wrapper>
-                <Content ref={ref} style={{ transform: 'translateX(250px)' }}>
+                <Content ref={ref}>
                     <div>{props.children}</div>
                 </Content>
             </Wrapper>
