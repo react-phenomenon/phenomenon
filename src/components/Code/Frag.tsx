@@ -29,9 +29,9 @@ export const Frag = (props: FragProps) => {
     const code =
         typeof props.code === 'string'
             ? props.code
-                  .split('\n')
-                  .map(line => indent.repeat(props.indent || 0) + line)
-                  .join('\n')
+                .split('\n')
+                .map(line => indent.repeat(props.indent || 0) + line)
+                .join('\n')
             : props.code
 
     useEffect(() => {

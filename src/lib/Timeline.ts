@@ -4,10 +4,14 @@ import { createContext } from 'react'
 
 type ID = number[]
 
+interface TimelineOptions {
+    offset: number
+}
+
 interface Step {
     id: ID
     register: () => AnimeAnimParams
-    options?: any
+    options?: TimelineOptions
 }
 
 const STEP_DURATION = 500
@@ -20,7 +24,7 @@ export class Timeline {
     private onRegisterCB?: () => void
     private onUpdateCB?: (anim: AnimeInstance) => void
 
-    public addStep(id: ID, register: Step['register'], options?: any) {
+    public addStep(id: ID, register: Step['register'], options?: TimelineOptions) {
         this.steps.push({ id, register, options })
         this.addStepDone()
     }
@@ -36,7 +40,6 @@ export class Timeline {
     }
 
     public onUpdate(cb: (anim: AnimeInstance) => void) {
-        console.log('onUpdate')
         this.onUpdateCB = cb
     }
 
@@ -86,12 +89,20 @@ export class Timeline {
             const prefStep = this.steps[index - 1]
             const stepOptions: AnimeAnimParams = step.register()
 
-            if ((prefStep && sameStep(prefStep.id, step.id)) || index === 0) {
-                this.line!.add(stepOptions, `-=${STEP_DURATION}`)
-            } else {
-                this.line!.add(stepOptions)
+            if (step.options && step.options.offset) {
+                return this.addToLine(stepOptions, step.options.offset)
             }
+
+            if (prefStep && sameStep(prefStep.id, step.id)) {
+                return this.addToLine(stepOptions, 1)
+            }
+
+            return this.addToLine(stepOptions)
         })
+    }
+
+    private addToLine(stepOptions: AnimeAnimParams, offset?: number) {
+        this.line!.add(stepOptions, offset && `-=${STEP_DURATION * offset}`)
     }
 }
 
@@ -101,20 +112,18 @@ const sameStep = (id1: ID, id2: ID) => {
 }
 
 const sortSteps = (a: Step, b: Step) => {
-    const aEnd = last(a.id)!
-    const bEnd = last(b.id)!
-    const aStart = first(a.id)!
-    const bStart = first(b.id)!
-    if (aStart !== bStart) {
-        return Math.abs(aStart) - Math.abs(bStart)
+    const aLen = a.id.length
+    const bLen = b.id.length
+    const minLen = Math.min(aLen, bLen)
+    for (let n = 0; n < minLen; n++) {
+        const an = norm(a.id[n])
+        const bn = norm(b.id[n])
+        if (an < bn) return -1
+        if (an > bn) return +1
     }
-    if (a.id.length < b.id.length) {
-        return aStart > bStart ? 1 : -1
-    }
-    if (aEnd < 0 || bEnd < 0) {
-        return Math.abs(aEnd) - Math.abs(bEnd)
-    }
-    return aEnd - bEnd
+    return aLen - bLen
 }
+
+const norm = (a: number) => Math.abs(a) + (a < 0 ? 0.5 : 0)
 
 export const TimelineContext = createContext<Timeline>({} as any)

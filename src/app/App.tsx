@@ -5,12 +5,15 @@ import { Slide } from '../components/Slide'
 import { Text } from '../components/Text'
 
 export const App = () => {
-    let i = 1
+    let i = 0
+    let c = 0
 
     return (
         <Deck>
             <Slide index={1}>
                 <h1>Slide 1</h1>
+                <Text in={++c} out={3}>Hello!</Text>
+                <Text in={++c} out={3}>I will show you some code examples</Text>
                 <Code
                     code={`
                         if ($IF) {
@@ -18,15 +21,17 @@ export const App = () => {
                         }
 
                         $COMMENT
-                        $END2
+                        console.log($LOG);
                         $END
                     `}
-                    index={++i}
+                    in={++c}
+                    out={3}
                 >
                     <Frag id="IF" index={++i} code="someIs === false" inline />
                     <Frag
                         id="IN_IF"
                         index={++i}
+                        indent={1}
                         code={`
                             if(!then) {
                                 return null;
@@ -37,7 +42,36 @@ export const App = () => {
                     />
                     <Frag id="COMMENT" index={++i} code={<Comment>Some 💩</Comment>} />
                     <Frag id="END" index={++i} code="return true;" />
-                    <Frag id="END2" index={++i} code="return kupa;" />
+                    <Frag id="LOG" index={++i} code="null >= 0" inline />
+                </Code>
+                <Text in={++c}>And now some CSS</Text>
+                <Code
+                    code={`
+                        .button {
+                            $BTN
+                            $HOVER
+                        }
+                    `}
+                    in={++c}
+                >
+                    <Frag
+                        id="BTN"
+                        index={++i}
+                        code={`
+                            background: red;
+                        `}
+                        indent={1}
+                    />
+                    <Frag
+                        id="HOVER"
+                        index={++i}
+                        code={`
+                            &:hover {
+                                background: #abc123;
+                            }
+                        `}
+                        indent={1}
+                    />
                 </Code>
             </Slide>
             <Slide index={2}>
@@ -54,6 +88,9 @@ export const App = () => {
             </Slide>
             <Slide index={3}>
                 <h1>Slide 3</h1>
+                <Text in={1}>
+                    Bye ;)
+                </Text>
             </Slide>
         </Deck>
     )

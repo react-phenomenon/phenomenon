@@ -13,17 +13,17 @@ export const Slide: FC<{ index: number }> = props => {
                 targets: ref.current,
                 easing: 'easeInOutQuad',
                 opacity: [0, 1],
-                translateX: [250, 0],
+                translateX: ['100%', 0],
+            }
+        }, { offset: 1 })
+        timeline.addStep([-props.index, 0], () => {
+            return {
+                targets: ref.current,
+                easing: 'easeInOutQuad',
+                opacity: [1, 0],
+                translateX: '-100%',
             }
         })
-        // timeline.addStep([-props.index, 0], () => {
-        //     return {
-        //         targets: ref.current,
-        //         easing: 'easeInOutQuad',
-        //         opacity: [1, 0],
-        //         translateX: -250,
-        //     }
-        // })
     }, [])
 
     return (
@@ -44,6 +44,7 @@ const Wrapper = styled.div`
     left: 0;
     bottom: 0;
     overflow: hidden;
+    pointer-events: none;
 `
 
 const Content = styled.div`
@@ -56,4 +57,5 @@ const Content = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: all;
 `

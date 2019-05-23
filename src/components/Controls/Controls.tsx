@@ -34,6 +34,7 @@ export const Controls: FC<ControlsProps> = props => {
                 ref={inputRef}
                 type="range"
                 defaultValue="0"
+                step="0.1"
                 onMouseUp={() => timeline.next()}
                 onChange={e => timeline.seekByPercent(+e.target.value / 100)}
             />

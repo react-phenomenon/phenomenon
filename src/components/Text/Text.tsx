@@ -22,7 +22,14 @@ export const Text: FC<{ in: number; out?: number }> = props => {
                 return {
                     targets: ref.current,
                     easing: 'easeInOutQuad',
-                    opacity: [1, 0],
+                    keyframes: [
+                        { opacity: 0 },
+                        {
+                            height: 0,
+                            margin: 0,
+                            padding: 0
+                        }
+                    ],
                 }
             })
         }

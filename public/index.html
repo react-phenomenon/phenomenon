@@ -9,11 +9,14 @@
             rel="stylesheet"
         />
         <style>
-            * {
-                box-sizing: border-box;
+            *,
+            *::after,
+            *::before {
+                box-sizing: inherit;
             }
             body,
             html {
+                box-sizing: border-box;
                 height: 100%;
                 margin: 0;
                 padding: 10px;
@@ -29,14 +32,6 @@
                 text-align: center;
                 color: steelblue;
                 font-size: 3em;
-            }
-
-            pre {
-                background-color: #20242b;
-                padding: 2em;
-                max-width: 60em;
-                margin: 2em auto;
-                border-radius: 0.5em;
             }
         </style>
     </head>

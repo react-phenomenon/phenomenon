@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
-import { Timeline, TimelineContext } from '../../lib/Timeline'
-import { Controls } from '../Controls'
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Timeline, TimelineContext } from '../../lib/Timeline';
+import { Controls } from '../Controls';
 
 export const Deck: FC = props => {
     const timelineRef = useRef(new Timeline())

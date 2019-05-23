@@ -14,8 +14,6 @@ export const findFragments = (children: ReactNode): Fragments => {
         const { code, ...otherProps } = props
         const stripedCode = typeof code === 'string' ? stripIndent(code) : code
 
-        console.log(stripedCode)
-
         fragments[props.id] = (
             <Frag
                 key={props.id + index + code}
