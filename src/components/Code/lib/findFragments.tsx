@@ -19,7 +19,7 @@ export const findFragments = (children: ReactNode): Fragments => {
                 key={props.id + index + code}
                 {...otherProps}
                 code={stripedCode}
-                index={props.index}
+                index={props.in}
             />
         )
     })

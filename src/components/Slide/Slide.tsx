@@ -8,21 +8,26 @@ export const Slide: FC<{ index: number }> = props => {
     const ref = useRef(null)
 
     useEffect(() => {
-        timeline.addStep([props.index], () => {
-            return {
-                targets: ref.current,
-                easing: 'easeInOutQuad',
-                opacity: [0, 1],
-                translateX: ['100%', 0],
-            }
-        }, { offset: 1 })
-        timeline.addStep([-props.index, 0], () => {
-            return {
-                targets: ref.current,
-                easing: 'easeInOutQuad',
-                opacity: [1, 0],
-                translateX: '-100%',
-            }
+        timeline.addStep({
+            id: [props.index],
+            params: () => {
+                return {
+                    targets: ref.current,
+                    opacity: [0, 1],
+                    translateX: ['100%', 0],
+                }
+            },
+            options: { offset: 1 },
+        })
+        timeline.addStep({
+            id: [-props.index, 0],
+            params: () => {
+                return {
+                    targets: ref.current,
+                    opacity: [1, 0],
+                    translateX: '-100%',
+                }
+            },
         })
     }, [])
 

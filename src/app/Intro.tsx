@@ -22,7 +22,6 @@ export const Intro = () => {
         timeline
             .add({
                 targets: ref.current,
-                easing: 'easeInOutQuad',
                 opacity: [0, 1],
                 // changeComplete: () => {
                 //     console.log('ref changeComplet')

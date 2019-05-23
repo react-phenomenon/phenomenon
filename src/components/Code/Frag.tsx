@@ -7,7 +7,8 @@ import { SubStepsContext } from '../SubSteps'
 export type FragProps = {
     id: string
     code: ReactNode
-    index: number
+    in: number
+    out?: number
     show?: boolean
     inline?: boolean
     indent?: number
@@ -29,9 +30,9 @@ export const Frag = (props: FragProps) => {
     const code =
         typeof props.code === 'string'
             ? props.code
-                .split('\n')
-                .map(line => indent.repeat(props.indent || 0) + line)
-                .join('\n')
+                  .split('\n')
+                  .map(line => indent.repeat(props.indent || 0) + line)
+                  .join('\n')
             : props.code
 
     useEffect(() => {
@@ -40,26 +41,28 @@ export const Frag = (props: FragProps) => {
         }
         if (size && !addedStep) {
             setAddedStep(true)
-            timeline.addStep([...subId, props.index], () => {
-                return {
+            timeline.addStep({
+                id: [...subId, props.in],
+                params: () => ({
                     targets: ref.current,
-                    easing: 'easeInOutQuad',
                     [key]: [0, size[key]],
                     opacity: [0, 1],
                     backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
-                }
+                }),
             })
-        }
 
-        // if (props.out) {
-        //     timeline.addStep([...subId, -props.out], () => {
-        //         return {
-        //             targets: ref.current,
-        //             easing: 'easeInOutQuad',
-        //             [key]: [0size[key], 0],
-        //         }
-        //     })
-        // }
+            if (props.out) {
+                timeline.addStep({
+                    id: [...subId, -props.out],
+                    params: () => {
+                        return {
+                            targets: ref.current,
+                            [key]: [size[key], 0],
+                        }
+                    },
+                })
+            }
+        }
     }, [width, size, addedStep])
 
     return (

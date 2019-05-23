@@ -12,8 +12,12 @@ export const App = () => {
         <Deck>
             <Slide index={1}>
                 <h1>Slide 1</h1>
-                <Text in={++c} out={3}>Hello!</Text>
-                <Text in={++c} out={3}>I will show you some code examples</Text>
+                <Text in={++c} out={3}>
+                    Hello!
+                </Text>
+                <Text in={++c} out={3}>
+                    I will show you some code examples
+                </Text>
                 <Code
                     code={`
                         if ($IF) {
@@ -22,15 +26,16 @@ export const App = () => {
 
                         $COMMENT
                         console.log($LOG);
+                        $END2
                         $END
                     `}
                     in={++c}
                     out={3}
                 >
-                    <Frag id="IF" index={++i} code="someIs === false" inline />
+                    <Frag id="IF" in={++i} code="someIs === false" inline />
                     <Frag
                         id="IN_IF"
-                        index={++i}
+                        in={++i}
                         indent={1}
                         code={`
                             if(!then) {
@@ -40,13 +45,15 @@ export const App = () => {
                             return some.toString();
                         `}
                     />
-                    <Frag id="COMMENT" index={++i} code={<Comment>Some 💩</Comment>} />
-                    <Frag id="END" index={++i} code="return true;" />
-                    <Frag id="LOG" index={++i} code="null >= 0" inline />
+                    <Frag id="COMMENT" in={++i} code={<Comment>Some 💩</Comment>} />
+                    <Frag id="END" in={++i} out={++i} code="return true;" />
+                    <Frag id="END2" in={i} code="return false;" />
+                    <Frag id="LOG" in={++i} code="null >= 0" inline />
                 </Code>
                 <Text in={++c}>And now some CSS</Text>
                 <Code
                     code={`
+                        $BODY
                         .button {
                             $BTN
                             $HOVER
@@ -56,7 +63,7 @@ export const App = () => {
                 >
                     <Frag
                         id="BTN"
-                        index={++i}
+                        in={++i}
                         code={`
                             background: red;
                         `}
@@ -64,13 +71,30 @@ export const App = () => {
                     />
                     <Frag
                         id="HOVER"
-                        index={++i}
+                        in={++i}
                         code={`
                             &:hover {
                                 background: #abc123;
                             }
                         `}
                         indent={1}
+                    />
+                    <Frag
+                        id="BODY"
+                        in={++i}
+                        code={`
+                            body {
+                                box-sizing: border-box;
+                                height: 100%;
+                                margin: 0;
+                                padding: 10px;
+                                font-size: 16px;
+                                line-height: 1.6;
+                                background-color: #282c34;
+                                color: aliceblue;
+                                font-family: 'Source Code Pro', monospace;
+                            }
+                        `}
                     />
                 </Code>
             </Slide>
@@ -88,9 +112,7 @@ export const App = () => {
             </Slide>
             <Slide index={3}>
                 <h1>Slide 3</h1>
-                <Text in={1}>
-                    Bye ;)
-                </Text>
+                <Text in={1}>Bye ;)</Text>
             </Slide>
         </Deck>
     )

@@ -25,33 +25,33 @@ export const Code = (props: CodeProps) => {
     const ref = useRef(null)
 
     useEffect(() => {
-        timeline.addStep([...subId, props.in], () => {
-            return {
+        timeline.addStep({
+            id: [...subId, props.in],
+            params: () => ({
                 targets: ref.current,
-                easing: 'easeInOutQuad',
                 opacity: [0, 1],
                 translateX: [250, 0],
-            }
+            }),
         })
         if (props.out) {
-            timeline.addStep([...subId, -props.out], () => {
-                return {
+            timeline.addStep({
+                id: [...subId, -props.out],
+                params: () => ({
                     targets: ref.current,
-                    easing: 'easeInOutQuad',
                     keyframes: [
                         { opacity: 0 },
                         {
                             height: 0,
                             margin: 0,
-                            padding: 0
-                        }
+                            padding: 0,
+                        },
                     ],
-                }
+                }),
             })
         }
     }, [])
 
-    const outTrimmed = out.map(item => typeof item === 'string' ? item.trim() : item);
+    const outTrimmed = out.map(item => (typeof item === 'string' ? item.trim() : item))
 
     return (
         <SubSteps id={[props.in]}>

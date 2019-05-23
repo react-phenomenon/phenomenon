@@ -10,12 +10,16 @@ interface TimelineOptions {
 
 interface Step {
     id: ID
-    register: () => AnimeAnimParams
+    params: () => AnimeAnimParams
     options?: TimelineOptions
 }
 
 const STEP_DURATION = 500
 const STEP_ADD_DEBOUNCE = 100
+
+const stepDefaults: Partial<AnimeAnimParams> = {
+    easing: 'easeInOutQuad',
+}
 
 export class Timeline {
     public steps: Step[] = []
@@ -24,8 +28,16 @@ export class Timeline {
     private onRegisterCB?: () => void
     private onUpdateCB?: (anim: AnimeInstance) => void
 
-    public addStep(id: ID, register: Step['register'], options?: TimelineOptions) {
-        this.steps.push({ id, register, options })
+    public addStep({
+        id,
+        params,
+        options,
+    }: {
+        id: ID
+        params: Step['params']
+        options?: TimelineOptions
+    }) {
+        this.steps.push({ id, params, options })
         this.addStepDone()
     }
 
@@ -87,7 +99,10 @@ export class Timeline {
 
         this.steps.forEach((step, index) => {
             const prefStep = this.steps[index - 1]
-            const stepOptions: AnimeAnimParams = step.register()
+            const stepOptions: AnimeAnimParams = {
+                ...stepDefaults,
+                ...step.params(),
+            }
 
             if (step.options && step.options.offset) {
                 return this.addToLine(stepOptions, step.options.offset)
