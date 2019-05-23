@@ -16,14 +16,14 @@ export const Slide: FC<{ index: number }> = props => {
                 translateX: [250, 0],
             }
         })
-        timeline.addStep([-props.index, 0], () => {
-            return {
-                targets: ref.current,
-                easing: 'easeInOutQuad',
-                opacity: [1, 0],
-                translateX: -250,
-            }
-        })
+        // timeline.addStep([-props.index, 0], () => {
+        //     return {
+        //         targets: ref.current,
+        //         easing: 'easeInOutQuad',
+        //         opacity: [1, 0],
+        //         translateX: -250,
+        //     }
+        // })
     }, [])
 
     return (
