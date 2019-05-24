@@ -1,34 +1,27 @@
-import React, { useEffect, FC, useContext, useRef } from 'react'
-import { TimelineContext } from '../../lib/Timeline'
-import { SubSteps } from '../SubSteps'
+import React, { FC, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { SubSteps } from '../SubSteps'
+import { useSlides } from '../../hooks/useSlides'
 
 export const Slide: FC<{ index: number }> = props => {
-    const timeline = useContext(TimelineContext)
+    const { addStep } = useSlides()
     const ref = useRef(null)
 
     useEffect(() => {
-        timeline.addStep({
-            id: [props.index],
-            params: () => {
-                return {
-                    targets: ref.current,
-                    opacity: [0, 1],
-                    translateX: ['100%', 0],
-                }
-            },
-            options: { offset: 1 },
-        })
-        timeline.addStep({
-            id: [-props.index, 0],
-            params: () => {
-                return {
-                    targets: ref.current,
-                    opacity: [1, 0],
-                    translateX: '-100%',
-                }
-            },
-        })
+        addStep(
+            props.index,
+            () => ({
+                targets: ref.current,
+                opacity: [0, 1],
+                translateX: ['100%', 0],
+            }),
+            { offset: 1 },
+        )
+        addStep(-props.index, () => ({
+            targets: ref.current,
+            opacity: [1, 0],
+            translateX: '-100%',
+        }))
     }, [])
 
     return (

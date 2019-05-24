@@ -1,10 +1,10 @@
-import React, { ReactNode, useContext, useRef, useEffect } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
+import styled from 'styled-components'
+import { useSlides } from '../../hooks/useSlides'
+import { SubSteps } from '../SubSteps'
 import { findFragments } from './lib/findFragments'
 import { stringReplace } from './lib/stringReplace'
 import { stripIndent } from './lib/stripIndent'
-import { SubSteps, SubStepsContext } from '../SubSteps'
-import { TimelineContext } from '../../lib/Timeline'
-import styled from 'styled-components'
 
 type CodeProps = {
     code: string
@@ -19,39 +19,32 @@ export const Code = (props: CodeProps) => {
     const fragments = findFragments(props.children)
     const code = stripIndent(props.code)
     const out = stringReplace(code, ID_REGEXP, id => fragments[id])
+    const outTrimmed = out.map(item => (typeof item === 'string' ? item.trim() : item))
 
-    const timeline = useContext(TimelineContext)
-    const subId = useContext(SubStepsContext)
     const ref = useRef(null)
+    const { addStep } = useSlides()
 
     useEffect(() => {
-        timeline.addStep({
-            id: [...subId, props.in],
-            params: () => ({
-                targets: ref.current,
-                opacity: [0, 1],
-                translateX: [250, 0],
-            }),
-        })
+        addStep(props.in, () => ({
+            targets: ref.current,
+            opacity: [0, 1],
+            translateX: [250, 0],
+        }))
+
         if (props.out) {
-            timeline.addStep({
-                id: [...subId, -props.out],
-                params: () => ({
-                    targets: ref.current,
-                    keyframes: [
-                        { opacity: 0 },
-                        {
-                            height: 0,
-                            margin: 0,
-                            padding: 0,
-                        },
-                    ],
-                }),
-            })
+            addStep(-props.out, () => ({
+                targets: ref.current,
+                keyframes: [
+                    { opacity: 0 },
+                    {
+                        height: 0,
+                        margin: 0,
+                        padding: 0,
+                    },
+                ],
+            }))
         }
     }, [])
-
-    const outTrimmed = out.map(item => (typeof item === 'string' ? item.trim() : item))
 
     return (
         <SubSteps id={[props.in]}>

@@ -92,7 +92,7 @@ export const App = () => {
                                 line-height: 1.6;
                                 background-color: #282c34;
                                 color: aliceblue;
-                                font-family: 'Source Code Pro', monospace;
+                                font-family: 'Source Code Pro';
                             }
                         `}
                     />

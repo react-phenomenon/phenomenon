@@ -1,10 +1,10 @@
-import { debounce, last, first, isEqual } from 'lodash'
-import animejs, { AnimeTimelineInstance, AnimeAnimParams, AnimeInstance } from 'animejs'
+import animejs, { AnimeAnimParams, AnimeInstance, AnimeTimelineInstance } from 'animejs'
+import { debounce, isEqual } from 'lodash'
 import { createContext } from 'react'
 
 type ID = number[]
 
-interface TimelineOptions {
+export interface TimelineOptions {
     offset: number
 }
 
@@ -16,6 +16,8 @@ interface Step {
 
 const STEP_DURATION = 500
 const STEP_ADD_DEBOUNCE = 100
+
+export const TimelineContext = createContext<Timeline>({} as any)
 
 const stepDefaults: Partial<AnimeAnimParams> = {
     easing: 'easeInOutQuad',
@@ -140,5 +142,3 @@ const sortSteps = (a: Step, b: Step) => {
 }
 
 const norm = (a: number) => Math.abs(a) + (a < 0 ? 0.5 : 0)
-
-export const TimelineContext = createContext<Timeline>({} as any)

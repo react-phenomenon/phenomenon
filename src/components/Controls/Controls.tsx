@@ -1,5 +1,6 @@
 import React, { createRef, FC, useEffect } from 'react'
 import styled from 'styled-components'
+import useToggle from 'react-use/lib/useToggle'
 import { useKeyPress } from '../../hooks/useKeyPress'
 import { Timeline } from '../../lib/Timeline'
 
@@ -10,6 +11,7 @@ interface ControlsProps {
 export const Controls: FC<ControlsProps> = props => {
     const { timeline } = props
     const inputRef = createRef<HTMLInputElement>()
+    const [help, toggleHelp] = useToggle(false)
 
     useEffect(() => {
         const ref = inputRef.current
@@ -22,28 +24,39 @@ export const Controls: FC<ControlsProps> = props => {
 
     const nextPress = useKeyPress(' ', 'ArrowRight', 'd')
     const prevPress = useKeyPress('Backspace', 'ArrowLeft', 'a')
+    const helpPress = useKeyPress('h')
+
+    const next = () => timeline.next()
+    const back = () => timeline.back()
 
     useEffect(() => {
-        if (nextPress) timeline.next()
-        if (prevPress) timeline.back()
-    }, [nextPress, prevPress])
+        if (nextPress) next()
+        if (prevPress) back()
+        if (helpPress) toggleHelp()
+    }, [nextPress, prevPress, helpPress])
 
     return (
-        <Container>
-            <Line
-                ref={inputRef}
-                type="range"
-                defaultValue="0"
-                step="0.1"
-                onMouseUp={() => timeline.next()}
-                onChange={e => timeline.seekByPercent(+e.target.value / 100)}
-            />
-            <ol style={{ position: 'absolute', right: 10, bottom: 40, textAlign: 'left' }}>
-                {timeline.steps.map((step, i) => (
-                    <li key={step.id.toString() + i}>{step.id.join('.')}</li>
-                ))}
-            </ol>
-        </Container>
+        <>
+            <Container>
+                <Line
+                    ref={inputRef}
+                    type="range"
+                    defaultValue="0"
+                    step="0.1"
+                    onMouseUp={() => timeline.next()}
+                    onChange={e => timeline.seekByPercent(+e.target.value / 100)}
+                />
+                {help && (
+                    <ol style={{ position: 'absolute', right: 10, bottom: 40, textAlign: 'left' }}>
+                        {timeline.steps.map((step, i) => (
+                            <li key={step.id.toString() + i}>{step.id.join('.')}</li>
+                        ))}
+                    </ol>
+                )}
+            </Container>
+            <ClickableArea left onClick={back} />
+            <ClickableArea right onClick={next} />
+        </>
     )
 }
 
@@ -57,8 +70,23 @@ const Container = styled.div`
     text-align: center;
 `
 
+const ClickableArea = styled.div<{ left?: boolean; right?: boolean }>`
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 40vw;
+    height: 100%;
+    z-index: 9;
+    ${p => p.left && 'left: 0;'}
+    ${p => p.right && 'right: 0;'}
+    &:active {
+        background: rgba(0, 0, 0, 0.1);
+    }
+`
+
 const Line = styled.input`
     width: 100%;
+    opacity: 0.5;
     -webkit-appearance: none;
     &:focus {
         outline: none;

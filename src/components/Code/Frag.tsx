@@ -1,8 +1,7 @@
 import useComponentSize from '@rehooks/component-size'
-import React, { useContext, useEffect, useRef, useState, ReactNode } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { TimelineContext } from '../../lib/Timeline'
-import { SubStepsContext } from '../SubSteps'
+import { useSlides } from '../../hooks/useSlides'
 
 export type FragProps = {
     id: string
@@ -22,9 +21,8 @@ export const Frag = (props: FragProps) => {
     const { width, height } = useComponentSize(ref)
     const [size, saveSize] = useState<{ width: number; height: number } | null>(null)
     const [addedStep, setAddedStep] = useState(false)
+    const { addStep } = useSlides()
 
-    const subId = useContext(SubStepsContext)
-    const timeline = useContext(TimelineContext)
     const key = props.inline ? 'width' : 'height'
 
     const code =
@@ -39,29 +37,24 @@ export const Frag = (props: FragProps) => {
         if (width && !size) {
             saveSize({ width, height })
         }
-        if (size && !addedStep) {
-            setAddedStep(true)
-            timeline.addStep({
-                id: [...subId, props.in],
-                params: () => ({
-                    targets: ref.current,
-                    [key]: [0, size[key]],
-                    opacity: [0, 1],
-                    backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
-                }),
-            })
 
-            if (props.out) {
-                timeline.addStep({
-                    id: [...subId, -props.out],
-                    params: () => {
-                        return {
-                            targets: ref.current,
-                            [key]: [size[key], 0],
-                        }
-                    },
-                })
-            }
+        if (!size || addedStep) return
+
+        setAddedStep(true)
+
+        addStep(props.in, () => ({
+            targets: ref.current,
+            [key]: [0, size[key]],
+            opacity: [0, 1],
+            backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
+        }))
+
+        if (props.out) {
+            addStep(-props.out, () => ({
+                targets: ref.current,
+                opacity: 0,
+                [key]: 0,
+            }))
         }
     }, [width, size, addedStep])
 
@@ -79,13 +72,10 @@ export const Frag = (props: FragProps) => {
 }
 
 const Element = styled.code<{ show?: boolean; inline?: boolean }>`
-    /* transition: all 1s ease; */
     display: ${p => (p.inline ? 'inline-block' : 'block')};
     vertical-align: top;
     color: #abc123;
     overflow: hidden;
     border-radius: 3px;
     box-sizing: border-box;
-    /* opacity: ${p => (p.show ? 1 : 0)};
-    position: ${p => (p.show ? 'relative' : 'absolute')}; */
 `
