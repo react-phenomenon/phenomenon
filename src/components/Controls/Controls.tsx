@@ -1,6 +1,6 @@
 import React, { createRef, FC, useEffect } from 'react'
+import useLocalStorage from 'react-use/lib/useLocalStorage'
 import styled from 'styled-components'
-import useToggle from 'react-use/lib/useToggle'
 import { useKeyPress } from '../../hooks/useKeyPress'
 import { Timeline } from '../../lib/Timeline'
 
@@ -11,7 +11,7 @@ interface ControlsProps {
 export const Controls: FC<ControlsProps> = props => {
     const { timeline } = props
     const inputRef = createRef<HTMLInputElement>()
-    const [help, toggleHelp] = useToggle(false)
+    const [help, toggleHelp] = useLocalStorage('help', false)
 
     useEffect(() => {
         const ref = inputRef.current
@@ -32,7 +32,7 @@ export const Controls: FC<ControlsProps> = props => {
     useEffect(() => {
         if (nextPress) next()
         if (prevPress) back()
-        if (helpPress) toggleHelp()
+        if (helpPress) toggleHelp(!help)
     }, [nextPress, prevPress, helpPress])
 
     return (
@@ -47,11 +47,18 @@ export const Controls: FC<ControlsProps> = props => {
                     onChange={e => timeline.seekByPercent(+e.target.value / 100)}
                 />
                 {help && (
-                    <ol style={{ position: 'absolute', right: 10, bottom: 40, textAlign: 'left' }}>
+                    <Steps
+                        style={{
+                            position: 'absolute',
+                            right: 10,
+                            bottom: 40,
+                            textAlign: 'left',
+                        }}
+                    >
                         {timeline.steps.map((step, i) => (
                             <li key={step.id.toString() + i}>{step.id.join('.')}</li>
                         ))}
-                    </ol>
+                    </Steps>
                 )}
             </Container>
             <ClickableArea left onClick={back} />
@@ -79,6 +86,12 @@ const ClickableArea = styled.div<{ left?: boolean; right?: boolean }>`
     z-index: 9;
     ${p => p.left && 'left: 0;'}
     ${p => p.right && 'right: 0;'}
+`
+
+const Steps = styled.ol`
+    font-size: 12px;
+    max-height: 80vh;
+    overflow: auto;
 `
 
 const Line = styled.input`

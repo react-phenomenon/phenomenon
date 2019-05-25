@@ -25,11 +25,15 @@ export const Code = (props: CodeProps) => {
     const { addStep } = useSlides()
 
     useEffect(() => {
-        addStep(props.in, () => ({
-            targets: ref.current,
-            opacity: [0, 1],
-            translateX: [250, 0],
-        }))
+        addStep(
+            props.in,
+            () => ({
+                targets: ref.current,
+                opacity: [0, 1],
+                translateX: [250, 0],
+            }),
+            { title: 'Code' },
+        )
 
         if (props.out) {
             addStep(-props.out, () => ({

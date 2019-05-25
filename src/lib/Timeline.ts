@@ -27,8 +27,9 @@ const stepDefaults: Partial<AnimeAnimParams> = {
 export class Timeline {
     public steps: Step[] = []
     private line?: AnimeTimelineInstance
-    private lastStepPosition = 0
+    private lastStep = 0
     private stepsDuration: number[] = []
+    private moving = false
     private onRegisterCB?: () => void
     private onUpdateCB?: (anim: AnimeInstance) => void
 
@@ -54,7 +55,12 @@ export class Timeline {
     public seek(ms: number) {
         this.pause()
         this.line && this.line.seek(ms)
-        this.lastStepPosition = ms - (ms % STEP_DURATION)
+        let sum = 0
+        this.lastStep = this.stepsDuration.findIndex(duration => {
+            if (duration + sum > ms) return true
+            sum += duration
+            return false
+        })
     }
 
     public seekByPercent(percent: number) {
@@ -63,24 +69,45 @@ export class Timeline {
         this.seek(pos)
     }
 
+    public seekByStep(step: number) {
+        const duration = this.stepsDuration
+            .slice(0, step)
+            .reduce((prev, current) => prev + current, 0)
+        this.seek(duration)
+    }
+
     public pause() {
+        this.moving = false
         this.line && this.line.pause()
     }
 
-    public next() {
+    public play() {
+        this.moving = true
         this.line && this.line.play()
     }
 
+    public next() {
+        if (this.moving) {
+            this.seekByStep(this.lastStep + 1)
+            this.play()
+        }
+        this.play()
+    }
+
     public back() {
-        const position = Math.max(this.lastStepPosition - STEP_DURATION, 0)
-        this.seek(position)
+        const step = Math.max(this.lastStep - 1, 0)
+        this.seekByStep(step)
     }
 
     private handleUpdate = (anim: AnimeInstance) => {
         this.onUpdateCB && this.onUpdateCB(anim)
-        if (anim.currentTime > this.lastStepPosition + STEP_DURATION) {
-            const position = this.lastStepPosition + STEP_DURATION
-            this.seek(position)
+
+        const currentSlideTime = this.stepsDuration
+            .slice(0, this.lastStep + 1)
+            .reduce((prev, current) => prev + current, 0)
+
+        if (anim.currentTime > currentSlideTime) {
+            this.seek(currentSlideTime)
         }
     }
 
@@ -115,8 +142,10 @@ export class Timeline {
             return this.addToLine(stepOptions)
         })
 
-        // TODO use ;)
         this.stepsDuration = this.line.children.map(el => el.duration)
+        // TODO more cleaver way
+        // Remove first slide because has -offset
+        this.stepsDuration = this.stepsDuration.slice(1, this.stepsDuration.length + 1)
     }
 
     private addToLine(stepOptions: AnimeAnimParams, offset?: number) {
