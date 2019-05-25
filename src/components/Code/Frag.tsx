@@ -50,7 +50,7 @@ export const Frag = (props: FragProps) => {
         }))
 
         if (props.out) {
-            addStep(-props.out, () => ({
+            addStep(props.out, () => ({
                 targets: ref.current,
                 opacity: 0,
                 [key]: 0,

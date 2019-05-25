@@ -3,14 +3,19 @@ import { Code, Frag, Comment } from '../components/Code'
 import { Deck } from '../components/Deck'
 import { Slide } from '../components/Slide'
 import { Text } from '../components/Text'
+import { Intro } from './Intro'
 
 export const App = () => {
+    let s = 0
     let i = 0
     let c = 0
 
     return (
         <Deck>
-            <Slide index={1}>
+            <Slide index={++s}>
+                <Intro in={1} />
+            </Slide>
+            <Slide index={++s}>
                 <h1>Slide 1</h1>
                 <Text in={++c} out={3}>
                     Hello!
@@ -98,7 +103,7 @@ export const App = () => {
                     />
                 </Code>
             </Slide>
-            <Slide index={2}>
+            <Slide index={++s}>
                 <h1>Slide 2</h1>
                 <Text in={1} out={3}>
                     Hello 1
@@ -110,7 +115,7 @@ export const App = () => {
                 <Text in={2}>Hello 2</Text>
                 <Text in={1}>Hello 1</Text>
             </Slide>
-            <Slide index={3}>
+            <Slide index={++s}>
                 <h1>Slide 3</h1>
                 <Text in={1}>Bye ;)</Text>
             </Slide>

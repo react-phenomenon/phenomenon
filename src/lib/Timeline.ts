@@ -5,7 +5,8 @@ import { createContext } from 'react'
 type ID = number[]
 
 export interface TimelineOptions {
-    offset: number
+    offset?: number
+    title?: string
 }
 
 interface Step {
@@ -25,28 +26,21 @@ const stepDefaults: Partial<AnimeAnimParams> = {
 
 export class Timeline {
     public steps: Step[] = []
-    public line?: AnimeTimelineInstance
+    private line?: AnimeTimelineInstance
     private lastStepPosition = 0
+    private stepsDuration: number[] = []
     private onRegisterCB?: () => void
     private onUpdateCB?: (anim: AnimeInstance) => void
 
-    public addStep({
-        id,
-        params,
-        options,
-    }: {
-        id: ID
-        params: Step['params']
-        options?: TimelineOptions
-    }) {
-        this.steps.push({ id, params, options })
+    public addStep(step: Step) {
+        this.steps.push(step)
         this.addStepDone()
     }
 
     private addStepDone = debounce(() => {
         this.createLine()
         this.onRegisterCB && this.onRegisterCB()
-        this.line!.seek(0)
+        this.seek(0)
     }, STEP_ADD_DEBOUNCE)
 
     public onRegister(cb: () => void) {
@@ -99,11 +93,15 @@ export class Timeline {
 
         this.steps.sort(sortSteps)
 
+        this.stepsDuration = []
+
         this.steps.forEach((step, index) => {
             const prefStep = this.steps[index - 1]
+            const stepParams = step.params()
+
             const stepOptions: AnimeAnimParams = {
                 ...stepDefaults,
-                ...step.params(),
+                ...stepParams,
             }
 
             if (step.options && step.options.offset) {
@@ -116,6 +114,9 @@ export class Timeline {
 
             return this.addToLine(stepOptions)
         })
+
+        // TODO use ;)
+        this.stepsDuration = this.line.children.map(el => el.duration)
     }
 
     private addToLine(stepOptions: AnimeAnimParams, offset?: number) {
@@ -124,8 +125,10 @@ export class Timeline {
 }
 
 const sameStep = (id1: ID, id2: ID) => {
-    const [id1abs, id2abs] = [id1, id2].map(id => id.map(i => Math.abs(i)))
-    return isEqual(id1abs, id2abs)
+    // Hmm we -1 = 1  maybe we don't need this
+    // const [id1abs, id2abs] = [id1, id2].map(id => id.map(i => Math.abs(i)))
+    // return isEqual(id1abs, id2abs)
+    return isEqual(id1, id2)
 }
 
 const sortSteps = (a: Step, b: Step) => {

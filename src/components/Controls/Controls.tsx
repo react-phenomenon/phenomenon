@@ -79,9 +79,6 @@ const ClickableArea = styled.div<{ left?: boolean; right?: boolean }>`
     z-index: 9;
     ${p => p.left && 'left: 0;'}
     ${p => p.right && 'right: 0;'}
-    &:active {
-        background: rgba(0, 0, 0, 0.1);
-    }
 `
 
 const Line = styled.input`

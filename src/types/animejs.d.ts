@@ -1,5 +1,9 @@
 declare module 'animejs' {
-    type FunctionBasedParamter = (element: HTMLElement, index: number, length: number) => number
+    type FunctionBasedParamter = (
+        element: HTMLElement,
+        index: number,
+        length: number,
+    ) => number
     type AnimeCallbackFunction = (anim: AnimeInstance) => void
     // Allowing null is necessary because DOM queries may not return anything.
     type AnimeTarget = string | object | HTMLElement | SVGElement | NodeList | null
@@ -105,6 +109,7 @@ declare module 'animejs' {
 
     export interface AnimeTimelineInstance extends AnimeInstance {
         add(params: AnimeAnimParams, offset?: number | string): AnimeTimelineInstance
+        children: AnimeInstance[]
     }
 
     // Helpers
@@ -127,12 +132,15 @@ declare module 'animejs' {
     function bezier(x1: number, y1: number, x2: number, y2: number): (t: number) => number
     // Timeline
     function timeline(
-        params?: Partial<AnimeInstanceParams> & Partial<AnimeInstance> & Partial<AnimeAnimParams>,
+        params?: Partial<AnimeInstanceParams> &
+            Partial<AnimeInstance> &
+            Partial<AnimeAnimParams>,
     ): AnimeTimelineInstance
     function random(min: number, max: number): number
 
     function animejs(params: AnimeParams): AnimeInstance
     animejs.timeline = timeline
+    animejs.stagger = (any: any) => any
 
     export default animejs
 }

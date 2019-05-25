@@ -15,7 +15,8 @@
         "linebreak-style": [true, "LF"],
         "member-access": true,
         "ordered-imports": false,
-        "no-increment-decrement": false
+        "no-increment-decrement": false,
+        "jsx-self-close": false
     },
     "rulesDirectory": []
 }

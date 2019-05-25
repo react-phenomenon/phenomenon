@@ -12,7 +12,7 @@ export const Text: FC<{ in: number; out?: number }> = props => {
         }))
 
         if (props.out) {
-            addStep(-props.out, () => ({
+            addStep(props.out, () => ({
                 targets: ref.current,
                 keyframes: [
                     { opacity: 0 },
