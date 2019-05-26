@@ -1,4 +1,4 @@
-import React, { createRef, FC, useEffect } from 'react'
+import React, { createRef, FC, useEffect, useState } from 'react'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import styled from 'styled-components'
 import { useKeyPress } from '../../hooks/useKeyPress'
@@ -56,7 +56,9 @@ export const Controls: FC<ControlsProps> = props => {
                         }}
                     >
                         {timeline.steps.map((step, i) => (
-                            <li key={step.id.toString() + i}>{step.id.join('.')}</li>
+                            <li key={step.id.toString() + i}>
+                                {step.id.join('.')} {step.options && step.options.title}
+                            </li>
                         ))}
                     </Steps>
                 )}

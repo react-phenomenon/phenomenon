@@ -16,82 +16,62 @@ export const Intro: FC<IntroProps> = props => {
         addStep(props.in, () => ({
             targets: ref.current!.getElementsByTagName('div'),
             translateX: [
+                { value: animejs.stagger([-100, 200]) },
                 { value: animejs.stagger([-50, 50]) },
-                { value: animejs.stagger([-45, 45]) },
-                { value: animejs.stagger([-200, 200]) },
             ],
-            translateY: [{ value: 0 }, { value: 0 }, { value: 200 }],
-            opacity: [1, 1, 1, 0],
-            rotate: [
-                { value: animejs.stagger([-30, 30]) },
-                { value: animejs.stagger([-20, 20]) },
-                { value: animejs.stagger([-100, 100]) },
-            ],
-            duration: 2000,
+            rotate: [animejs.stagger([-7, 7]), 0],
+            duration: 1500,
+            easing: 'easeInOutQuint',
         }))
         addStep(props.in, () => ({
             targets: refTitle.current,
             scale: [0.9, 1],
             opacity: [0, 1],
+            easing: 'easeInOutQuint',
         }))
     }, [])
 
     return (
         <div>
             <div ref={ref}>
-                <Square className="sq1" />
-                <Square className="sq2" />
-                <Square className="sq3" />
-                <Square className="sq1" />
-                <Square className="sq2" />
-                <Square className="sq3" />
+                <Square />
+                <Square />
+                <Square />
+                <Square main>
+                    <Title ref={refTitle} style={{ opacity: 0 }}>
+                        <b>Oak</b> Presentation Library
+                    </Title>
+                </Square>
+                <Square style={{ translate: 'transformX(-100px)' }} />
             </div>
-            <Title ref={refTitle} style={{ opacity: 0 }}>
-                <b>Oak</b> <br /> Presentation Library
-            </Title>
         </div>
     )
 }
 
-const Square = styled.div`
-    height: 300px;
-    width: 200px;
+const Square = styled.div<{ main?: boolean }>`
+    width: 300px;
+    height: 200px;
     border-radius: 10px;
-    z-index: 2;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     margin: auto;
-    transform-origin: 50% 88%;
-
-    &.sq1 {
-        background-color: #ff4066;
-    }
-    &.sq2 {
-        background-color: #ffa440;
-    }
-    &.sq3 {
-        background-color: #213ebf;
-    }
+    border: 3px solid #282c34;
+    background-color: ${p => (p.main ? '#abc123' : 'rgba(255,255,255,.1)')};
+    z-index: ${p => (p.main ? 2 : 1)};
 `
 
-const Title = styled.div`
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 400px;
-    height: 4em;
+const Title = styled.p`
     font-size: 30px;
-    text-align: center;
+    color: #282c34;
+    margin: 0;
+    padding: 10px 20px;
+    line-height: 1.2;
 
     b {
-        color: #76ba3b;
-        font-size: 40px;
+        font-size: 70px;
+        display: block;
     }
 `
