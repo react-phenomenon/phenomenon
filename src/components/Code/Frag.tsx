@@ -1,7 +1,8 @@
 import useComponentSize from '@rehooks/component-size'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
+import { FragmentsProvider, appendFragments } from './lib/appendFragments'
 
 export type FragProps = {
     id: string
@@ -18,20 +19,25 @@ const indent = '    '
 export const Frag = (props: FragProps) => {
     const ref = useRef(null)
 
+    const fragments = useContext(FragmentsProvider)
+
     const { width, height } = useComponentSize(ref)
     const [size, saveSize] = useState<{ width: number; height: number } | null>(null)
     const [addedStep, setAddedStep] = useState(false)
     const { addStep } = useSlides()
 
+    const prepareTextCode = (code: string) => {
+        const indentedCode = code
+            .split('\n')
+            .map(line => indent.repeat(props.indent || 0) + line)
+            .join('\n')
+
+        return appendFragments(indentedCode, id => fragments[id])
+    }
+
     const key = props.inline ? 'width' : 'height'
 
-    const code =
-        typeof props.code === 'string'
-            ? props.code
-                  .split('\n')
-                  .map(line => indent.repeat(props.indent || 0) + line)
-                  .join('\n')
-            : props.code
+    const code = typeof props.code === 'string' ? prepareTextCode(props.code) : props.code
 
     useEffect(() => {
         if (width && !size) {
@@ -42,19 +48,19 @@ export const Frag = (props: FragProps) => {
 
         setAddedStep(true)
 
-        addStep(props.in, () => ({
+        addStep(props.in, {
             targets: ref.current,
             [key]: [0, size[key]],
             opacity: [0, 1],
             backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
-        }))
+        })
 
         if (props.out) {
-            addStep(props.out, () => ({
+            addStep(props.out, {
                 targets: ref.current,
                 opacity: 0,
                 [key]: 0,
-            }))
+            })
         }
     }, [width, size, addedStep])
 
@@ -64,7 +70,10 @@ export const Frag = (props: FragProps) => {
             show={props.show}
             inline={props.inline}
             ref={ref}
-            style={{ [key]: size ? 0 : undefined }}
+            style={{
+                [key]: size ? 0 : undefined,
+                // position: size ? 'relative' : 'absolute',
+            }}
         >
             {code}
         </Element>
@@ -74,7 +83,6 @@ export const Frag = (props: FragProps) => {
 const Element = styled.code<{ show?: boolean; inline?: boolean }>`
     display: ${p => (p.inline ? 'inline-block' : 'block')};
     vertical-align: top;
-    color: #abc123;
     overflow: hidden;
     border-radius: 3px;
     box-sizing: border-box;

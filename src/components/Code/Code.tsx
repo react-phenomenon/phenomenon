@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
 import { SubSteps } from '../SubSteps'
 import { findFragments } from './lib/findFragments'
-import { stringReplace } from './lib/stringReplace'
 import { stripIndent } from './lib/stripIndent'
+import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 
 type CodeProps = {
     code: string
@@ -13,12 +13,10 @@ type CodeProps = {
     children?: ReactNode
 }
 
-const ID_REGEXP = /\n?\$([A-Z0-9_]*)\n?/g // $SOME
-
 export const Code = (props: CodeProps) => {
     const fragments = findFragments(props.children)
     const code = stripIndent(props.code)
-    const out = stringReplace(code, ID_REGEXP, id => fragments[id])
+    const out = appendFragments(code, id => fragments[id])
     const outTrimmed = out.map(item => (typeof item === 'string' ? item.trim() : item))
 
     const ref = useRef(null)
@@ -27,16 +25,16 @@ export const Code = (props: CodeProps) => {
     useEffect(() => {
         addStep(
             props.in,
-            () => ({
+            {
                 targets: ref.current,
                 opacity: [0, 1],
                 translateX: [250, 0],
-            }),
+            },
             { title: 'Code' },
         )
 
         if (props.out) {
-            addStep(-props.out, () => ({
+            addStep(-props.out, {
                 targets: ref.current,
                 keyframes: [
                     { opacity: 0 },
@@ -46,13 +44,15 @@ export const Code = (props: CodeProps) => {
                         padding: 0,
                     },
                 ],
-            }))
+            })
         }
     }, [])
 
     return (
         <SubSteps id={[props.in]}>
-            <Pre ref={ref}>{outTrimmed}</Pre>
+            <FragmentsProvider.Provider value={fragments}>
+                <Pre ref={ref}>{outTrimmed}</Pre>
+            </FragmentsProvider.Provider>
         </SubSteps>
     )
 }

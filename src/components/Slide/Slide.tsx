@@ -5,23 +5,23 @@ import { useSlides } from '../../hooks/useSlides'
 
 export const Slide: FC<{ index: number }> = props => {
     const { addStep } = useSlides()
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         addStep(
             props.index,
-            () => ({
+            {
                 targets: ref.current,
                 opacity: [0, 1],
                 translateX: ['100%', 0],
-            }),
-            { offset: 1 },
+            },
+            { offset: true },
         )
-        addStep(-props.index, () => ({
+        addStep(-props.index, {
             targets: ref.current,
             opacity: [1, 0],
             translateX: '-100%',
-        }))
+        })
     }, [])
 
     return (

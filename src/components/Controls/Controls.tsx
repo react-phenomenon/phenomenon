@@ -35,6 +35,12 @@ export const Controls: FC<ControlsProps> = props => {
         if (helpPress) toggleHelp(!help)
     }, [nextPress, prevPress, helpPress])
 
+    const handleRangeEnd = (event: any) => {
+        event.preventDefault()
+        event.target.blur()
+        timeline.next()
+    }
+
     return (
         <>
             <Container>
@@ -43,7 +49,8 @@ export const Controls: FC<ControlsProps> = props => {
                     type="range"
                     defaultValue="0"
                     step="0.1"
-                    onMouseUp={() => timeline.next()}
+                    onMouseUp={handleRangeEnd}
+                    onTouchEnd={handleRangeEnd}
                     onChange={e => timeline.seekByPercent(+e.target.value / 100)}
                 />
                 {help && (
@@ -57,7 +64,10 @@ export const Controls: FC<ControlsProps> = props => {
                     >
                         {timeline.steps.map((step, i) => (
                             <li key={step.id.toString() + i}>
-                                {step.id.join('.')} {step.options && step.options.title}
+                                {step.id.join('.')}
+                                {step.options &&
+                                    step.options.title &&
+                                    ` - ${step.options.title}`}
                             </li>
                         ))}
                     </Steps>

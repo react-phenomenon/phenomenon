@@ -2,5 +2,6 @@
     "editor.formatOnSave": true,
     "cSpell.words": [
         "animejs"
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -6,13 +6,13 @@ export const Text: FC<{ in: number; out?: number }> = props => {
     const { addStep } = useSlides()
 
     useEffect(() => {
-        addStep(props.in, () => ({
+        addStep(props.in, {
             targets: ref.current,
             opacity: [0, 1],
-        }))
+        })
 
         if (props.out) {
-            addStep(props.out, () => ({
+            addStep(props.out, {
                 targets: ref.current,
                 keyframes: [
                     { opacity: 0 },
@@ -22,7 +22,7 @@ export const Text: FC<{ in: number; out?: number }> = props => {
                         padding: 0,
                     },
                 ],
-            }))
+            })
         }
     }, [])
 

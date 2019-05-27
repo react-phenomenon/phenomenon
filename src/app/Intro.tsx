@@ -13,7 +13,7 @@ export const Intro: FC<IntroProps> = props => {
     const { addStep } = useSlides()
 
     useEffect(() => {
-        addStep(props.in, () => ({
+        addStep(props.in, {
             targets: ref.current!.getElementsByTagName('div'),
             translateX: [
                 { value: animejs.stagger([-100, 200]) },
@@ -22,13 +22,13 @@ export const Intro: FC<IntroProps> = props => {
             rotate: [animejs.stagger([-7, 7]), 0],
             duration: 1500,
             easing: 'easeInOutQuint',
-        }))
-        addStep(props.in, () => ({
+        })
+        addStep(props.in, {
             targets: refTitle.current,
             scale: [0.9, 1],
             opacity: [0, 1],
             easing: 'easeInOutQuint',
-        }))
+        })
     }, [])
 
     return (

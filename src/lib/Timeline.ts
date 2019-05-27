@@ -1,17 +1,17 @@
 import animejs, { AnimeAnimParams, AnimeInstance, AnimeTimelineInstance } from 'animejs'
-import { debounce, isEqual } from 'lodash'
+import { debounce, isEqual, uniq } from 'lodash'
 import { createContext } from 'react'
 
 type ID = number[]
 
 export interface TimelineOptions {
-    offset?: number
+    offset?: boolean
     title?: string
 }
 
 interface Step {
     id: ID
-    params: () => AnimeAnimParams
+    params: AnimeAnimParams
     options?: TimelineOptions
 }
 
@@ -22,6 +22,7 @@ export const TimelineContext = createContext<Timeline>({} as any)
 
 const stepDefaults: Partial<AnimeAnimParams> = {
     easing: 'easeInOutQuad',
+    duration: STEP_DURATION,
 }
 
 export class Timeline {
@@ -54,13 +55,8 @@ export class Timeline {
 
     public seek(ms: number) {
         this.pause()
+        this.lastStep = this.stepsDuration.findIndex(duration => duration >= ms)
         this.line && this.line.seek(ms)
-        let sum = 0
-        this.lastStep = this.stepsDuration.findIndex(duration => {
-            if (duration + sum > ms) return true
-            sum += duration
-            return false
-        })
     }
 
     public seekByPercent(percent: number) {
@@ -70,9 +66,7 @@ export class Timeline {
     }
 
     public seekByStep(step: number) {
-        const duration = this.stepsDuration
-            .slice(0, step)
-            .reduce((prev, current) => prev + current, 0)
+        const duration = this.stepsDuration[step]
         this.seek(duration)
     }
 
@@ -102,12 +96,10 @@ export class Timeline {
     private handleUpdate = (anim: AnimeInstance) => {
         this.onUpdateCB && this.onUpdateCB(anim)
 
-        const currentSlideTime = this.stepsDuration
-            .slice(0, this.lastStep + 1)
-            .reduce((prev, current) => prev + current, 0)
+        const nextTime = this.stepsDuration[this.lastStep + 1]
 
-        if (anim.currentTime > currentSlideTime) {
-            this.seek(currentSlideTime)
+        if (anim.currentTime > nextTime) {
+            this.seek(nextTime)
         }
     }
 
@@ -120,43 +112,39 @@ export class Timeline {
 
         this.steps.sort(sortSteps)
 
-        this.stepsDuration = []
+        this.stepsDuration = [0]
+        let durationSum = 0
 
         this.steps.forEach((step, index) => {
-            const prefStep = this.steps[index - 1]
-            const stepParams = step.params()
+            const prefStep = this.steps[index - 1] as Step | undefined
 
-            const stepOptions: AnimeAnimParams = {
+            const stepParams: AnimeAnimParams = {
                 ...stepDefaults,
-                ...stepParams,
+                ...step.params,
             }
 
-            if (step.options && step.options.offset) {
-                return this.addToLine(stepOptions, step.options.offset)
-            }
+            const duration = stepParams.duration as number
 
-            if (prefStep && sameStep(prefStep.id, step.id)) {
-                return this.addToLine(stepOptions, 1)
-            }
+            if (
+                (step.options && step.options.offset) ||
+                (prefStep && sameStep(prefStep.id, step.id))
+            ) {
+                this.addToLine(stepParams, duration)
+            } else {
+                durationSum += duration
+                this.stepsDuration.push(durationSum)
 
-            return this.addToLine(stepOptions)
+                this.addToLine(stepParams)
+            }
         })
-
-        this.stepsDuration = this.line.children.map(el => el.duration)
-        // TODO more cleaver way
-        // Remove first slide because has -offset
-        this.stepsDuration = this.stepsDuration.slice(1, this.stepsDuration.length + 1)
     }
 
-    private addToLine(stepOptions: AnimeAnimParams, offset?: number) {
-        this.line!.add(stepOptions, offset && `-=${STEP_DURATION * offset}`)
+    private addToLine(params: AnimeAnimParams, offset?: number) {
+        this.line!.add(params, offset && `-=${offset}`)
     }
 }
 
 const sameStep = (id1: ID, id2: ID) => {
-    // Hmm we -1 = 1  maybe we don't need this
-    // const [id1abs, id2abs] = [id1, id2].map(id => id.map(i => Math.abs(i)))
-    // return isEqual(id1abs, id2abs)
     return isEqual(id1, id2)
 }
 

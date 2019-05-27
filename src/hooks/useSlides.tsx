@@ -8,7 +8,7 @@ export const useSlides = () => {
     const subId = useContext(SubStepsContext)
 
     const addStep = useCallback(
-        (index: number, params: () => AnimeAnimParams, options?: TimelineOptions) => {
+        (index: number, params: AnimeAnimParams, options?: TimelineOptions) => {
             timeline.addStep({
                 id: [...subId, index],
                 params,

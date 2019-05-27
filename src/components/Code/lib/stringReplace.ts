@@ -1,4 +1,8 @@
-export const stringReplace = <T>(string: string, regexp: RegExp, fn: (id: string) => T) => {
+export const stringReplace = <T>(
+    string: string,
+    regexp: RegExp,
+    fn: (id: string) => T,
+) => {
     const output = []
 
     const storedLastIndex = regexp.lastIndex
