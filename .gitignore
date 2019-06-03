@@ -1,3 +1,4 @@
 build/
+render/
 node_modules/
 .history/

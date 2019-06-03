@@ -93,6 +93,10 @@ export class Timeline {
         this.seekByStep(step)
     }
 
+    public getDuration() {
+        return this.line && this.line.duration
+    }
+
     private handleUpdate = (anim: AnimeInstance) => {
         this.onUpdateCB && this.onUpdateCB(anim)
 
