@@ -6,7 +6,7 @@
         "jsx": "preserve",
         "esModuleInterop": true,
         "strict": true,
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "lib": ["dom", "dom.iterable", "esnext", "esnext.array"],
         "locale": "pl",
         "noImplicitReturns": true,
         "noUnusedLocals": false,

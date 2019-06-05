@@ -1,6 +1,7 @@
 import React, { createContext, FC } from 'react'
 import { stringReplace } from './stringReplace'
 import styled from 'styled-components'
+import { uniqueId } from 'lodash'
 
 const ID_REGEXP = /\n?\$([A-Z0-9_]*)\n?/g // $SOME
 
@@ -20,7 +21,7 @@ const mapCode = (code: any[], fn: (c: string) => any) =>
 
 const highlight = (code: string, reg: RegExp, Comp: any) =>
     stringReplace(code, reg, key => (
-        <Comp key={code + key} value={key}>
+        <Comp key={uniqueId('highlight-')} value={key}>
             {key}
         </Comp>
     ))

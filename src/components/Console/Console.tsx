@@ -1,24 +1,14 @@
-import React, { ReactNode, useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import { useSlides } from '../../hooks/useSlides'
+import React, { FC, useRef, useEffect } from 'react'
 import { SubSteps } from '../SubSteps'
-import { findFragments } from './lib/findFragments'
-import { stripIndent } from '../../helpers/stripIndent'
-import { appendFragments, FragmentsProvider } from './lib/appendFragments'
+import { useSlides } from '../../hooks/useSlides'
+import styled from 'styled-components'
 
-type CodeProps = {
-    code: string
+type ConsoleProps = {
     in: number
     out?: number
-    children?: ReactNode
 }
 
-export const Code = (props: CodeProps) => {
-    const fragments = findFragments(props.children)
-    const code = stripIndent(props.code)
-    const out = appendFragments(code, id => fragments[id])
-    const outTrimmed = out.map(item => (typeof item === 'string' ? item.trim() : item))
-
+export const Console: FC<ConsoleProps> = props => {
     const ref = useRef(null)
     const { addStep } = useSlides()
 
@@ -30,7 +20,7 @@ export const Code = (props: CodeProps) => {
                 opacity: [0, 1],
                 translateX: [250, 0],
             },
-            { title: 'Code' },
+            { title: 'Console' },
         )
 
         if (props.out) {
@@ -50,17 +40,28 @@ export const Code = (props: CodeProps) => {
 
     return (
         <SubSteps id={[props.in]}>
-            <FragmentsProvider.Provider value={fragments}>
-                <Pre ref={ref}>{outTrimmed}</Pre>
-            </FragmentsProvider.Provider>
+            <Container ref={ref}>
+                <Scroll>{props.children}</Scroll>
+            </Container>
         </SubSteps>
     )
 }
 
-const Pre = styled.pre`
+const Container = styled.div`
     overflow: hidden;
+    position: relative;
+    width: 500px;
+    max-width: 100%;
+    height: 300px;
     background-color: #20242b;
     padding: 2em;
     margin: 2em auto;
     border-radius: 0.5em;
+`
+
+const Scroll = styled.div`
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
 `

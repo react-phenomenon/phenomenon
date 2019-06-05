@@ -4,16 +4,50 @@ import { Deck } from '../components/Deck'
 import { Slide } from '../components/Slide'
 import { Text } from '../components/Text'
 import { Intro } from './Intro'
+import { Console, Cmd, Output } from '../components/Console'
 
 export const App = () => {
     let s = 0
     let i = 0
     let c = 0
 
+    let cli = 0
+
     return (
         <Deck>
             <Slide index={++s}>
                 <Intro in={1} />
+            </Slide>
+            <Slide index={++s}>
+                <h1>CMD</h1>
+                <Console in={1}>
+                    <Cmd in={++cli} name="rm -rf /dev/null" />
+                    <Output
+                        in={++cli}
+                        text="rm: cannot remove '/dev/null': No such file or directory"
+                    />
+                    <Cmd in={++cli} name="ls -l /home/root/Projects/oak" />
+                    <Output
+                        in={++cli}
+                        text={`
+                            total 568
+                            root   4096 maj 28 01:19 build
+                            root  36864 cze  5 23:24 node_modules
+                            root   1661 cze  5 23:24 package.json
+                            root   4096 lut 13 15:36 public
+                            root     12 mar 16 13:23 README.md
+                        `}
+                    />
+                    <Output
+                        in={++cli}
+                        text={`
+                            root   4096 cze  3 02:07 scripts
+                            root   4096 maj 23 00:40 src
+                            root    703 cze  5 23:46 tsconfig.json
+                            root 499238 cze  5 23:24 yarn.lock
+                        `}
+                    />
+                </Console>
             </Slide>
             <Slide index={++s}>
                 <h1>JavaScript</h1>
@@ -25,7 +59,7 @@ export const App = () => {
                 </Text>
                 <Code
                     code={`
-                        if ($IF) {
+                        if ($IF2$IF) {
                             $IN_IF
                         }
 
@@ -37,7 +71,14 @@ export const App = () => {
                     in={++c}
                     out={3}
                 >
-                    <Frag id="IF" in={++i} code="!disabled || b === 5" inline />
+                    <Frag
+                        id="IF"
+                        in={++i}
+                        out={i + 1}
+                        code="!disabled || b === 5"
+                        inline
+                    />
+                    <Frag id="IF2" in={++i} code="b === 1000" inline />
                     <Frag
                         id="IN_IF"
                         in={++i}
