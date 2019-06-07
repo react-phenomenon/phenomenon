@@ -1,8 +1,13 @@
 import React, { FC, createContext, useContext } from 'react'
+import { ID } from '../../types/ID'
 
-export const SubStepsContext = createContext<number[]>([])
+export const SubStepsContext = createContext<ID>([])
 
-export const SubSteps: FC<{ id: number[] }> = props => {
+interface SubStepsProps {
+    id: ID
+}
+
+export const SubSteps: FC<SubStepsProps> = props => {
     const parent = useContext(SubStepsContext)
     return (
         <SubStepsContext.Provider value={[...parent, ...props.id]}>

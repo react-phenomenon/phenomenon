@@ -1,59 +1,61 @@
-import React, { ReactNode, useEffect, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef, FC } from 'react'
 import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
 import { SubSteps } from '../SubSteps'
 import { findFragments } from './lib/findFragments'
 import { stripIndent } from '../../helpers/stripIndent'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
+import { StepProps } from '../../types/StepProps'
+import { Expand } from '../Expand'
 
-type CodeProps = {
+interface CodeProps extends Partial<StepProps> {
     code: string
-    in: number
-    out?: number
-    children?: ReactNode
 }
 
-export const Code = (props: CodeProps) => {
+export const Code: FC<CodeProps> = props => {
     const fragments = findFragments(props.children)
     const code = stripIndent(props.code)
-    const out = appendFragments(code, id => fragments[id])
-    const outTrimmed = out.map(item => (typeof item === 'string' ? item.trim() : item))
+    const out = appendFragments(code, fragments)
 
-    const ref = useRef(null)
-    const { addStep } = useSlides()
+    // const ref = useRef(null)
+    // const { addStep } = useSlides()
 
-    useEffect(() => {
-        addStep(
-            props.in,
-            {
-                targets: ref.current,
-                opacity: [0, 1],
-                translateX: [250, 0],
-            },
-            { title: 'Code' },
-        )
+    // useEffect(() => {
+    //     if (props.in) {
+    //         addStep(
+    //             props.in,
+    //             {
+    //                 targets: ref.current,
+    //                 opacity: [0, 1],
+    //                 translateX: [250, 0],
+    //             },
+    //             { title: 'Code' },
+    //         )
+    //     }
 
-        if (props.out) {
-            addStep(-props.out, {
-                targets: ref.current,
-                keyframes: [
-                    { opacity: 0 },
-                    {
-                        height: 0,
-                        margin: 0,
-                        padding: 0,
-                    },
-                ],
-            })
-        }
-    }, [])
+    //     if (props.out) {
+    //         addStep(-props.out, {
+    //             targets: ref.current,
+    //             keyframes: [
+    //                 { opacity: 0 },
+    //                 {
+    //                     height: 0,
+    //                     margin: 0,
+    //                     padding: 0,
+    //                 },
+    //             ],
+    //         })
+    //     }
+    // }, [])
 
     return (
-        <SubSteps id={[props.in]}>
-            <FragmentsProvider.Provider value={fragments}>
-                <Pre ref={ref}>{outTrimmed}</Pre>
-            </FragmentsProvider.Provider>
-        </SubSteps>
+        <Expand in={props.in} out={props.out} options={{ title: 'Code' }}>
+            <SubSteps id={[props.in || 0]}>
+                <FragmentsProvider.Provider value={fragments}>
+                    <Pre>{out}</Pre>
+                </FragmentsProvider.Provider>
+            </SubSteps>
+        </Expand>
     )
 }
 

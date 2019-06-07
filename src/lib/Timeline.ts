@@ -1,8 +1,7 @@
 import animejs, { AnimeAnimParams, AnimeInstance, AnimeTimelineInstance } from 'animejs'
-import { debounce, isEqual, uniq } from 'lodash'
+import { debounce, isEqual } from 'lodash'
 import { createContext } from 'react'
-
-type ID = number[]
+import { ID } from '../types/ID'
 
 export interface TimelineOptions {
     offset?: boolean
@@ -14,6 +13,8 @@ interface Step {
     params: AnimeAnimParams
     options?: TimelineOptions
 }
+
+type TimelineUpdateCallback = (ms: number, duration: number) => void
 
 const STEP_DURATION = 500
 const STEP_ADD_DEBOUNCE = 100
@@ -32,7 +33,7 @@ export class Timeline {
     private stepsDuration: number[] = []
     private moving = false
     private onRegisterCB?: () => void
-    private onUpdateCB?: (anim: AnimeInstance) => void
+    private onUpdateCB?: TimelineUpdateCallback
 
     public addStep(step: Step) {
         this.steps.push(step)
@@ -42,14 +43,14 @@ export class Timeline {
     private addStepDone = debounce(() => {
         this.createLine()
         this.onRegisterCB && this.onRegisterCB()
-        this.seek(0)
+        this.seek(this.getLastSeek())
     }, STEP_ADD_DEBOUNCE)
 
     public onRegister(cb: () => void) {
         this.onRegisterCB = cb
     }
 
-    public onUpdate(cb: (anim: AnimeInstance) => void) {
+    public onUpdate(cb: TimelineUpdateCallback) {
         this.onUpdateCB = cb
     }
 
@@ -57,6 +58,16 @@ export class Timeline {
         this.pause()
         this.lastStep = this.stepsDuration.findIndex(duration => duration >= ms)
         this.line && this.line.seek(ms)
+        this.saveLastSeek(ms)
+    }
+
+    private saveLastSeek = debounce((ms: number) => {
+        localStorage.setItem('lastSeek', ms.toString())
+    }, 1000)
+
+    private getLastSeek() {
+        const ms = localStorage.getItem('lastSeek')
+        return ms ? +ms : 0
     }
 
     public seekByPercent(percent: number) {
@@ -97,8 +108,12 @@ export class Timeline {
         return this.line && this.line.duration
     }
 
+    public getCurrentTime() {
+        return this.line && this.line.currentTime
+    }
+
     private handleUpdate = (anim: AnimeInstance) => {
-        this.onUpdateCB && this.onUpdateCB(anim)
+        this.onUpdateCB && this.onUpdateCB(anim.currentTime, anim.duration)
 
         const nextTime = this.stepsDuration[this.lastStep + 1]
 

@@ -3,12 +3,11 @@ import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react
 import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
 import { FragmentsProvider, appendFragments } from './lib/appendFragments'
+import { StepProps } from '../../types/StepProps'
 
-export type FragProps = {
+export interface FragProps extends StepProps {
     id: string
     code: ReactNode
-    in: number
-    out?: number
     show?: boolean
     inline?: boolean
     indent?: number
@@ -32,7 +31,7 @@ export const Frag = (props: FragProps) => {
             .map(line => indent.repeat(props.indent || 0) + line)
             .join('\n')
 
-        return appendFragments(indentedCode, id => fragments[id])
+        return appendFragments(indentedCode, fragments)
     }
 
     const key = props.inline ? 'width' : 'height'
@@ -48,12 +47,16 @@ export const Frag = (props: FragProps) => {
 
         setAddedStep(true)
 
-        addStep(props.in, {
-            targets: ref.current,
-            [key]: [0, size[key]],
-            opacity: [0, 1],
-            backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
-        })
+        addStep(
+            props.in,
+            {
+                targets: ref.current,
+                [key]: [0, size[key]],
+                opacity: [0, 1],
+                backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
+            },
+            { title: 'Frag' },
+        )
 
         if (props.out) {
             addStep(props.out, {

@@ -2,11 +2,9 @@ import React, { FC, useRef, useEffect } from 'react'
 import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
 import styled from 'styled-components'
+import { StepProps } from '../../types/StepProps'
 
-type ConsoleProps = {
-    in: number
-    out?: number
-}
+interface ConsoleProps extends StepProps {}
 
 export const Console: FC<ConsoleProps> = props => {
     const ref = useRef(null)

@@ -3,7 +3,7 @@ import useComponentSize from '@rehooks/component-size'
 import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
 
-type CmdProps = {
+interface CmdProps {
     name: string
     in: number
 }
@@ -25,19 +25,23 @@ export const Cmd: FC<CmdProps> = props => {
 
         setAddedStep(true)
 
-        addStep(props.in, {
-            targets: ref.current,
-            keyframes: [
-                {
-                    height: size,
-                    width: '0%',
-                },
-                {
-                    opacity: 1,
-                    width: '100%',
-                },
-            ],
-        })
+        addStep(
+            props.in,
+            {
+                targets: ref.current,
+                keyframes: [
+                    {
+                        height: size,
+                        width: '0%',
+                    },
+                    {
+                        opacity: 1,
+                        width: '100%',
+                    },
+                ],
+            },
+            { title: 'Cmd' },
+        )
     }, [height, size, addedStep])
 
     return (

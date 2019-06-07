@@ -1,5 +1,5 @@
 import React, { Children, ReactNode } from 'react'
-import { Fragments } from '../../../types/Fragments'
+import { Fragments } from '../types/Fragments'
 import { FragProps } from '../Frag'
 import { stripIndent } from '../../../helpers/stripIndent'
 
@@ -14,14 +14,17 @@ export const findFragments = (children: ReactNode): Fragments => {
         const { code, ...otherProps } = props
         const stripedCode = typeof code === 'string' ? stripIndent(code) : code
 
-        fragments[props.id] = (
-            <Frag
-                key={props.id + index}
-                {...otherProps}
-                code={stripedCode}
-                index={props.in}
-            />
-        )
+        fragments[props.id] = {
+            element: (
+                <Frag
+                    key={props.id + index}
+                    {...otherProps}
+                    code={stripedCode}
+                    index={props.in}
+                />
+            ),
+            inline: !!props.inline,
+        }
     })
 
     return fragments

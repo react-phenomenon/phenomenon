@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
 import { stripIndent } from '../../helpers/stripIndent'
 
-type OutputProps = {
+interface OutputProps {
     text: string
     in: number
 }

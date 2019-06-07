@@ -16,8 +16,8 @@ export const Controls: FC<ControlsProps> = props => {
     useEffect(() => {
         const ref = inputRef.current
         if (ref) {
-            timeline.onUpdate(anim => {
-                ref.value = ((anim.currentTime / anim.duration) * 100).toString()
+            timeline.onUpdate((ms, duration) => {
+                ref.value = ((ms / duration) * 100).toString()
             })
         }
     }, [])
@@ -25,6 +25,7 @@ export const Controls: FC<ControlsProps> = props => {
     const nextPress = useKeyPress(' ', 'ArrowRight', 'd')
     const prevPress = useKeyPress('Backspace', 'ArrowLeft', 'a')
     const helpPress = useKeyPress('h')
+    const homePress = useKeyPress('Home', 's')
 
     const next = () => timeline.next()
     const back = () => timeline.back()
@@ -33,7 +34,8 @@ export const Controls: FC<ControlsProps> = props => {
         if (nextPress) next()
         if (prevPress) back()
         if (helpPress) toggleHelp(!help)
-    }, [nextPress, prevPress, helpPress])
+        if (homePress) timeline.seek(0)
+    }, [nextPress, prevPress, helpPress, homePress])
 
     const handleRangeEnd = (event: any) => {
         event.preventDefault()

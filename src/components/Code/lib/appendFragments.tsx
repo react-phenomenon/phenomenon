@@ -1,68 +1,34 @@
-import React, { createContext, FC } from 'react'
-import { stringReplace } from './stringReplace'
-import styled from 'styled-components'
-import { uniqueId } from 'lodash'
+import { createContext } from 'react'
+import { stringReplace } from '../../../helpers/stringReplace'
+import { highlightCode } from '../../../helpers/highlightCode'
+import { Fragments } from '../types/Fragments'
 
 const ID_REGEXP = /\n?\$([A-Z0-9_]*)\n?/g // $SOME
 
 export const FragmentsProvider = createContext<{ [key: string]: any }>({})
 
-export const appendFragments = (code: string, fn: (id: string) => any) => {
-    let newCode = stringReplace(code, ID_REGEXP, fn)
-    for (const style of styles) {
-        newCode = mapCode(newCode, c => highlight(c, style.reg, style.Comp))
-    }
-    return newCode
-    // return mapCode(stringReplace(code, ID_REGEXP, fn), highlightKeywords)
+export const appendFragments = (code: string, fragments: Fragments) => {
+    const elements = stringReplace(code, ID_REGEXP, id => fragments[id])
+
+    const newCode = elements.map((item, index) => {
+        const next = elements[index + 1]
+
+        // Next element has display: block so we have to remove new line
+        if (
+            typeof item === 'string' &&
+            next &&
+            typeof next === 'object' &&
+            !next.inline
+        ) {
+            return item.trimRight()
+        }
+
+        if (typeof item === 'string') {
+            return item
+        }
+
+        return item.element
+    })
+
+    return highlightCode(newCode)
 }
-
-const mapCode = (code: any[], fn: (c: string) => any) =>
-    code.map(item => (typeof item === 'string' ? fn(item) : item)).flat()
-
-const highlight = (code: string, reg: RegExp, Comp: any) =>
-    stringReplace(code, reg, key => (
-        <Comp key={uniqueId('highlight-')} value={key}>
-            {key}
-        </Comp>
-    ))
-
-const Color: FC<{ value: string }> = ({ value }) => (
-    <span style={{ color: value }}>{value}</span>
-)
-
-const styles: { reg: RegExp; Comp: any }[] = [
-    {
-        reg: /(if|else|return|for|while|of|=>)/g,
-        Comp: styled.span`
-            color: #c678dd;
-        `,
-    },
-    {
-        reg: /(#[0-9a-fA-F]{3,6})/g,
-        Comp: Color,
-    },
-    {
-        reg: /(true|false|undefined|null)/g,
-        Comp: styled.span`
-            color: #d19a66;
-        `,
-    },
-    {
-        reg: /(["'`].+["'`])/g,
-        Comp: styled.span`
-            color: #98c379;
-        `,
-    },
-    {
-        reg: /(\d+(%|px|\.)*)/g,
-        Comp: styled.span`
-            color: #d19a66;
-        `,
-    },
-    {
-        reg: /([=!@$%^&*<>|]+)/g,
-        Comp: styled.span`
-            color: #56b6c2;
-        `,
-    },
-]

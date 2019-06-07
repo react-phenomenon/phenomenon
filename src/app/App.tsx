@@ -2,16 +2,18 @@ import React from 'react'
 import { Code, Frag, Comment } from '../components/Code'
 import { Deck } from '../components/Deck'
 import { Slide } from '../components/Slide'
-import { Text } from '../components/Text'
+import { Fade } from '../components/Fade'
 import { Intro } from './Intro'
 import { Console, Cmd, Output } from '../components/Console'
+import { Expand } from '../components/Expand'
 
 export const App = () => {
+    let f = 0
     let s = 0
     let i = 0
     let c = 0
-
     let cli = 0
+    let ei = 0
 
     return (
         <Deck>
@@ -19,8 +21,104 @@ export const App = () => {
                 <Intro in={1} />
             </Slide>
             <Slide index={++s}>
+                <h1>Hello</h1>
+                <p>Click space or use arrow keys to navigate</p>
+                <Expand in={++f} out={f + 1}>
+                    <p>To create slides you have to use two components:</p>
+                    <Code
+                        code={`
+                            <Deck>
+                                <Slide index={1}>Slide 1 content</Slide>
+                                <Slide index={2}>Slide 2 content</Slide>
+                                // …
+                            </Deck>
+                        `}
+                    />
+                </Expand>
+                <Expand in={++f}>
+                    <p>Next, you may want to add some basic fancy components:</p>
+                </Expand>
+                <Fade in={++f} out={f + 3}>
+                    <h3>Fade component</h3>
+                    <Code code={`<Fade in={1}>Content</Fade>`} />
+                </Fade>
+                <Expand in={++f} out={f + 2}>
+                    <h3>Expand component</h3>
+                    <Code code={`<Expand in={2}>Content</Expand>`} />
+                </Expand>
+                <Expand in={++f}>
+                    <p>You can also hide those components using eg:</p>
+                    <Code code={`<Expand in={1} out={2}>Content</Expand>`} />
+                </Expand>
+            </Slide>
+            <Slide index={++s}>
+                <h1>Full example</h1>
+                <Code
+                    code={`
+                        <Deck>
+                            $SLIDE1
+                            $SLIDE2
+                        </Deck>
+                    `}
+                >
+                    <Frag
+                        in={++ei}
+                        id="SLIDE1"
+                        indent={1}
+                        code={`
+                            <Slide index={1}>
+                                $SLIDE1_CONTENT1
+                                $SLIDE1_CONTENT2
+                            </Slide>
+                        `}
+                    />
+                    <Frag
+                        in={++ei}
+                        id="SLIDE1_CONTENT1"
+                        indent={2}
+                        code={`
+                            <Fade in={1}>
+                                <h1>Welcome!</h1>
+                            </Fade>
+                        `}
+                    />
+                    <Frag
+                        in={++ei}
+                        id="SLIDE1_CONTENT2"
+                        indent={2}
+                        code={`
+                            <Fade in={2}>
+                                <p>Lorem ipsum dor…</p>
+                            </Fade>
+                        `}
+                    />
+                    <Frag
+                        in={++ei}
+                        id="SLIDE2"
+                        indent={1}
+                        code={`
+                            <Slide index={2}>
+                                $SLIDE2_CONTENT
+                            </Slide>
+                        `}
+                    />
+                    <Frag
+                        in={++ei}
+                        id="SLIDE2_CONTENT"
+                        indent={2}
+                        code={`
+                            <h1>Next slide!</h1>
+                            <Expand in={1}>
+                                <h2>hooray!</h2>
+                            </Expand>
+                            <p>It's so easy!</p>
+                        `}
+                    />
+                </Code>
+            </Slide>
+            <Slide index={++s}>
                 <h1>CMD</h1>
-                <Console in={1}>
+                <Console in={1} out={5}>
                     <Cmd in={++cli} name="rm -rf /dev/null" />
                     <Output
                         in={++cli}
@@ -51,12 +149,10 @@ export const App = () => {
             </Slide>
             <Slide index={++s}>
                 <h1>JavaScript</h1>
-                <Text in={++c} out={3}>
-                    Hello!
-                </Text>
-                <Text in={++c} out={3}>
-                    I will show you some code examples
-                </Text>
+                <Fade in={++c} out={3}>
+                    <p>Hello!</p>
+                    <p>I will show you some code examples</p>
+                </Fade>
                 <Code
                     code={`
                         if ($IF2$IF) {
@@ -128,7 +224,9 @@ export const App = () => {
             </Slide>
             <Slide index={++s}>
                 <h1>CSS</h1>
-                <Text in={++c}>And now some CSS</Text>
+                <Fade in={++c}>
+                    <p>And now some CSS</p>
+                </Fade>
                 <Code
                     code={`
                         $BODY
@@ -182,16 +280,6 @@ export const App = () => {
                         `}
                     />
                 </Code>
-            </Slide>
-            <Slide index={++s}>
-                <h1>End</h1>
-                <Text in={1} out={2}>
-                    1 Bye
-                </Text>
-                <Text in={2} out={3}>
-                    2 Bye ;
-                </Text>
-                <Text in={3}>3 Bye ;)</Text>
             </Slide>
         </Deck>
     )

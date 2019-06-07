@@ -3,7 +3,11 @@ import styled from 'styled-components'
 import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
 
-export const Slide: FC<{ index: number }> = props => {
+interface SlideProps {
+    index: number
+}
+
+export const Slide: FC<SlideProps> = props => {
     const { addStep } = useSlides()
     const ref = useRef<HTMLDivElement>(null)
 
@@ -15,7 +19,7 @@ export const Slide: FC<{ index: number }> = props => {
                 opacity: [0, 1],
                 translateX: ['100%', 0],
             },
-            { offset: true },
+            { title: 'Slide', offset: true },
         )
         addStep(-props.index, {
             targets: ref.current,
