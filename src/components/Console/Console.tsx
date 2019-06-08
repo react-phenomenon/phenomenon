@@ -3,45 +3,19 @@ import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
 import styled from 'styled-components'
 import { StepProps } from '../../types/StepProps'
+import { Expand } from '../Expand'
 
 interface ConsoleProps extends StepProps {}
 
 export const Console: FC<ConsoleProps> = props => {
-    const ref = useRef(null)
-    const { addStep } = useSlides()
-
-    useEffect(() => {
-        addStep(
-            props.in,
-            {
-                targets: ref.current,
-                opacity: [0, 1],
-                translateX: [250, 0],
-            },
-            { title: 'Console' },
-        )
-
-        if (props.out) {
-            addStep(-props.out, {
-                targets: ref.current,
-                keyframes: [
-                    { opacity: 0 },
-                    {
-                        height: 0,
-                        margin: 0,
-                        padding: 0,
-                    },
-                ],
-            })
-        }
-    }, [])
-
     return (
-        <SubSteps id={[props.in]}>
-            <Container ref={ref}>
-                <Scroll>{props.children}</Scroll>
-            </Container>
-        </SubSteps>
+        <Expand in={props.in} out={props.out} options={{ title: 'Console' }}>
+            <SubSteps id={[props.in]}>
+                <Container>
+                    <Scroll>{props.children}</Scroll>
+                </Container>
+            </SubSteps>
+        </Expand>
     )
 }
 

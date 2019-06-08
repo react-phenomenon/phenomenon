@@ -20,7 +20,7 @@ export const Intro: FC<IntroProps> = props => {
                 { value: animejs.stagger([-50, 50]) },
             ],
             rotate: [animejs.stagger([-7, 7]), 0],
-            duration: 1500,
+            duration: 1000,
             easing: 'easeInOutQuint',
         })
         addStep(props.in, {

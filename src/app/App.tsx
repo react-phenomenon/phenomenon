@@ -200,7 +200,7 @@ export const App = () => {
                     in={1}
                     code={`
                         $DIV_START $LABEL
-                        $____<input $TYPE $ID />
+                        $____<input$TYPE$ID />
                         $DIV_END
                     `}
                 >
@@ -218,8 +218,8 @@ export const App = () => {
                             </label>
                         `}
                     />
-                    <Frag id="FOR" in={4} code={`\u00a0for="email"`} inline />
-                    <Frag id="ID" in={4} code={`\u00a0id="email"`} inline />
+                    <Frag id="FOR" in={4} code={` for="email"`} inline />
+                    <Frag id="ID" in={4} code={` id="email"`} inline />
                 </Code>
             </Slide>
             <Slide index={++s}>

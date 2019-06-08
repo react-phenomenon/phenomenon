@@ -1,6 +1,6 @@
 import React, { createRef, FC, useEffect, useState } from 'react'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useKeyPress } from '../../hooks/useKeyPress'
 import { Timeline } from '../../lib/Timeline'
 
@@ -95,16 +95,27 @@ const ClickableArea = styled.div<{ left?: boolean; right?: boolean }>`
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 40vw;
+    width: 30vw;
     height: 100%;
     z-index: 9;
-    ${p => p.left && 'left: 0;'}
-    ${p => p.right && 'right: 0;'}
+    ${p =>
+        p.left &&
+        css`
+            left: 0;
+            cursor: w-resize;
+        `}
+    ${p =>
+        p.right &&
+        css`
+            right: 0;
+
+            cursor: e-resize;
+        `}
 `
 
 const Steps = styled.ol`
     font-size: 12px;
-    max-height: 80vh;
+    max-height: calc(100vh - 65px);
     overflow: auto;
 `
 
