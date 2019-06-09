@@ -1,8 +1,9 @@
-import React, { createRef, FC, useEffect, useState } from 'react'
+import React, { createRef, FC, useEffect } from 'react'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import styled, { css } from 'styled-components'
 import { useKeyPress } from '../../hooks/useKeyPress'
 import { Timeline } from '../../lib/Timeline'
+import { Pointer } from './Pointer'
 
 interface ControlsProps {
     timeline: Timeline
@@ -75,6 +76,9 @@ export const Controls: FC<ControlsProps> = props => {
                     </Steps>
                 )}
             </Container>
+
+            <Pointer />
+
             <ClickableArea left onClick={back} />
             <ClickableArea right onClick={next} />
         </>

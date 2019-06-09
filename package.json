@@ -4,7 +4,8 @@
   "homepage": "http://kacperkozak.github.io/oak",
   "private": true,
   "scripts": {
-    "build": "react-scripts build",
+    "build": "PUBLIC_URL='/' react-scripts build",
+    "server": "node server/index.ts",
     "start": "react-scripts start",
     "lint": "tslint --project . src/**/*.tsx src/**/*.ts",
     "lint:fix": "tslint --fix --project . src/**/*.tsx src/**/*.ts",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@rehooks/component-size": "^1.0.2",
     "animejs": "^3.0.1",
+    "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.11",
     "pretty-ms": "^5.0.0",
@@ -22,6 +24,7 @@
     "react-dom": "^16.8.6",
     "react-hooks-global-state": "^0.9.0",
     "react-use": "^9.0.0",
+    "socket.io": "^2.2.0",
     "styled-components": "^4.2.0",
     "ts-loader": "^5.3.3"
   },
@@ -29,9 +32,11 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
+    "@types/express": "^4.17.0",
     "@types/lodash": "^4.14.123",
     "@types/react": "^16.8.13",
     "@types/react-dom": "^16.8.4",
+    "@types/socket.io-client": "^1.4.32",
     "@types/styled-components": "^4.1.15",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
