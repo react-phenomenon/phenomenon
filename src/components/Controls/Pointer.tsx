@@ -4,14 +4,12 @@ import io from 'socket.io-client'
 import styled from 'styled-components'
 
 const socket = io()
-
 const POINTER_SIZE = 30
 
 interface PointerProps {}
 
 export const Pointer: FC<PointerProps> = () => {
     const ref = useRef<HTMLDivElement>(null)
-
     const { rotationRate } = useMotion()
 
     useEffect(() => {

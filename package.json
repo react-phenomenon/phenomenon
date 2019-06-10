@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "PUBLIC_URL='/' react-scripts build",
-    "server": "node server/index.ts",
+    "server": "node server.js",
     "start": "react-scripts start",
     "lint": "tslint --project . src/**/*.tsx src/**/*.ts",
     "lint:fix": "tslint --fix --project . src/**/*.tsx src/**/*.ts",
