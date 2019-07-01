@@ -3,22 +3,23 @@ import { Code, Frag, Comment } from '../components/Code'
 import { Deck } from '../components/Deck'
 import { Slide } from '../components/Slide'
 import { Fade } from '../components/Fade'
-import { Intro } from './Intro'
 import { Console, Cmd, Output } from '../components/Console'
 import { Expand } from '../components/Expand'
+import { FullExample } from './FullExample'
+import { ConsoleExample } from './ConsoleExample'
 
 export const App = () => {
     let f = 0
     let s = 0
     let i = 0
     let c = 0
-    let cli = 0
-    let ei = 0
 
     return (
         <Deck>
-            <Slide index={++s}>
-                <Intro in={1} />
+            <Slide index={++s} backgroundImage={require('./assets/background.png')}>
+                <Fade in={1}>
+                    <img src={require('./assets/logo.png')} alt="Phenomenon" />
+                </Fade>
             </Slide>
             <Slide index={++s}>
                 <h1>Hello</h1>
@@ -47,105 +48,17 @@ export const App = () => {
                     <Code code={`<Expand in={2}>Content</Expand>`} />
                 </Expand>
                 <Expand in={++f}>
-                    <p>You can also hide those components using eg:</p>
+                    <p>You can also hide those components using out prop eg:</p>
                     <Code code={`<Expand in={1} out={2}>Content</Expand>`} />
                 </Expand>
             </Slide>
-            <Slide index={++s}>
+            <Slide index={++s} backgroundColor="rgba(0,0,0,.5)">
                 <h1>Full example</h1>
-                <Code
-                    code={`
-                        <Deck>
-                            $SLIDE1
-                            $SLIDE2
-                        </Deck>
-                    `}
-                >
-                    <Frag
-                        in={++ei}
-                        id="SLIDE1"
-                        indent={1}
-                        code={`
-                            <Slide index={1}>
-                                $SLIDE1_CONTENT1
-                                $SLIDE1_CONTENT2
-                            </Slide>
-                        `}
-                    />
-                    <Frag
-                        in={++ei}
-                        id="SLIDE1_CONTENT1"
-                        indent={2}
-                        code={`
-                            <Fade in={1}>
-                                <h1>Welcome!</h1>
-                            </Fade>
-                        `}
-                    />
-                    <Frag
-                        in={++ei}
-                        id="SLIDE1_CONTENT2"
-                        indent={2}
-                        code={`
-                            <Fade in={2}>
-                                <p>Lorem ipsum dor…</p>
-                            </Fade>
-                        `}
-                    />
-                    <Frag
-                        in={++ei}
-                        id="SLIDE2"
-                        indent={1}
-                        code={`
-                            <Slide index={2}>
-                                $SLIDE2_CONTENT
-                            </Slide>
-                        `}
-                    />
-                    <Frag
-                        in={++ei}
-                        id="SLIDE2_CONTENT"
-                        indent={2}
-                        code={`
-                            <h1>Next slide!</h1>
-                            <Expand in={1}>
-                                <h2>hooray!</h2>
-                            </Expand>
-                            <p>It's so easy!</p>
-                        `}
-                    />
-                </Code>
+                <FullExample />
             </Slide>
             <Slide index={++s}>
-                <h1>CMD</h1>
-                <Console in={1} out={5}>
-                    <Cmd in={++cli} name="rm -rf /dev/null" />
-                    <Output
-                        in={++cli}
-                        text="rm: cannot remove '/dev/null': No such file or directory"
-                    />
-                    <Cmd in={++cli} name="ls -l /home/root/Projects/oak" />
-                    <Output
-                        in={++cli}
-                        text={`
-                            total 568
-                            root   4096 maj 28 01:19 build
-                            root  36864 cze  5 23:24 node_modules
-                            root   1661 cze  5 23:24 package.json
-                            root   4096 lut 13 15:36 public
-                            root     12 mar 16 13:23 README.md
-                        `}
-                    />
-                    <Output
-                        in={++cli}
-                        text={`
-                            root   4096 cze  3 02:07 scripts
-                            root   4096 maj 23 00:40 src
-                            root    703 cze  5 23:46 tsconfig.json
-                            root 499238 cze  5 23:24 yarn.lock
-                        `}
-                    />
-                </Console>
+                <h1>Console</h1>
+                <ConsoleExample />
             </Slide>
             <Slide index={++s}>
                 <h1>JavaScript</h1>

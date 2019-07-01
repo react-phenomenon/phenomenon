@@ -1,9 +1,5 @@
 # Ideas
 
-## Name
-
-PoAK → Presentation of Amazing Knowledge
-
 ## Components
 
 ```jsx
@@ -48,7 +44,11 @@ interface State {
 
 interface Timeline {
     // Register
-    addStep(index: number, duration: number, type?: string): { id: StepID; shouldStart: boolean }
+    addStep(
+        index: number,
+        duration: number,
+        type?: string,
+    ): { id: StepID; shouldStart: boolean }
     shouldStart(id: StepID): boolean
     theEnd()
     // Control

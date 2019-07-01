@@ -5,11 +5,16 @@ import { useSlides } from '../../hooks/useSlides'
 
 interface SlideProps {
     index: number
+    backgroundColor?: string
+    backgroundImage?: string
 }
 
 export const Slide: FC<SlideProps> = props => {
+    const { index, backgroundColor, backgroundImage } = props
+
     const { addStep } = useSlides()
     const ref = useRef<HTMLDivElement>(null)
+    const ref2 = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         addStep(
@@ -21,16 +26,37 @@ export const Slide: FC<SlideProps> = props => {
             },
             { title: 'Slide', offset: true },
         )
+
+        addStep(
+            props.index,
+            {
+                targets: ref2.current,
+                opacity: [0, 1],
+            },
+            { offset: true },
+        )
+
         addStep(-props.index, {
             targets: ref.current,
             opacity: [1, 0],
             translateX: '-100%',
         })
+
+        addStep(-props.index, {
+            targets: ref2.current,
+            opacity: [1, 0],
+        })
     }, [])
 
     return (
-        <SubSteps id={[props.index]}>
-            <Wrapper>
+        <SubSteps id={[index]}>
+            <Wrapper
+                ref={ref2}
+                style={{
+                    backgroundColor,
+                    backgroundImage: `url(${backgroundImage})`,
+                }}
+            >
                 <Content ref={ref}>
                     <div>{props.children}</div>
                 </Content>
@@ -47,6 +73,8 @@ const Wrapper = styled.div`
     bottom: 0;
     overflow: hidden;
     pointer-events: none;
+    background-position: center center;
+    background-size: cover;
 `
 
 const Content = styled.div`
