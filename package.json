@@ -1,10 +1,11 @@
 {
   "name": "@phenomenon/slides",
   "version": "1.0.0",
-  "homepage": "http://kacperkozak.github.io/oak",
+  "homepage": "http://react-phenomenon.github.io/slides",
   "private": true,
   "scripts": {
-    "build": "PUBLIC_URL='/' react-scripts build",
+    "build": "react-scripts build",
+    "build:local": "PUBLIC_URL='/' react-scripts build",
     "server": "node server.js",
     "start": "react-scripts start",
     "lint": "tslint --project . src/**/*.tsx src/**/*.ts",
