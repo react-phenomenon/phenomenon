@@ -16,7 +16,7 @@ export const App = () => {
 
     return (
         <Deck>
-            <Slide index={++s} backgroundImage={require('./assets/background.png')}>
+            <Slide index={++s} backgroundImage={require('./assets/background.jpg')}>
                 <Fade in={1}>
                     <img src={require('./assets/logo.png')} alt="Phenomenon" />
                 </Fade>
