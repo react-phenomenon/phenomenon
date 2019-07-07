@@ -8,19 +8,23 @@ self.__precacheManifest = [
     "url": "/slides/static/media/background.f19b53aa.jpg"
   },
   {
+    "revision": "998f280dce8285a38ff8aae5ad7f5a3f",
+    "url": "/slides/static/media/background-blurred.998f280d.jpg"
+  },
+  {
     "revision": "de5c9734d6b20aac5354",
     "url": "/slides/static/js/runtime~main.77ce6a65.js"
   },
   {
-    "revision": "73ce205da6790aa2d241",
-    "url": "/slides/static/js/main.9c0b1fc5.chunk.js"
+    "revision": "5241eacddec39d0a0f6f",
+    "url": "/slides/static/js/main.cc6d47c6.chunk.js"
   },
   {
-    "revision": "e844fbd7bd1a9f72209a",
-    "url": "/slides/static/js/2.65a9c4af.chunk.js"
+    "revision": "21d6aa0db7014f5b49f3",
+    "url": "/slides/static/js/2.7de38c05.chunk.js"
   },
   {
-    "revision": "8ab71ce2dace2995165838e2a5c27a81",
+    "revision": "5222ca7244a4ba000bdb1bb1877cae7b",
     "url": "/slides/index.html"
   }
 ];
