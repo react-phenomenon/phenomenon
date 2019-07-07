@@ -1,19 +1,29 @@
 import useComponentSize from '@rehooks/component-size'
 import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { config } from '../../app/config'
 import { useSlides } from '../../hooks/useSlides'
-import { FragmentsProvider, appendFragments } from './lib/appendFragments'
 import { StepProps } from '../../types/StepProps'
+import { appendFragments, FragmentsProvider } from './lib/appendFragments'
+import { Fragments } from './types/Fragments'
 
 export interface FragProps extends StepProps {
     id: string
     code: ReactNode
-    show?: boolean
     inline?: boolean
     indent?: number
 }
 
-const indent = '    '
+const indentSymbol = '    '
+
+const prepareTextCode = (code: string, indent: number = 0, fragments: Fragments) => {
+    const indentedCode = code
+        .split('\n')
+        .map(line => config.indent.repeat(indent) + line)
+        .join('\n')
+
+    return appendFragments(indentedCode, fragments)
+}
 
 export const Frag = (props: FragProps) => {
     const ref = useRef(null)
@@ -25,18 +35,12 @@ export const Frag = (props: FragProps) => {
     const [addedStep, setAddedStep] = useState(false)
     const { addStep } = useSlides()
 
-    const prepareTextCode = (code: string) => {
-        const indentedCode = code
-            .split('\n')
-            .map(line => indent.repeat(props.indent || 0) + line)
-            .join('\n')
-
-        return appendFragments(indentedCode, fragments)
-    }
-
     const key = props.inline ? 'width' : 'height'
 
-    const code = typeof props.code === 'string' ? prepareTextCode(props.code) : props.code
+    const code =
+        typeof props.code === 'string'
+            ? prepareTextCode(props.code, props.indent, fragments)
+            : props.code
 
     useEffect(() => {
         if (width && !size) {
@@ -70,7 +74,6 @@ export const Frag = (props: FragProps) => {
     return (
         <Element
             key={props.id}
-            show={props.show}
             inline={props.inline}
             ref={ref}
             style={{
@@ -83,7 +86,7 @@ export const Frag = (props: FragProps) => {
     )
 }
 
-const Element = styled.code<{ show?: boolean; inline?: boolean }>`
+const Element = styled.code<{ inline?: boolean }>`
     display: ${p => (p.inline ? 'inline-block' : 'block')};
     vertical-align: top;
     overflow: hidden;

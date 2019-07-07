@@ -11,8 +11,8 @@ export const findFragments = (children: ReactNode): Fragments => {
         const Frag = element.type
         const props: FragProps = element.props
 
-        const { code, ...otherProps } = props
-        const stripedCode = typeof code === 'string' ? stripIndent(code) : code
+        const { code, inline, ...otherProps } = props
+        const stripedCode = typeof code === 'string' && !inline ? stripIndent(code) : code
 
         fragments[props.id] = {
             element: (
@@ -20,6 +20,7 @@ export const findFragments = (children: ReactNode): Fragments => {
                     key={props.id + index}
                     {...otherProps}
                     code={stripedCode}
+                    inline={inline}
                     index={props.in}
                 />
             ),

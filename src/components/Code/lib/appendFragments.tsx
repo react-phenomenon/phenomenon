@@ -5,7 +5,7 @@ import { Fragments } from '../types/Fragments'
 
 const ID_REGEXP = /\n?\$([A-Z0-9_]*)\n?/g // $SOME
 
-export const FragmentsProvider = createContext<{ [key: string]: any }>({})
+export const FragmentsProvider = createContext<Fragments>({})
 
 export const appendFragments = (code: string, fragments: Fragments) => {
     const elements = stringReplace(code, ID_REGEXP, id => fragments[id])

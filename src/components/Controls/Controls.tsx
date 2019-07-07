@@ -51,7 +51,7 @@ export const Controls: FC<ControlsProps> = props => {
                     ref={inputRef}
                     type="range"
                     defaultValue="0"
-                    step="0.1"
+                    step="0.001"
                     onMouseUp={handleRangeEnd}
                     onTouchEnd={handleRangeEnd}
                     onChange={e => timeline.seekByPercent(+e.target.value / 100)}
@@ -77,7 +77,7 @@ export const Controls: FC<ControlsProps> = props => {
                 )}
             </Container>
 
-            <Pointer />
+            {/* <Pointer /> */}
 
             <ClickableArea left onClick={back} />
             <ClickableArea right onClick={next} />
