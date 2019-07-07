@@ -1,11 +1,17 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState, createContext } from 'react'
 import { Timeline, TimelineContext } from '../../lib/Timeline'
 import { Controls } from '../Controls'
+import { Config } from '../../types/Config'
+import { ConfigContext } from '../../lib/Config'
 
 const WINDOW = window as any
 const renderMode: boolean = WINDOW.__RENDER__
 
-export const Deck: FC = props => {
+interface DeckProps {
+    config?: Partial<Config>
+}
+
+export const Deck: FC<DeckProps> = props => {
     const timelineRef = useRef(new Timeline())
     const timeline = timelineRef.current
     const [rdy, setRdy] = useState(false)
@@ -32,9 +38,11 @@ export const Deck: FC = props => {
                     )}
                 </>
             )}
-            <TimelineContext.Provider value={timeline}>
-                {props.children}
-            </TimelineContext.Provider>
+            <ConfigContext.Provider value={props.config || {}}>
+                <TimelineContext.Provider value={timeline}>
+                    {props.children}
+                </TimelineContext.Provider>
+            </ConfigContext.Provider>
         </>
     )
 }

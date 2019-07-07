@@ -15,7 +15,7 @@ export const App = () => {
     let c = 0
 
     return (
-        <Deck>
+        <Deck config={{ backgroundImage: require('./assets/background-blurred.jpg') }}>
             <Slide index={++s} backgroundImage={require('./assets/background.jpg')}>
                 <Fade in={1}>
                     <img src={require('./assets/logo.png')} alt="Phenomenon" />

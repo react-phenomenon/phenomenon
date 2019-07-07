@@ -1,7 +1,8 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
 import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
+import { ConfigContext } from '../../lib/Config'
 
 interface SlideProps {
     index: number
@@ -10,9 +11,12 @@ interface SlideProps {
 }
 
 export const Slide: FC<SlideProps> = props => {
-    const { index, backgroundColor, backgroundImage } = props
+    const { index, children, ...slideConfig } = props
 
     const { addStep } = useSlides()
+    const baseConfig = useContext(ConfigContext)
+    const config = { ...baseConfig, ...slideConfig }
+
     const ref = useRef<HTMLDivElement>(null)
     const ref2 = useRef<HTMLDivElement>(null)
 
@@ -53,8 +57,8 @@ export const Slide: FC<SlideProps> = props => {
             <Wrapper
                 ref={ref2}
                 style={{
-                    backgroundColor,
-                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundColor: config.backgroundColor,
+                    backgroundImage: `url(${config.backgroundImage})`,
                 }}
             >
                 <Content ref={ref}>
