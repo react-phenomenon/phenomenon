@@ -16,7 +16,10 @@ export const App = () => {
 
     return (
         <Deck config={{ backgroundImage: require('./assets/background-blurred.jpg') }}>
-            <Slide index={++s} backgroundImage={require('./assets/background.jpg')}>
+            <Slide
+                index={++s}
+                config={{ backgroundImage: require('./assets/background.jpg') }}
+            >
                 <Fade in={1}>
                     <img src={require('./assets/logo.png')} alt="Phenomenon" />
                 </Fade>
@@ -52,7 +55,10 @@ export const App = () => {
                     <Code code={`<Expand in={1} out={2}>Content</Expand>`} />
                 </Expand>
             </Slide>
-            <Slide index={++s} backgroundColor="rgba(0,0,0,.5)">
+            <Slide
+                index={++s}
+                config={{ backgroundColor: 'rgba(0,0,0,.5)', backgroundImage: "''" }}
+            >
                 <h1>Full example</h1>
                 <FullExample />
             </Slide>

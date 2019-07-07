@@ -3,15 +3,15 @@ import styled from 'styled-components'
 import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
 import { ConfigContext } from '../../lib/Config'
+import { Config } from '../../types/Config'
 
 interface SlideProps {
     index: number
-    backgroundColor?: string
-    backgroundImage?: string
+    config?: Partial<Config>
 }
 
 export const Slide: FC<SlideProps> = props => {
-    const { index, children, ...slideConfig } = props
+    const { index, children, config: slideConfig } = props
 
     const { addStep } = useSlides()
     const baseConfig = useContext(ConfigContext)
@@ -62,7 +62,7 @@ export const Slide: FC<SlideProps> = props => {
                 }}
             >
                 <Content ref={ref}>
-                    <div>{props.children}</div>
+                    <div>{children}</div>
                 </Content>
             </Wrapper>
         </SubSteps>
