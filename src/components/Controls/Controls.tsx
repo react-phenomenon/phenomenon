@@ -121,6 +121,8 @@ const Steps = styled.ol`
     font-size: 12px;
     max-height: calc(100vh - 65px);
     overflow: auto;
+    color: white;
+    font-family: monospace;
 `
 
 const Line = styled.input`
