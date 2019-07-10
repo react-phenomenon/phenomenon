@@ -61,8 +61,11 @@ export const Code: FC<CodeProps> = props => {
 
 const Pre = styled.pre`
     overflow: hidden;
-    background-color: #20242b;
     padding: 2em;
     margin: 2em auto;
+    background-color: #20242b;
     border-radius: 0.5em;
+    color: #f0f8ff;
+    line-height: 1.6;
+    font-size: 16px;
 `

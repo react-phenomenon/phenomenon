@@ -1,76 +1,48 @@
 import React from 'react'
-import { Code, Frag, Comment } from '../components/Code'
+import { Code, Comment, Frag } from '../components/Code'
 import { Deck } from '../components/Deck'
-import { Slide } from '../components/Slide'
 import { Fade } from '../components/Fade'
-import { Console, Cmd, Output } from '../components/Console'
-import { Expand } from '../components/Expand'
-import { FullExample } from './FullExample'
+import { Slide } from '../components/Slide'
+import {
+    backgroundColor,
+    backgroundImage,
+    Logo,
+    mainBackgroundImage,
+    Text,
+    Title,
+} from '../themes/storm'
 import { ConsoleExample } from './ConsoleExample'
+import { FullExample } from './FullExample'
+import { Intro } from './Intro'
 
 export const App = () => {
-    let f = 0
     let s = 0
     let i = 0
     let c = 0
 
     return (
-        <Deck config={{ backgroundImage: require('./assets/background-blurred.jpg') }}>
-            <Slide
-                index={++s}
-                config={{ backgroundImage: require('./assets/background.jpg') }}
-            >
+        <Deck config={{ backgroundImage, backgroundColor }}>
+            <Slide index={++s} config={{ backgroundImage: mainBackgroundImage }}>
                 <Fade in={1}>
-                    <img src={require('./assets/logo.png')} alt="Phenomenon" />
+                    <Logo />
                 </Fade>
             </Slide>
             <Slide index={++s}>
-                <h1>Hello</h1>
-                <p>Click space or use arrow keys to navigate</p>
-                <Expand in={++f} out={f + 1}>
-                    <p>To create slides you have to use two components:</p>
-                    <Code
-                        code={`
-                            <Deck>
-                                <Slide index={1}>Slide 1 content</Slide>
-                                <Slide index={2}>Slide 2 content</Slide>
-                                // …
-                            </Deck>
-                        `}
-                    />
-                </Expand>
-                <Expand in={++f}>
-                    <p>Next, you may want to add some basic fancy components:</p>
-                </Expand>
-                <Fade in={++f} out={f + 3}>
-                    <h3>Fade component</h3>
-                    <Code code={`<Fade in={1}>Content</Fade>`} />
-                </Fade>
-                <Expand in={++f} out={f + 2}>
-                    <h3>Expand component</h3>
-                    <Code code={`<Expand in={2}>Content</Expand>`} />
-                </Expand>
-                <Expand in={++f}>
-                    <p>You can also hide those components using out prop eg:</p>
-                    <Code code={`<Expand in={1} out={2}>Content</Expand>`} />
-                </Expand>
+                <Intro></Intro>
             </Slide>
-            <Slide
-                index={++s}
-                config={{ backgroundColor: 'rgba(0,0,0,.5)', backgroundImage: "''" }}
-            >
-                <h1>Full example</h1>
+            <Slide index={++s} config={{ backgroundColor, backgroundImage: "''" }}>
+                <Title>Full example</Title>
                 <FullExample />
             </Slide>
             <Slide index={++s}>
-                <h1>Console</h1>
+                <Title>Console</Title>
                 <ConsoleExample />
             </Slide>
             <Slide index={++s}>
-                <h1>JavaScript</h1>
+                <Title>JavaScript</Title>
                 <Fade in={++c} out={3}>
-                    <p>Hello!</p>
-                    <p>I will show you some code examples</p>
+                    <Text>Hello!</Text>
+                    <Text>I will show you some code examples</Text>
                 </Fade>
                 <Code
                     code={`
@@ -114,7 +86,7 @@ export const App = () => {
                 </Code>
             </Slide>
             <Slide index={++s}>
-                <h1>React</h1>
+                <Title>React</Title>
                 <Code
                     in={1}
                     code={`
@@ -123,7 +95,7 @@ export const App = () => {
                         $DIV_END
                     `}
                 >
-                    <Frag id="TYPE" in={1} code={`\u00a0type="email"`} inline />
+                    <Frag id="TYPE" in={1} code={` type="email"`} inline />
                     <Frag id="DIV_START" in={2} code={`<div className="wrapper">`} />
                     <Frag id="____" in={2} code={`    `} inline />
                     <Frag id="DIV_END" in={2} code={`</div>`} />
@@ -142,9 +114,9 @@ export const App = () => {
                 </Code>
             </Slide>
             <Slide index={++s}>
-                <h1>CSS</h1>
+                <Title>CSS</Title>
                 <Fade in={++c}>
-                    <p>And now some CSS</p>
+                    <Text>And now some CSS</Text>
                 </Fade>
                 <Code
                     code={`

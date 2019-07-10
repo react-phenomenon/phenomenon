@@ -1,22 +1,26 @@
-import React, { FC, useEffect, useRef, useState, createContext } from 'react'
-import { Timeline, TimelineContext } from '../../lib/Timeline'
-import { Controls } from '../Controls'
-import { Config } from '../../types/Config'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 import { ConfigContext } from '../../lib/Config'
+import { Timeline, TimelineContext } from '../../lib/Timeline'
+import { Config } from '../../types/Config'
+import { Controls } from '../Controls'
 
 const WINDOW = window as any
-const renderMode: boolean = WINDOW.__RENDER__
+const inRenderMode: boolean = WINDOW.__RENDER__
 
 interface DeckProps {
     config?: Partial<Config>
 }
 
 export const Deck: FC<DeckProps> = props => {
+    const { config = {} } = props
+
     const timelineRef = useRef(new Timeline())
     const timeline = timelineRef.current
+
     const [rdy, setRdy] = useState(false)
 
-    if (renderMode) {
+    if (inRenderMode) {
         WINDOW.__TIMELINE = timeline
     }
 
@@ -30,19 +34,30 @@ export const Deck: FC<DeckProps> = props => {
         <>
             {rdy && (
                 <>
-                    {!renderMode && <Controls timeline={timeline} />}
-                    {renderMode && (
+                    {!inRenderMode && <Controls timeline={timeline} />}
+                    {inRenderMode && (
                         <div id="duration" style={{ display: 'none' }}>
                             {timeline.getDuration()}
                         </div>
                     )}
                 </>
             )}
-            <ConfigContext.Provider value={props.config || {}}>
+            <ConfigContext.Provider value={config}>
                 <TimelineContext.Provider value={timeline}>
-                    {props.children}
+                    <Container
+                        style={{
+                            backgroundColor: config.backgroundColor,
+                            backgroundImage: `url(${config.backgroundImage})`,
+                        }}
+                    >
+                        {props.children}
+                    </Container>
                 </TimelineContext.Provider>
             </ConfigContext.Provider>
         </>
     )
 }
+
+const Container = styled.div`
+    height: 100%;
+`

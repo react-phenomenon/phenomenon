@@ -1,6 +1,5 @@
 import React, { FC, useRef, useEffect } from 'react'
 import { SubSteps } from '../SubSteps'
-import { useSlides } from '../../hooks/useSlides'
 import styled from 'styled-components'
 import { StepProps } from '../../types/StepProps'
 import { Expand } from '../Expand'
@@ -29,6 +28,10 @@ const Container = styled.div`
     padding: 2em;
     margin: 2em auto;
     border-radius: 0.5em;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+    color: #f0f8ff;
+    line-height: 1.6;
 `
 
 const Scroll = styled.div`
