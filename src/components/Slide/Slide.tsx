@@ -92,4 +92,7 @@ const Content = styled.div`
     justify-content: center;
     align-items: center;
     pointer-events: all;
+    padding: 20px 0;
+    max-height: 100vh;
+    overflow: auto;
 `
