@@ -18,34 +18,30 @@ import { JavaScriptExample } from './JavaScriptExample'
 import { ReactExample } from './ReactExample'
 import { CssExample } from './CssExample'
 
-export const App = () => {
-    let s = 0
-
-    return (
-        <Deck config={{ backgroundImage, backgroundColor }}>
-            <Slide index={++s} config={{ backgroundImage: mainBackgroundImage }}>
-                <Fade in={1}>
-                    <Logo />
-                </Fade>
-            </Slide>
-            <Slide index={++s}>
-                <Intro />
-            </Slide>
-            <Slide index={++s} config={{ backgroundColor, backgroundImage: "''" }}>
-                <FullExample />
-            </Slide>
-            <Slide index={++s}>
-                <ConsoleExample />
-            </Slide>
-            <Slide index={++s}>
-                <JavaScriptExample />
-            </Slide>
-            <Slide index={++s}>
-                <ReactExample />
-            </Slide>
-            <Slide index={++s}>
-                <CssExample />
-            </Slide>
-        </Deck>
-    )
-}
+export const App = () => (
+    <Deck config={{ backgroundImage, backgroundColor }}>
+        <Slide config={{ backgroundImage: mainBackgroundImage }}>
+            <Fade in={1}>
+                <Logo />
+            </Fade>
+        </Slide>
+        <Slide>
+            <Intro />
+        </Slide>
+        <Slide config={{ backgroundColor, backgroundImage: "''" }}>
+            <FullExample />
+        </Slide>
+        <Slide>
+            <ConsoleExample />
+        </Slide>
+        <Slide>
+            <JavaScriptExample />
+        </Slide>
+        <Slide>
+            <ReactExample />
+        </Slide>
+        <Slide>
+            <CssExample />
+        </Slide>
+    </Deck>
+)

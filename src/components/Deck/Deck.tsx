@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState, Children, ReactElement } from 'react'
 import styled from 'styled-components'
 import { ConfigContext } from '../../lib/Config'
 import { Timeline, TimelineContext } from '../../lib/Timeline'
 import { Config } from '../../types/Config'
 import { Controls } from '../Controls'
+import { SlideFilledProps } from '../Slide'
 
 const WINDOW = window as any
 const inRenderMode: boolean = WINDOW.__RENDER__
@@ -13,7 +14,7 @@ interface DeckProps {
 }
 
 export const Deck: FC<DeckProps> = props => {
-    const { config = {} } = props
+    const { children, config = {} } = props
 
     const timelineRef = useRef(new Timeline())
     const timeline = timelineRef.current
@@ -29,6 +30,10 @@ export const Deck: FC<DeckProps> = props => {
             setRdy(true)
         })
     }, [])
+
+    const childrenArray = Children.toArray<ReactElement<SlideFilledProps>>(
+        children as any,
+    )
 
     return (
         <>
@@ -50,7 +55,9 @@ export const Deck: FC<DeckProps> = props => {
                             backgroundImage: `url(${config.backgroundImage})`,
                         }}
                     >
-                        {props.children}
+                        {childrenArray.map((child, index) => (
+                            <child.type key={index} index={index + 1} {...child.props} />
+                        ))}
                     </Container>
                 </TimelineContext.Provider>
             </ConfigContext.Provider>

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useContext } from 'react'
+import React, { FC, useEffect, useRef, useContext, PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
@@ -6,12 +6,16 @@ import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
 
 interface SlideProps {
-    index: number
     config?: Partial<Config>
 }
 
+export interface SlideFilledProps extends SlideProps {
+    index: number
+}
+
 export const Slide: FC<SlideProps> = props => {
-    const { index, children, config: slideConfig } = props
+    const filledProps = props as PropsWithChildren<SlideFilledProps>
+    const { index, children, config: slideConfig } = filledProps
 
     const { addStep } = useSlides()
     const baseConfig = useContext(ConfigContext)
@@ -22,7 +26,7 @@ export const Slide: FC<SlideProps> = props => {
 
     useEffect(() => {
         addStep(
-            props.index,
+            index,
             {
                 targets: ref.current,
                 opacity: [0, 1],
@@ -32,7 +36,7 @@ export const Slide: FC<SlideProps> = props => {
         )
 
         addStep(
-            props.index,
+            index,
             {
                 targets: ref2.current,
                 opacity: [0, 1],
@@ -40,13 +44,13 @@ export const Slide: FC<SlideProps> = props => {
             { offset: true },
         )
 
-        addStep(-props.index, {
+        addStep(-index, {
             targets: ref.current,
             opacity: [1, 0],
             translateX: '-100%',
         })
 
-        addStep(-props.index, {
+        addStep(-index, {
             targets: ref2.current,
             opacity: [1, 0],
         })
