@@ -14,13 +14,17 @@ export const Title = styled.h1`
 
 export const SubTitle = styled.h2`
     ${baseTextStyles}
-    text-align: center;
     color: #69a0d3;
     font-size: 28px;
 `
 
-export const Text = styled.p`
+export const Text = styled.p<{ align?: 'left' | 'right' | 'center' }>`
     ${baseTextStyles}
     font-size: 16px;
     color: #f0f8ff;
+    ${p =>
+        p.align &&
+        css`
+            text-align: ${p.align};
+        `}
 `

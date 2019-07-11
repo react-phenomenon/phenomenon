@@ -9,14 +9,16 @@ export const Fade: FC<TextProps> = props => {
     const { addStep } = useSlides()
 
     useEffect(() => {
-        addStep(
-            props.in,
-            {
-                targets: ref.current,
-                opacity: [0, 1],
-            },
-            props.options || { title: 'Fade' },
-        )
+        if (props.in) {
+            addStep(
+                props.in,
+                {
+                    targets: ref.current,
+                    opacity: [0, 1],
+                },
+                props.options || { title: 'Fade' },
+            )
+        }
 
         if (props.out) {
             addStep(props.out, {

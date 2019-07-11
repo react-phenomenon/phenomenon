@@ -13,7 +13,7 @@ import {
 } from '../themes/storm'
 import { ConsoleExample } from './ConsoleExample'
 import { FullExample } from './FullExample'
-import { Intro } from './Intro'
+import { HowToUse } from './HowToUse'
 import { JavaScriptExample } from './JavaScriptExample'
 import { ReactExample } from './ReactExample'
 import { CssExample } from './CssExample'
@@ -21,12 +21,11 @@ import { CssExample } from './CssExample'
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
         <Slide config={{ backgroundImage: mainBackgroundImage }}>
-            <Fade in={1}>
-                <Logo />
-            </Fade>
+            <Logo />
+            <Text align="center">Click space or use arrow keys to navigate</Text>
         </Slide>
         <Slide>
-            <Intro />
+            <HowToUse />
         </Slide>
         <Slide config={{ backgroundColor, backgroundImage: "''" }}>
             <FullExample />

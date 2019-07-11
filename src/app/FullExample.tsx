@@ -20,7 +20,7 @@ export const FullExample: FC = () => {
                     id="SLIDE1"
                     indent={1}
                     code={`
-                    <Slide index={1}>
+                    <Slide>
                         $SLIDE1_CONTENT1
                         $SLIDE1_CONTENT2
                     </Slide>
@@ -31,42 +31,40 @@ export const FullExample: FC = () => {
                     id="SLIDE1_CONTENT1"
                     indent={2}
                     code={`
-                    <Fade in={1}>
                         <h1>Welcome!</h1>
-                    </Fade>
-                `}
+                    `}
                 />
                 <Frag
                     in={++i}
                     id="SLIDE1_CONTENT2"
                     indent={2}
                     code={`
-                    <Fade in={2}>
-                        <p>Lorem ipsum dor…</p>
-                    </Fade>
-                `}
+                        <Fade in={1}>
+                            <p>Lorem ipsum dor…</p>
+                        </Fade>
+                    `}
                 />
                 <Frag
                     in={++i}
                     id="SLIDE2"
                     indent={1}
                     code={`
-                    <Slide index={2}>
-                        $SLIDE2_CONTENT
-                    </Slide>
-                `}
+                        <Slide>
+                            $SLIDE2_CONTENT
+                        </Slide>
+                    `}
                 />
                 <Frag
                     in={++i}
                     id="SLIDE2_CONTENT"
                     indent={2}
                     code={`
-                    <h1>Next slide!</h1>
-                    <Expand in={1}>
-                        <h2>hooray!</h2>
-                    </Expand>
-                    <p>It's so easy!</p>
-                `}
+                        <h1>Next slide!</h1>
+                        <Expand in={1}>
+                            <h2>hooray!</h2>
+                        </Expand>
+                        <p>It's so easy!</p>
+                    `}
                 />
             </Code>
         </>

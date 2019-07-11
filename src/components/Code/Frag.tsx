@@ -14,8 +14,6 @@ export interface FragProps extends StepProps {
     indent?: number
 }
 
-const indentSymbol = '    '
-
 const prepareTextCode = (code: string, indent: number = 0, fragments: Fragments) => {
     const indentedCode = code
         .split('\n')
@@ -51,16 +49,21 @@ export const Frag = (props: FragProps) => {
 
         setAddedStep(true)
 
-        addStep(
-            props.in,
-            {
-                targets: ref.current,
-                [key]: [0, size[key]],
-                opacity: [0, 1],
-                backgroundColor: ['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.0)'],
-            },
-            { title: 'Frag' },
-        )
+        if (props.in) {
+            addStep(
+                props.in,
+                {
+                    targets: ref.current,
+                    [key]: [0, size[key]],
+                    opacity: [0, 1],
+                    backgroundColor: [
+                        'rgba(255, 255, 255, 0.9)',
+                        'rgba(255, 255, 255, 0.0)',
+                    ],
+                },
+                { title: 'Frag' },
+            )
+        }
 
         if (props.out) {
             addStep(props.out, {

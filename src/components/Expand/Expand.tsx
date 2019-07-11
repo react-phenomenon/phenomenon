@@ -4,7 +4,7 @@ import { useSlides } from '../../hooks/useSlides'
 import { StepProps } from '../../types/StepProps'
 import { useElementSize } from './useElementSize'
 
-interface ExpandProps extends Partial<StepProps> {
+interface ExpandProps extends StepProps {
     horizontal?: boolean
 }
 

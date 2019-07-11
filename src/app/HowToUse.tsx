@@ -4,19 +4,18 @@ import { Expand } from '../components/Expand'
 import { Fade } from '../components/Fade'
 import { SubTitle, Text, Title } from '../themes/storm'
 
-export const Intro: FC = () => {
+export const HowToUse: FC = () => {
     let f = 0
     return (
         <div>
-            <Title>Hello</Title>
-            <Text>Click space or use arrow keys to navigate</Text>
+            <Title>How to use</Title>
             <Expand in={++f} out={f + 1}>
                 <Text>To create slides you have to use two components:</Text>
                 <Code
                     code={`
                         <Deck>
-                            <Slide index={1}>Slide 1 content</Slide>
-                            <Slide index={2}>Slide 2 content</Slide>
+                            <Slide>Slide 1 content</Slide>
+                            <Slide>Slide 2 content</Slide>
                             // …
                         </Deck>
                     `}

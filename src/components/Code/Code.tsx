@@ -7,7 +7,7 @@ import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
 
-interface CodeProps extends Partial<StepProps> {
+interface CodeProps extends StepProps {
     code: string
 }
 

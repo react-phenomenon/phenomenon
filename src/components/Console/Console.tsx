@@ -9,7 +9,7 @@ interface ConsoleProps extends StepProps {}
 export const Console: FC<ConsoleProps> = props => {
     return (
         <Expand in={props.in} out={props.out} options={{ title: 'Console' }}>
-            <SubSteps id={[props.in]}>
+            <SubSteps id={[props.in || 0]}>
                 <Container>
                     <Scroll>{props.children}</Scroll>
                 </Container>
