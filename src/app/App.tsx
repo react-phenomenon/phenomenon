@@ -1,7 +1,5 @@
 import React from 'react'
-import { Code, Frag } from '../components/Code'
 import { Deck } from '../components/Deck'
-import { Fade } from '../components/Fade'
 import { Slide } from '../components/Slide'
 import {
     backgroundColor,
@@ -9,14 +7,13 @@ import {
     Logo,
     mainBackgroundImage,
     Text,
-    Title,
 } from '../themes/storm'
 import { ConsoleExample } from './ConsoleExample'
+import { CssExample } from './CssExample'
 import { FullExample } from './FullExample'
 import { HowToUse } from './HowToUse'
 import { JavaScriptExample } from './JavaScriptExample'
 import { ReactExample } from './ReactExample'
-import { CssExample } from './CssExample'
 
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>

@@ -7,7 +7,7 @@ export const ConsoleExample: FC = () => {
     return (
         <>
             <Title>Console</Title>
-            <Console in={1} out={5}>
+            <Console>
                 <Cmd in={++i} name="rm -rf /dev/null" />
                 <Output
                     in={++i}

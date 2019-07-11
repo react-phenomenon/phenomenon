@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import useComponentSize from '@rehooks/component-size'
 import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
+import { useElementSize } from '../../hooks/useElementSize'
 
 interface CmdProps {
     name: string
@@ -11,16 +11,11 @@ interface CmdProps {
 export const Cmd: FC<CmdProps> = props => {
     const ref = useRef(null)
 
-    const { height } = useComponentSize(ref)
-    const [size, saveSize] = useState<number | null>(null)
+    const size = useElementSize(ref)
     const [addedStep, setAddedStep] = useState(false)
     const { addStep } = useSlides()
 
     useEffect(() => {
-        if (height && !size) {
-            saveSize(height)
-        }
-
         if (!size || addedStep) return
 
         setAddedStep(true)
@@ -31,7 +26,7 @@ export const Cmd: FC<CmdProps> = props => {
                 targets: ref.current,
                 keyframes: [
                     {
-                        height: size,
+                        height: size.height,
                         width: '0%',
                     },
                     {
@@ -42,7 +37,7 @@ export const Cmd: FC<CmdProps> = props => {
             },
             { title: 'Cmd' },
         )
-    }, [height, size, addedStep])
+    }, [size, addedStep])
 
     return (
         <Container ref={ref} style={{ opacity: 0, height: size ? 0 : undefined }}>

@@ -10,24 +10,32 @@ export const JavaScriptExample: FC = () => {
     return (
         <>
             <Title>JavaScript</Title>
-            <Fade in={++c} out={3}>
+            <Fade in={++c} out={100}>
                 <Text>Hello!</Text>
                 <Text>I will show you some code examples</Text>
             </Fade>
             <Code
                 code={`
+                    $FULL_IF
+
+                    $COMMENT
+                    console.log($LOG);
+                    $END2
+
+                    $END
+                `}
+                in={++c}
+                out={100}
+            >
+                <Frag
+                    id="FULL_IF"
+                    in={++i}
+                    code={`
                         if ($IF2$IF) {
                             $IN_IF
                         }
-
-                        $COMMENT
-                        console.log($LOG);
-                        $END2
-                        $END
                     `}
-                in={++c}
-                out={3}
-            >
+                />
                 <Frag id="IF" in={++i} out={i + 1} code="!disabled || b === 5" inline />
                 <Frag id="IF2" in={++i} code="b === 1000" inline />
                 <Frag
@@ -35,11 +43,12 @@ export const JavaScriptExample: FC = () => {
                     in={++i}
                     indent={1}
                     code={`
-                            if($THEN) {$RETURN
-                            }
-                            
-                            return some.startWith('test');
-                        `}
+                        if ($THEN) {
+                            $RETURN
+                        }
+                        
+                        return some.startWith('test');
+                    `}
                 />
                 <Frag id="THEN" in={++i} code="!then" inline />
                 <Frag id="RETURN" in={++i} code="return null;" indent={2} />

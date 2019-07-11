@@ -27,6 +27,8 @@ export const appendFragments = (code: string, fragments: Fragments) => {
             return item
         }
 
+        if (!item) return null
+
         return item.element
     })
 

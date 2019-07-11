@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useSlides } from '../../hooks/useSlides'
 import { StepProps } from '../../types/StepProps'
-import { useElementSize } from './useElementSize'
+import { useElementSize } from '../../hooks/useElementSize'
 
 interface ExpandProps extends StepProps {
     horizontal?: boolean
