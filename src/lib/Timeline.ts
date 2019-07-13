@@ -43,7 +43,9 @@ export class Timeline {
     private addStepDone = debounce(() => {
         this.createLine()
         this.onRegisterCB && this.onRegisterCB()
-        this.seek(this.getLastSeek())
+        // Take previous step and play for update trigger
+        this.seekByStep(this.getLastSeek() - 1)
+        this.line && this.line.play()
     }, STEP_ADD_DEBOUNCE)
 
     public onRegister(cb: () => void) {
@@ -58,7 +60,7 @@ export class Timeline {
         this.pause()
         this.lastStep = this.stepsDuration.findIndex(duration => duration >= ms)
         this.line && this.line.seek(ms)
-        this.saveLastSeek(ms)
+        this.saveLastSeek(this.lastStep)
     }
 
     private saveLastSeek = debounce((ms: number) => {

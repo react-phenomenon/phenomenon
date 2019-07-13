@@ -6,12 +6,38 @@ const minIndent = (code: string) => {
     return Math.min(...match.map((x: string) => x.length))
 }
 
+const emptyLineRegex = /^\s*/
+
+const removeWhitespaceEdges = (code: string) => {
+    const lines = code.split('\n')
+
+    if (lines.length <= 1) {
+        return code
+    }
+
+    const firstLine = lines[0]
+    const lastLine = lines[lines.length - 1]
+
+    if (emptyLineRegex.test(firstLine)) {
+        lines.shift()
+    }
+
+    if (emptyLineRegex.test(lastLine)) {
+        lines.pop()
+    }
+
+    return lines.join('\n')
+}
+
 export const stripIndent = (code: string) => {
     const indent = minIndent(code)
 
     if (indent === 0) return code
 
-    const reg = new RegExp(`^[ \\t]{${indent}}`, 'gm')
+    const indentReg = new RegExp(`^[ \\t]{${indent}}`, 'gm')
 
-    return code.replace(reg, '').trim()
+    let newCode = code.replace(indentReg, '')
+    newCode = removeWhitespaceEdges(newCode)
+
+    return newCode
 }

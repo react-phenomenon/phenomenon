@@ -51,6 +51,7 @@ export const CssExample: FC = () => {
                             padding: 10px;
                             $BODY2
                         }
+                        
                     `}
                 />
                 <Frag

@@ -28,12 +28,9 @@ export const Controls: FC<ControlsProps> = props => {
     const helpPress = useKeyPress('h')
     const homePress = useKeyPress('Home', 's')
 
-    const next = () => timeline.next()
-    const back = () => timeline.back()
-
     useEffect(() => {
-        if (nextPress) next()
-        if (prevPress) back()
+        if (nextPress) timeline.next()
+        if (prevPress) timeline.back()
         if (helpPress) toggleHelp(!help)
         if (homePress) timeline.seek(0)
     }, [nextPress, prevPress, helpPress, homePress])
@@ -79,8 +76,8 @@ export const Controls: FC<ControlsProps> = props => {
 
             {/* <Pointer /> */}
 
-            <ClickableArea left onClick={back} />
-            <ClickableArea right onClick={next} />
+            <ClickableArea right onClick={() => timeline.next()} />
+            <ClickableArea left onClick={() => timeline.back()} />
         </>
     )
 }
