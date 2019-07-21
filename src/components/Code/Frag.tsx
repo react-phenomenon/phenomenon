@@ -67,11 +67,15 @@ export const Frag = (props: FragProps) => {
         }
 
         if (props.out) {
-            addStep(props.out, {
-                targets: ref.current,
-                opacity: 0,
-                [key]: 0,
-            })
+            addStep(
+                props.out,
+                {
+                    targets: ref.current,
+                    opacity: 0,
+                    [key]: 0,
+                },
+                { title: 'Frag out' },
+            )
         }
     }, [size, addedStep, ref.current])
 

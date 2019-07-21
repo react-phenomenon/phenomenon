@@ -6,7 +6,11 @@ import { stripIndent } from '../../../helpers/stripIndent'
 export const findFragments = (children: ReactNode): Fragments => {
     const fragments: Fragments = {}
 
-    Children.forEach(children, (el, index) => {
+    const fragmentNodes = Children.toArray(children).filter(
+        (node: any) => !node.type._inline,
+    )
+
+    fragmentNodes.forEach((el, index) => {
         const element = el as any
         const Frag = element.type
         const props: FragProps = element.props

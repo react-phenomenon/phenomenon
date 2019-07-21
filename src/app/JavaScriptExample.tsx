@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Title, Text } from '../themes/storm'
 import { Fade } from '../components/Fade'
-import { Code, Frag, Comment } from '../components/Code'
+import { Code, Frag, Comment, Mark } from '../components/Code'
 
 export const JavaScriptExample: FC = () => {
     let c = 0
@@ -55,6 +55,8 @@ export const JavaScriptExample: FC = () => {
                 <Frag id="COMMENT" in={++i} code={<Comment>Some 💩</Comment>} />
                 <Frag id="END" in={++i} out={++i} code="return true;" />
                 <Frag id="END2" in={i} code="return false;" />
+                <Mark in={++i} out={i + 2} line={3} />
+                <Mark in={++i} out={i + 1} line={10} />
                 <Frag id="LOG" in={++i} code="null >= 0" inline />
             </Code>
         </>
