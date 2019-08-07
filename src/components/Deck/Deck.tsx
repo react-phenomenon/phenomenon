@@ -21,9 +21,9 @@ export const Deck: FC<DeckProps> = props => {
 
     const [rdy, setRdy] = useState(false)
 
-    if (inRenderMode) {
-        WINDOW.__TIMELINE = timeline
-    }
+    // if (inRenderMode) {
+    WINDOW.__TIMELINE = timeline
+    // }
 
     useEffect(() => {
         timeline.onRegister(() => {

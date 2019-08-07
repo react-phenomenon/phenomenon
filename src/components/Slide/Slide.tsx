@@ -29,8 +29,8 @@ export const Slide: FC<SlideProps> = props => {
             index,
             {
                 targets: ref.current,
-                opacity: [0, 1],
-                translateX: ['100%', 0],
+                opacity: 1,
+                x: 0,
             },
             { title: 'Slide', offset: true },
         )
@@ -39,20 +39,20 @@ export const Slide: FC<SlideProps> = props => {
             index,
             {
                 targets: ref2.current,
-                opacity: [0, 1],
+                opacity: 1,
             },
             { offset: true },
         )
 
         addStep(-index, {
             targets: ref.current,
-            opacity: [1, 0],
-            translateX: '-100%',
+            opacity: 0,
+            x: '-100%',
         })
 
         addStep(-index, {
             targets: ref2.current,
-            opacity: [1, 0],
+            opacity: 0,
         })
     }, [])
 
@@ -63,9 +63,10 @@ export const Slide: FC<SlideProps> = props => {
                 style={{
                     backgroundColor: config.backgroundColor,
                     backgroundImage: `url(${config.backgroundImage})`,
+                    opacity: 0,
                 }}
             >
-                <Content ref={ref}>
+                <Content ref={ref} style={{ transform: 'translateX(100%)' }}>
                     <div>{children}</div>
                 </Content>
             </Wrapper>

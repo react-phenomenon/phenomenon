@@ -2,6 +2,7 @@ import animejs, { AnimeAnimParams, AnimeInstance, AnimeTimelineInstance } from '
 import { debounce, isEqual } from 'lodash'
 import { createContext } from 'react'
 import { ID } from '../types/ID'
+import { TimelineMax } from 'gsap'
 
 export interface TimelineOptions {
     offset?: boolean
@@ -22,13 +23,13 @@ const STEP_ADD_DEBOUNCE = 100
 export const TimelineContext = createContext<Timeline>({} as any)
 
 const stepDefaults: Partial<AnimeAnimParams> = {
-    easing: 'easeInOutQuad',
+    // easing: 'easeInOutQuad',
     duration: STEP_DURATION,
 }
 
 export class Timeline {
     public steps: Step[] = []
-    private line?: AnimeTimelineInstance
+    private line?: TimelineMax
     private lastStep = 0
     private stepsDuration: number[] = []
     private moving = false
@@ -44,8 +45,8 @@ export class Timeline {
         this.createLine()
         this.onRegisterCB && this.onRegisterCB()
         // Take previous step and play for update trigger
-        this.seekByStep(this.getLastSeek() - 1)
-        this.line && this.line.play()
+        // this.seekByStep(this.getLastSeek() - 1)
+        // this.line && this.line.play()
     }, STEP_ADD_DEBOUNCE)
 
     public onRegister(cb: () => void) {
@@ -56,31 +57,31 @@ export class Timeline {
         this.onUpdateCB = cb
     }
 
-    public seek(ms: number) {
+    public seek(seconds: number) {
         this.pause()
-        this.lastStep = this.stepsDuration.findIndex(duration => duration >= ms)
-        this.line && this.line.seek(ms)
-        this.saveLastSeek(this.lastStep)
+        // this.lastStep = this.stepsDuration.findIndex(duration => duration >= ms)
+        this.line && this.line.seek(seconds)
+        // this.saveLastSeek(this.lastStep)
     }
 
-    private saveLastSeek = debounce((ms: number) => {
-        localStorage.setItem('lastSeek', ms.toString())
-    }, 1000)
+    // private saveLastSeek = debounce((ms: number) => {
+    //     localStorage.setItem('lastSeek', ms.toString())
+    // }, 1000)
 
     private getLastSeek() {
-        const ms = localStorage.getItem('lastSeek')
+        const ms = null //localStorage.getItem('lastSeek')
         return ms ? +ms : 0
     }
 
     public seekByPercent(percent: number) {
         if (!this.line) return
-        const pos = percent * this.line.duration
+        const pos = percent * this.line.duration()
         this.seek(pos)
     }
 
     public seekByStep(step: number) {
-        const duration = this.stepsDuration[step]
-        this.seek(duration)
+        // const duration = this.stepsDuration[step]
+        // this.seek(duration)
     }
 
     public pause() {
@@ -94,46 +95,45 @@ export class Timeline {
     }
 
     public next() {
-        if (this.moving) {
-            this.seekByStep(this.lastStep + 1)
-            this.play()
-        }
+        // if (this.moving) {
+        //     this.seekByStep(this.lastStep + 1)
+        //     this.play()
+        // }
         this.play()
     }
 
     public back() {
-        const step = Math.max(this.lastStep - 1, 0)
-        this.seekByStep(step)
+        // const step = Math.max(this.lastStep - 1, 0)
+        // this.seekByStep(step)
+        this.line && this.line.reverse()
     }
 
     public getDuration() {
-        return this.line && this.line.duration
+        return this.line && this.line.duration()
     }
 
     public getCurrentTime() {
-        return this.line && this.line.currentTime
+        return this.line && this.line.time()
     }
 
-    private handleUpdate = (anim: AnimeInstance) => {
-        this.onUpdateCB && this.onUpdateCB(anim.currentTime, anim.duration)
+    // private handleUpdate = (anim: AnimeInstance) => {
+    //     this.onUpdateCB && this.onUpdateCB(anim.currentTime, anim.duration)
 
-        const nextTime = this.stepsDuration[this.lastStep + 1]
+    //     const nextTime = this.stepsDuration[this.lastStep + 1]
 
-        if (anim.currentTime > nextTime) {
-            this.seek(nextTime)
-        }
-    }
+    //     if (anim.currentTime > nextTime) {
+    //         this.seek(nextTime)
+    //     }
+    // }
 
     private createLine() {
-        this.line = animejs.timeline({
-            autoplay: false,
-            duration: STEP_DURATION,
-            update: this.handleUpdate,
-        })
+        console.log('createLine')
+
+        this.line = new TimelineMax({ paused: true })
 
         this.steps.sort(sortSteps)
 
-        this.stepsDuration = [0]
+        this.stepsDuration = []
         let durationSum = 0
 
         this.steps.forEach((step, index) => {
@@ -150,7 +150,7 @@ export class Timeline {
                 (step.options && step.options.offset) ||
                 (prefStep && sameStep(prefStep.id, step.id))
             ) {
-                this.addToLine(stepParams, duration)
+                this.addToLine(stepParams, duration / 1000)
             } else {
                 durationSum += duration
                 this.stepsDuration.push(durationSum)
@@ -161,7 +161,16 @@ export class Timeline {
     }
 
     private addToLine(params: AnimeAnimParams, offset?: number) {
-        this.line!.add(params, offset && `-=${offset}`)
+        // this.line!.add(params, offset && `-=${offset}`)
+        const { targets, duration, ...rest } = params
+        console.log({ targets, duration, ...rest }, `-=${offset}`)
+
+        this.line!.to(
+            targets as any,
+            (duration as any) / 1000,
+            rest as any,
+            offset && `-=${offset}`,
+        ).addPause()
     }
 }
 

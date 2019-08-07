@@ -1,7 +1,8 @@
 {
     "editor.formatOnSave": true,
     "cSpell.words": [
-        "animejs"
+        "animejs",
+        "gsap"
     ],
     "typescript.tsdk": "node_modules/typescript/lib"
 }

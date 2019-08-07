@@ -14,7 +14,7 @@ export const Fade: FC<TextProps> = props => {
                 props.in,
                 {
                     targets: ref.current,
-                    opacity: [0, 1],
+                    opacity: 1,
                 },
                 props.options || { title: 'Fade' },
             )
@@ -28,5 +28,9 @@ export const Fade: FC<TextProps> = props => {
         }
     }, [])
 
-    return <div ref={ref}>{props.children}</div>
+    return (
+        <div ref={ref} style={{ opacity: 0 }}>
+            {props.children}
+        </div>
+    )
 }

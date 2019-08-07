@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Deck } from '../components/Deck'
 import { Slide } from '../components/Slide'
 import {
@@ -7,6 +7,7 @@ import {
     Logo,
     mainBackgroundImage,
     Text,
+    SubTitle,
 } from '../themes/storm'
 import { ConsoleExample } from './ConsoleExample'
 import { CssExample } from './CssExample'
@@ -14,6 +15,7 @@ import { FullExample } from './FullExample'
 import { HowToUse } from './HowToUse'
 import { JavaScriptExample } from './JavaScriptExample'
 import { ReactExample } from './ReactExample'
+import { Fade } from '../components/Fade'
 
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
@@ -22,9 +24,15 @@ export const App = () => (
             <Text align="center">Click space or use arrow keys to navigate</Text>
         </Slide>
         <Slide>
-            <HowToUse />
+            <SubTitle>Fade component</SubTitle>
+            <Fade in={1}>
+                <Text align="center">Click space or use arrow keys to navigate</Text>
+            </Fade>
         </Slide>
-        <Slide config={{ backgroundColor, backgroundImage: "''" }}>
+        {/* <Slide>
+            <HowToUse />
+        </Slide> */}
+        {/* <Slide config={{ backgroundColor, backgroundImage: "''" }}> 
             <FullExample />
         </Slide>
         <Slide>
@@ -38,6 +46,6 @@ export const App = () => (
         </Slide>
         <Slide>
             <CssExample />
-        </Slide>
+        </Slide> */}
     </Deck>
 )

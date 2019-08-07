@@ -64,4 +64,7 @@
 npm install @phenomenon/react-timeline
 
 
+// Ctrl+Shift+P for presentation for quick jump :)
+
+
 ```
