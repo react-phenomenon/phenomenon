@@ -46,4 +46,22 @@
     <Mark in={++i} id="IF" />
     <Mark in={++i} id="BODY" line={2} />
 </Code>
+
+
+// Stops for PDF, timeline snap and labels
+<Stop on={12} label="Very important place" />
+
+
+// SubSteps unwrap
+// Allows you to add something else when eg. showing code fragments
+// Consider different name :) noScope, concurrent
+<SubSteps unwrap />
+<Code unwrap />
+<Console unwrap />
+
+
+// Make react timeline as separate lib
+npm install @phenomenon/react-timeline
+
+
 ```
