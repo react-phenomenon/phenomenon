@@ -46,7 +46,7 @@ export class Timeline {
         this.onRegisterCB && this.onRegisterCB()
         // Take previous step and play for update trigger
         // this.seekByStep(this.getLastSeek() - 1)
-        // this.line && this.line.play()
+        this.next()
     }, STEP_ADD_DEBOUNCE)
 
     public onRegister(cb: () => void) {
@@ -79,32 +79,15 @@ export class Timeline {
         this.seek(pos)
     }
 
-    public seekByStep(step: number) {
-        // const duration = this.stepsDuration[step]
-        // this.seek(duration)
-    }
-
     public pause() {
-        this.moving = false
         this.line && this.line.pause()
     }
 
-    public play() {
-        this.moving = true
+    public next() {
         this.line && this.line.play()
     }
 
-    public next() {
-        // if (this.moving) {
-        //     this.seekByStep(this.lastStep + 1)
-        //     this.play()
-        // }
-        this.play()
-    }
-
     public back() {
-        // const step = Math.max(this.lastStep - 1, 0)
-        // this.seekByStep(step)
         this.line && this.line.reverse()
     }
 
@@ -116,19 +99,15 @@ export class Timeline {
         return this.line && this.line.time()
     }
 
-    // private handleUpdate = (anim: AnimeInstance) => {
-    //     this.onUpdateCB && this.onUpdateCB(anim.currentTime, anim.duration)
+    private handleUpdate = () => {
+        if (!this.line || !this.onUpdateCB) return
 
-    //     const nextTime = this.stepsDuration[this.lastStep + 1]
+        console.log(this.getCurrentTime())
 
-    //     if (anim.currentTime > nextTime) {
-    //         this.seek(nextTime)
-    //     }
-    // }
+        this.onUpdateCB(this.getCurrentTime()!, this.getCurrentTime()!)
+    }
 
     private createLine() {
-        console.log('createLine')
-
         this.line = new TimelineMax({ paused: true })
 
         this.steps.sort(sortSteps)
@@ -150,7 +129,9 @@ export class Timeline {
                 (step.options && step.options.offset) ||
                 (prefStep && sameStep(prefStep.id, step.id))
             ) {
-                this.addToLine(stepParams, duration / 1000)
+                // Fix for first step with minus offset
+                const offsetDuration = index === 0 ? undefined : duration / 1000
+                this.addToLine(stepParams, offsetDuration)
             } else {
                 durationSum += duration
                 this.stepsDuration.push(durationSum)
@@ -158,12 +139,12 @@ export class Timeline {
                 this.addToLine(stepParams)
             }
         })
+
+        this.line.eventCallback('onUpdate', this.handleUpdate)
     }
 
     private addToLine(params: AnimeAnimParams, offset?: number) {
-        // this.line!.add(params, offset && `-=${offset}`)
         const { targets, duration, ...rest } = params
-        console.log({ targets, duration, ...rest }, `-=${offset}`)
 
         this.line!.to(
             targets as any,
