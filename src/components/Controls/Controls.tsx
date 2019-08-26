@@ -3,7 +3,6 @@ import useLocalStorage from 'react-use/lib/useLocalStorage'
 import styled, { css } from 'styled-components'
 import { useKeyPress } from '../../hooks/useKeyPress'
 import { Timeline } from '../../lib/Timeline'
-import { Pointer } from './Pointer'
 
 interface ControlsProps {
     timeline: Timeline
@@ -17,8 +16,8 @@ export const Controls: FC<ControlsProps> = props => {
     useEffect(() => {
         const ref = inputRef.current
         if (ref) {
-            timeline.onUpdate((ms, duration) => {
-                ref.value = ((ms / duration) * 100).toString()
+            timeline.onUpdate((s, duration) => {
+                ref.value = ((s / duration) * 100).toString()
             })
         }
     }, [])

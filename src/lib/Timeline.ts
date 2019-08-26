@@ -101,10 +101,7 @@ export class Timeline {
 
     private handleUpdate = () => {
         if (!this.line || !this.onUpdateCB) return
-
-        console.log(this.getCurrentTime())
-
-        this.onUpdateCB(this.getCurrentTime()!, this.getCurrentTime()!)
+        this.onUpdateCB(this.getCurrentTime()!, this.getDuration()!)
     }
 
     private createLine() {
