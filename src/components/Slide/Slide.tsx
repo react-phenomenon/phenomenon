@@ -4,6 +4,7 @@ import { SubSteps } from '../SubSteps'
 import { useSlides } from '../../hooks/useSlides'
 import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
+import { useStep } from '../../hooks/useStep'
 
 interface SlideProps {
     config?: Partial<Config>
@@ -17,64 +18,73 @@ export const Slide: FC<SlideProps> = props => {
     const filledProps = props as PropsWithChildren<SlideFilledProps>
     const { index, children, config: slideConfig } = filledProps
 
-    const { addStep } = useSlides()
     const baseConfig = useContext(ConfigContext)
     const config = { ...baseConfig, ...slideConfig }
 
-    const ref = useRef<HTMLDivElement>(null)
-    const ref2 = useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
+    const backgroundRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        addStep(
-            index,
-            {
-                targets: ref.current,
-                opacity: 1,
-                x: 0,
-            },
-            { title: 'Slide', offset: true },
-        )
+    useStep(
+        index,
+        timeline => {
+            timeline
+                .to(backgroundRef.current!, 0.4, {
+                    opacity: 1,
+                })
+                .to(
+                    contentRef.current!,
+                    0.4,
+                    {
+                        opacity: 1,
+                        x: 0,
+                    },
+                    '-=0.4',
+                )
+        },
+        { offset: true },
+    )
 
-        addStep(
-            index,
-            {
-                targets: ref2.current,
-                opacity: 1,
-            },
-            { offset: true },
-        )
-
-        addStep(-index, {
-            targets: ref.current,
-            opacity: 0,
-            x: '-100%',
-        })
-
-        addStep(-index, {
-            targets: ref2.current,
-            opacity: 0,
-        })
-    }, [])
+    useStep(-index, timeline => {
+        timeline
+            .to(backgroundRef.current!, 0.4, {
+                opacity: 0,
+            })
+            .to(
+                contentRef.current!,
+                0.4,
+                {
+                    opacity: 0,
+                    x: '-100%',
+                },
+                '-=0.4',
+            )
+    })
 
     return (
         <SubSteps id={[index]}>
-            <Wrapper
-                ref={ref2}
+            <Background
+                ref={backgroundRef}
                 style={{
                     backgroundColor: config.backgroundColor,
                     backgroundImage: `url(${config.backgroundImage})`,
                     opacity: 0,
                 }}
             >
-                <Content ref={ref} style={{ transform: 'translateX(100%)' }}>
+                <Content
+                    ref={contentRef}
+                    style={{
+                        transform: 'translateX(100%)',
+                        opacity: 0,
+                    }}
+                >
                     <div>{children}</div>
                 </Content>
-            </Wrapper>
+            </Background>
         </SubSteps>
     )
 }
 
-const Wrapper = styled.div`
+const Background = styled.div`
     position: absolute;
     top: 0;
     right: 0;

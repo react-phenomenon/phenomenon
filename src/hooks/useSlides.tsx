@@ -4,19 +4,17 @@ import { SubStepsContext } from '../components/SubSteps'
 import { TimelineContext, TimelineOptions } from '../lib/Timeline'
 
 export const useSlides = () => {
-    const timeline = useContext(TimelineContext)
-    const subId = useContext(SubStepsContext)
-
-    const addStep = useCallback(
-        (index: number, params: AnimeAnimParams, options?: TimelineOptions) => {
-            timeline.addStep({
-                id: [...subId, index],
-                params,
-                options,
-            })
-        },
-        [timeline, subId],
-    )
-
-    return { addStep }
+    // const timeline = useContext(TimelineContext)
+    // const subId = useContext(SubStepsContext)
+    // const addStep = useCallback(
+    //     (index: number, params: AnimeAnimParams, options?: TimelineOptions) => {
+    //         timeline.addStep({
+    //             id: [...subId, index],
+    //             stepTimeline: params,
+    //             options,
+    //         })
+    //     },
+    //     [timeline, subId],
+    // )
+    return { addStep: console.log }
 }

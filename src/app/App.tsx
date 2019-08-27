@@ -1,21 +1,15 @@
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 import { Deck } from '../components/Deck'
+import { Fade } from '../components/Fade'
 import { Slide } from '../components/Slide'
 import {
     backgroundColor,
     backgroundImage,
     Logo,
     mainBackgroundImage,
-    Text,
     SubTitle,
+    Text,
 } from '../themes/storm'
-import { ConsoleExample } from './ConsoleExample'
-import { CssExample } from './CssExample'
-import { FullExample } from './FullExample'
-import { HowToUse } from './HowToUse'
-import { JavaScriptExample } from './JavaScriptExample'
-import { ReactExample } from './ReactExample'
-import { Fade } from '../components/Fade'
 
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
