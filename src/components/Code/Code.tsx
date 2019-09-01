@@ -46,6 +46,5 @@ const Wrapper = styled.div`
 `
 
 const Pre = styled.pre`
-    /* overflow: hidden; */
     position: relative;
 `

@@ -10,10 +10,12 @@ export const Fade: FC<TextProps> = props => {
     useStep(
         props.in,
         (timeline, { duration, ease }) => {
-            timeline.to(ref.current!, duration.normal, {
-                opacity: 1,
-                ease,
-            })
+            timeline.fromTo(
+                ref.current!,
+                duration.normal,
+                { opacity: 0 },
+                { opacity: 1, ease },
+            )
         },
         { title: '→Fade' },
     )
@@ -29,9 +31,5 @@ export const Fade: FC<TextProps> = props => {
         { title: '←Fade' },
     )
 
-    return (
-        <div ref={ref} style={{ opacity: 0 }}>
-            {props.children}
-        </div>
-    )
+    return <div ref={ref}>{props.children}</div>
 }

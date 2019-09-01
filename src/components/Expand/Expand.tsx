@@ -18,10 +18,12 @@ export const Expand: FC<ExpandProps> = props => {
         (timeline, { duration, ease }) => {
             const el = ref.current!
             timeline
-                .to(el, duration.fast, {
-                    [direction]: size![direction],
-                    ease,
-                })
+                .fromTo(
+                    el,
+                    duration.fast,
+                    { [direction]: 0, opacity: 0, ease },
+                    { [direction]: size![direction], ease },
+                )
                 .to(el, duration.fast, {
                     opacity: 1,
                     ease,
@@ -47,17 +49,7 @@ export const Expand: FC<ExpandProps> = props => {
         { title: '←Expand' },
     )
 
-    return (
-        <Container
-            ref={ref}
-            style={{
-                opacity: props.in ? 0 : 1,
-                [direction]: size && props.in ? 0 : undefined,
-            }}
-        >
-            {props.children}
-        </Container>
-    )
+    return <Container ref={ref}>{props.children}</Container>
 }
 
 const Container = styled.div`

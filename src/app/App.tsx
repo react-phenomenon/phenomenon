@@ -11,6 +11,12 @@ import {
     Text,
 } from '../themes/storm'
 import { Expand } from '../components/Expand'
+import { HowToUse } from './HowToUse'
+import { FullExample } from './FullExample'
+import { ConsoleExample } from './ConsoleExample'
+import { JavaScriptExample } from './JavaScriptExample'
+import { ReactExample } from './ReactExample'
+import { CssExample } from './CssExample'
 
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
@@ -29,13 +35,13 @@ export const App = () => (
                 </Text>
             </Expand>
         </Slide>
-        {/* <Slide>
+        <Slide>
             <HowToUse />
-        </Slide> */}
-        {/* <Slide config={{ backgroundColor, backgroundImage: "''" }}> 
+        </Slide>
+        <Slide config={{ backgroundColor, backgroundImage: "''" }}>
             <FullExample />
         </Slide>
-        <Slide>
+        {/* <Slide>
             <ConsoleExample />
         </Slide>
         <Slide>
