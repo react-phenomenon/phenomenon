@@ -1,11 +1,9 @@
-import React, { FC, useEffect, useRef, useContext, PropsWithChildren } from 'react'
+import React, { FC, PropsWithChildren, useContext, useRef } from 'react'
 import styled from 'styled-components'
-import { SubSteps } from '../SubSteps'
-import { useSlides } from '../../hooks/useSlides'
+import { useStep } from '../../hooks/useStep'
 import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
-import { useStep } from '../../hooks/useStep'
-import { Power2 } from 'gsap'
+import { SubSteps } from '../SubSteps'
 
 interface SlideProps {
     config?: Partial<Config>

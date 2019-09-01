@@ -51,11 +51,6 @@ export class Timeline {
         this.line && this.line.seek(seconds)
     }
 
-    private getLastSeek() {
-        const ms = null //localStorage.getItem('lastSeek')
-        return ms ? +ms : 0
-    }
-
     public seekByPercent(percent: number) {
         if (!this.line) return
         const pos = percent * this.line.duration()
@@ -104,10 +99,16 @@ export class Timeline {
     }
 
     private addToLine(step: Step, index: number) {
-        const stepTimeline = new TimelineMax()
-        step.createStepTimeline(stepTimeline)
+        const { id, createStepTimeline, options = {} } = step
 
-        if (step.options && step.options.animateWithNext && index > 0) {
+        const stepTimeline = new TimelineMax()
+        createStepTimeline(stepTimeline)
+
+        // TODO sameStep
+        const prevStep = this.steps[index - 1]
+        const sameStep = prevStep && isSameStep(id, prevStep.id)
+
+        if (options.animateWithNext && index > 0) {
             this.line!.add(stepTimeline, `-=${stepTimeline.duration()}`).addPause()
             return
         }
@@ -116,7 +117,7 @@ export class Timeline {
     }
 }
 
-const sameStep = (id1: ID, id2: ID) => {
+const isSameStep = (id1: ID, id2: ID) => {
     return isEqual(id1, id2)
 }
 

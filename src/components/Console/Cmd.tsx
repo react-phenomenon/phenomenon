@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
-import { useSlides } from '../../hooks/useSlides'
 import { useElementSize } from '../../hooks/useElementSize'
+import { useStep } from '../../hooks/useStep'
 
 interface CmdProps {
     name: string
@@ -10,37 +10,30 @@ interface CmdProps {
 
 export const Cmd: FC<CmdProps> = props => {
     const ref = useRef(null)
-
     const size = useElementSize(ref)
-    const [addedStep, setAddedStep] = useState(false)
-    const { addStep } = useSlides()
 
-    useEffect(() => {
-        if (!size || addedStep) return
-
-        setAddedStep(true)
-
-        addStep(
-            props.in,
-            {
-                targets: ref.current,
-                keyframes: [
-                    {
-                        height: size.height,
-                        width: '0%',
-                    },
-                    {
-                        opacity: 1,
-                        width: '100%',
-                    },
-                ],
-            },
-            { title: 'Cmd' },
-        )
-    }, [size, addedStep])
+    useStep(
+        props.in,
+        (timeline, { duration, ease }) => {
+            const el = ref.current!
+            timeline
+                .fromTo(
+                    el,
+                    duration.fast,
+                    { height: 0, width: 0, opacity: 0 },
+                    { height: size!.height, ease },
+                )
+                .to(el, duration.fast, {
+                    opacity: 1,
+                    width: '100%',
+                    ease,
+                })
+        },
+        { title: 'Cmd', deps: [size !== null] },
+    )
 
     return (
-        <Container ref={ref} style={{ opacity: 0, height: size ? 0 : undefined }}>
+        <Container ref={ref}>
             <Line>
                 <Prompt>➜</Prompt>
                 {props.name}

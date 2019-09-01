@@ -41,7 +41,7 @@ export const App = () => (
         <Slide config={{ backgroundColor, backgroundImage: "''" }}>
             <FullExample />
         </Slide>
-        {/* <Slide>
+        <Slide>
             <ConsoleExample />
         </Slide>
         <Slide>
@@ -52,6 +52,6 @@ export const App = () => (
         </Slide>
         <Slide>
             <CssExample />
-        </Slide> */}
+        </Slide>
     </Deck>
 )

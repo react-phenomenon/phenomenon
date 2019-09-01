@@ -1,9 +1,8 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
-// import useComponentSize from '@rehooks/component-size'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
-import { useSlides } from '../../hooks/useSlides'
 import { stripIndent } from '../../helpers/stripIndent'
 import { useElementSize } from '../../hooks/useElementSize'
+import { useStep } from '../../hooks/useStep'
 
 interface OutputProps {
     text: string
@@ -12,25 +11,23 @@ interface OutputProps {
 
 export const Output: FC<OutputProps> = props => {
     const ref = useRef(null)
-
     const size = useElementSize(ref)
-    const [addedStep, setAddedStep] = useState(false)
-    const { addStep } = useSlides()
 
-    useEffect(() => {
-        if (!size || addedStep) return
-
-        setAddedStep(true)
-
-        addStep(props.in, {
-            targets: ref.current,
-            height: [0, size.height],
-            opacity: [0, 1],
-        })
-    }, [size, addedStep])
+    useStep(
+        props.in,
+        (timeline, { duration, ease }) => {
+            timeline.fromTo(
+                ref.current!,
+                duration.normal,
+                { opacity: 0, height: 0 },
+                { opacity: 1, height: size!.height, ease },
+            )
+        },
+        { title: 'Output', deps: [size !== null] },
+    )
 
     return (
-        <Container ref={ref} style={{ opacity: 0, height: size ? 0 : undefined }}>
+        <Container ref={ref}>
             <Code>{stripIndent(props.text).trim()}</Code>
         </Container>
     )

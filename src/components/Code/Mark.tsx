@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
-import { useSlides } from '../../hooks/useSlides'
+import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
 
 interface MarkProps extends StepProps {
@@ -13,31 +13,27 @@ interface MarkFC<P> extends FC<P> {
 
 export const Mark: MarkFC<MarkProps> = props => {
     const ref = useRef<HTMLDivElement>(null)
-    const { addStep } = useSlides()
 
-    useEffect(() => {
-        if (props.in) {
-            addStep(
-                props.in,
-                {
-                    targets: ref.current,
-                    opacity: [0, 1],
-                },
-                { title: 'Mark' },
+    useStep(
+        props.in,
+        (timeline, { duration, ease }) => {
+            timeline.fromTo(
+                ref.current!,
+                duration.normal,
+                { opacity: 0 },
+                { opacity: 1, ease },
             )
+        },
+        { title: '→Mark' },
+    )
 
-            if (props.out) {
-                addStep(
-                    props.out,
-                    {
-                        targets: ref.current,
-                        opacity: 0,
-                    },
-                    { title: 'Mark out' },
-                )
-            }
-        }
-    }, [])
+    useStep(
+        props.out,
+        (timeline, { duration, ease }) => {
+            timeline.to(ref.current!, duration.normal, { opacity: 0, ease })
+        },
+        { title: '→Mark' },
+    )
 
     return (
         <Marker ref={ref} style={{ top: `${(props.line - 1) * 1.5}em` }}>
