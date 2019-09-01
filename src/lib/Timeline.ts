@@ -4,8 +4,9 @@ import { ID } from '../types/ID'
 import { TimelineMax } from 'gsap'
 
 export interface TimelineOptions {
-    offset?: boolean
+    animateWithNext?: boolean
     title?: string
+    deps?: boolean[]
 }
 
 interface Step {
@@ -106,7 +107,7 @@ export class Timeline {
         const stepTimeline = new TimelineMax()
         step.createStepTimeline(stepTimeline)
 
-        if (step.options && step.options.offset && index > 0) {
+        if (step.options && step.options.animateWithNext && index > 0) {
             this.line!.add(stepTimeline, `-=${stepTimeline.duration()}`).addPause()
             return
         }

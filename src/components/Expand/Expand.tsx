@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { useSlides } from '../../hooks/useSlides'
 import { StepProps } from '../../types/StepProps'
 import { useElementSize } from '../../hooks/useElementSize'
+import { useStep } from '../../hooks/useStep'
 
 interface ExpandProps extends StepProps {
     horizontal?: boolean
@@ -11,34 +11,41 @@ interface ExpandProps extends StepProps {
 export const Expand: FC<ExpandProps> = props => {
     const direction = props.horizontal ? 'width' : 'height'
     const ref = useRef<HTMLDivElement>(null)
-
-    const { addStep } = useSlides()
-    const [addedStep, setAddedStep] = useState(false)
     const size = useElementSize(ref)
 
-    useEffect(() => {
-        if (!size || addedStep) return
+    useStep(
+        props.in,
+        (timeline, { duration, ease }) => {
+            const el = ref.current!
+            timeline
+                .to(el, duration.fast, {
+                    [direction]: size![direction],
+                    ease,
+                })
+                .to(el, duration.fast, {
+                    opacity: 1,
+                    ease,
+                })
+        },
+        { title: '→Expand', deps: [size !== null] },
+    )
 
-        setAddedStep(true)
-
-        if (props.in) {
-            addStep(
-                props.in,
-                {
-                    targets: ref.current,
-                    keyframes: [{ [direction]: size[direction] }, { opacity: 1 }],
-                },
-                props.options || { title: 'Expand' },
-            )
-        }
-
-        if (props.out) {
-            addStep(props.out, {
-                targets: ref.current,
-                keyframes: [{ opacity: 0 }, { [direction]: 0 }],
-            })
-        }
-    }, [size, addedStep])
+    useStep(
+        props.out,
+        (timeline, { duration, ease }) => {
+            const el = ref.current!
+            timeline
+                .to(el, duration.fast, {
+                    opacity: 0,
+                    ease,
+                })
+                .to(el, duration.fast, {
+                    [direction]: 0,
+                    ease,
+                })
+        },
+        { title: '←Expand' },
+    )
 
     return (
         <Container

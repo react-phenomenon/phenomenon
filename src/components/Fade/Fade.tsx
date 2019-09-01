@@ -7,17 +7,27 @@ interface TextProps extends StepProps {}
 export const Fade: FC<TextProps> = props => {
     const ref = useRef(null)
 
-    useStep(props.in, timeline => {
-        timeline.to(ref.current!, 0.4, {
-            opacity: 1,
-        })
-    })
+    useStep(
+        props.in,
+        (timeline, { duration, ease }) => {
+            timeline.to(ref.current!, duration.normal, {
+                opacity: 1,
+                ease,
+            })
+        },
+        { title: '→Fade' },
+    )
 
-    useStep(props.out, timeline => {
-        timeline.to(ref.current!, 0.4, {
-            opacity: 0,
-        })
-    })
+    useStep(
+        props.out,
+        (timeline, { duration, ease }) => {
+            timeline.to(ref.current!, duration.normal, {
+                opacity: 0,
+                ease,
+            })
+        },
+        { title: '←Fade' },
+    )
 
     return (
         <div ref={ref} style={{ opacity: 0 }}>

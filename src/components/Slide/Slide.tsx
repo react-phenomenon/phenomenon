@@ -5,6 +5,7 @@ import { useSlides } from '../../hooks/useSlides'
 import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
 import { useStep } from '../../hooks/useStep'
+import { Power2 } from 'gsap'
 
 interface SlideProps {
     config?: Partial<Config>
@@ -26,39 +27,47 @@ export const Slide: FC<SlideProps> = props => {
 
     useStep(
         index,
-        timeline => {
+        (timeline, { duration, ease }) => {
             timeline
-                .to(backgroundRef.current!, 0.4, {
+                .to(backgroundRef.current!, duration.slow, {
                     opacity: 1,
+                    ease,
                 })
                 .to(
                     contentRef.current!,
-                    0.4,
+                    duration.slow,
                     {
                         opacity: 1,
                         x: 0,
+                        ease,
                     },
-                    '-=0.4',
+                    `-=${duration}`,
                 )
         },
-        { offset: true },
+        { title: '→Slide', animateWithNext: true },
     )
 
-    useStep(-index, timeline => {
-        timeline
-            .to(backgroundRef.current!, 0.4, {
-                opacity: 0,
-            })
-            .to(
-                contentRef.current!,
-                0.4,
-                {
+    useStep(
+        -index,
+        (timeline, { duration, ease }) => {
+            timeline
+                .to(backgroundRef.current!, duration.slow, {
                     opacity: 0,
-                    x: '-100%',
-                },
-                '-=0.4',
-            )
-    })
+                    ease,
+                })
+                .to(
+                    contentRef.current!,
+                    duration.slow,
+                    {
+                        opacity: 0,
+                        x: '-100%',
+                        ease,
+                    },
+                    `-=${duration}`,
+                )
+        },
+        { title: '←Slide' },
+    )
 
     return (
         <SubSteps id={[index]}>

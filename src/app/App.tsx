@@ -10,6 +10,7 @@ import {
     SubTitle,
     Text,
 } from '../themes/storm'
+import { Expand } from '../components/Expand'
 
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
@@ -22,6 +23,11 @@ export const App = () => (
             <Fade in={1}>
                 <Text align="center">Click space or use arrow keys to navigate</Text>
             </Fade>
+            <Expand in={2} out={3}>
+                <Text align="center">
+                    <Logo />
+                </Text>
+            </Expand>
         </Slide>
         {/* <Slide>
             <HowToUse />
