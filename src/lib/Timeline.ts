@@ -62,11 +62,19 @@ export class Timeline {
     }
 
     public next() {
-        this.line && this.line.play()
+        if (!this.line) return
+        if (this.line.isActive()) {
+            this.line.seek(this.line.time() + 1)
+        }
+        this.line.play()
     }
 
     public back() {
-        this.line && this.line.reverse()
+        if (!this.line) return
+        if (this.line.isActive()) {
+            this.line.seek(this.line.time() - 1)
+        }
+        this.line.reverse()
     }
 
     public getDuration() {
