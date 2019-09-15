@@ -8,8 +8,10 @@
     "build:local": "PUBLIC_URL='/' react-scripts build",
     "server": "node server.js",
     "start": "react-scripts start",
-    "lint": "eslint  --ext .ts,.tsx src/",
-    "predeploy": "rm -rf dist && yarn build",
+    "test": "react-scripts test",
+    "lint": "eslint  --ext .ts,.tsx,.js src/",
+    "prettier-check": "prettier --check 'src/**/*.{ts,tsx}' 'scripts/**/*.js'",
+    "predeploy": "rm -rf build && yarn build",
     "deploy": "gh-pages -d build"
   },
   "lint-staged": {

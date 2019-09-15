@@ -2,10 +2,13 @@ language: node_js
 node_js:
   - "stable"
 cache:
+  yarn: true
   directories:
     - node_modules
 script:
-  - npm run build
+  - yarn run lint
+  - yarn run prettier-check
+  - yarn run build
 deploy:
   provider: pages
   skip_cleanup: true
