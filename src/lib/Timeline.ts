@@ -14,6 +14,7 @@ interface Step {
     createStepTimeline: (tl: TimelineMax) => void
     ref?: any
     options?: TimelineOptions
+    _duration?: number
 }
 
 type TimelineUpdateCallback = (ms: number, duration: number) => void
@@ -92,6 +93,7 @@ export class Timeline {
 
     private createLine() {
         if (this.line) {
+            // tslint:disable-next-line: no-console
             console.warn('[Timeline] this.line already exists!')
         }
 
@@ -109,19 +111,36 @@ export class Timeline {
     private addToLine(step: Step, index: number) {
         const { id, createStepTimeline, options = {} } = step
 
+        if (!this.line) return
+
         const stepTimeline = new TimelineMax()
         createStepTimeline(stepTimeline)
 
-        // TODO sameStep
-        const prevStep = this.steps[index - 1]
-        const sameStep = prevStep && isSameStep(id, prevStep.id)
+        // Store duration in steps for "same step" behavior
+        const duration = stepTimeline.duration()
+        this.steps[index]._duration = duration
 
-        if (options.animateWithNext && index > 0) {
-            this.line!.add(stepTimeline, `-=${stepTimeline.duration()}`).addPause()
+        const prevDuration = this.getSameStepOffset(id, index)
+
+        if ((options.animateWithNext || prevDuration) && index > 0) {
+            const offset = Math.min(duration, prevDuration || Infinity)
+
+            this.line.removePause(this.line.duration())
+            this.line.add(stepTimeline, `-=${offset}`).addPause()
             return
         }
 
-        this.line!.add(stepTimeline).addPause()
+        this.line.add(stepTimeline).addPause()
+    }
+
+    private getSameStepOffset(id: ID, index: number): number {
+        const prevStep = this.steps[index - 1]
+
+        if (!prevStep || !isSameStep(id, prevStep.id)) {
+            return 0
+        }
+
+        return prevStep._duration || 0
     }
 }
 
