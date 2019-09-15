@@ -6,6 +6,7 @@ import { Config } from '../../types/Config'
 import { Controls } from '../Controls'
 import { SlideFilledProps } from '../Slide'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WINDOW = window as any
 const inRenderMode: boolean = WINDOW.__RENDER__
 
@@ -29,9 +30,10 @@ export const Deck: FC<DeckProps> = props => {
         timeline.onRegister(() => {
             setRdy(true)
         })
-    }, [])
+    }, [timeline])
 
     const childrenArray = Children.toArray<ReactElement<SlideFilledProps>>(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         children as any,
     )
 

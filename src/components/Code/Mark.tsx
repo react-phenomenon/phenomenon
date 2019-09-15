@@ -7,11 +7,7 @@ interface MarkProps extends StepProps {
     line: number
 }
 
-interface MarkFC<P> extends FC<P> {
-    _inline: boolean
-}
-
-export const Mark: MarkFC<MarkProps> = props => {
+export const Mark: FC<MarkProps> = props => {
     const ref = useRef<HTMLDivElement>(null)
 
     useStep(
@@ -41,9 +37,6 @@ export const Mark: MarkFC<MarkProps> = props => {
         </Marker>
     )
 }
-
-// This will differentiate this component from the <Frag />
-Mark._inline = true
 
 const Marker = styled.mark`
     position: absolute;

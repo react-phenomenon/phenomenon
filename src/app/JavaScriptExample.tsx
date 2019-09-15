@@ -52,7 +52,7 @@ export const JavaScriptExample: FC = () => {
                 />
                 <Frag id="THEN" in={++i} code="!then" inline />
                 <Frag id="RETURN" in={++i} code="return null;" indent={2} />
-                <Frag id="COMMENT" in={++i} code={<Comment>Some 💩</Comment>} />
+                <Frag id="COMMENT" in={++i} code={<Comment>Comment here</Comment>} />
                 <Frag id="END" in={++i} out={++i} code="return true;" />
                 <Frag id="END2" in={i} code="return false;" />
                 <Mark in={++i} out={i + 2} line={3} />

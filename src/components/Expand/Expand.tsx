@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
-import { StepProps } from '../../types/StepProps'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
+import { StepProps } from '../../types/StepProps'
 
 interface ExpandProps extends StepProps {
     horizontal?: boolean

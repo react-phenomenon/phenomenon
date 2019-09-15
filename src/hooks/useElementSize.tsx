@@ -6,13 +6,13 @@ export const useElementSize = (ref: RefObject<HTMLElement>): Size | null => {
     const [size, saveSize] = useState<ClientRect | null>(null)
 
     useEffect(() => {
-        if (!size) {
-            const rect = ref.current!.getBoundingClientRect()
+        if (!size && ref.current) {
+            const rect = ref.current.getBoundingClientRect()
             if (rect.width && rect.height) {
                 saveSize(rect)
             }
         }
-    }, [size, ref.current])
+    }, [size, ref])
 
     return size
 }

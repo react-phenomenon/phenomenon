@@ -20,7 +20,7 @@ export const Controls: FC<ControlsProps> = props => {
                 ref.value = ((s / duration) * 100).toString()
             })
         }
-    }, [])
+    }, [inputRef, timeline])
 
     const nextPress = useKeyPress(' ', 'ArrowRight', 'd')
     const prevPress = useKeyPress('Backspace', 'ArrowLeft', 'a')
@@ -32,9 +32,12 @@ export const Controls: FC<ControlsProps> = props => {
         if (prevPress) timeline.back()
         if (helpPress) toggleHelp(!help)
         if (homePress) timeline.seek(0)
-    }, [nextPress, prevPress, helpPress, homePress])
+    }, [nextPress, prevPress, helpPress, homePress, timeline, toggleHelp, help])
 
-    const handleRangeEnd = (event: any) => {
+    const handleRangeEnd = (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        event: React.MouseEvent<HTMLInputElement, MouseEvent> | any,
+    ) => {
         event.preventDefault()
         event.target.blur()
         timeline.next()

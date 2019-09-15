@@ -6,6 +6,7 @@ import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { Fragments } from './types/Fragments'
+import { FragFC } from './types/FragFC'
 
 export interface FragProps extends StepProps {
     id: string
@@ -14,19 +15,7 @@ export interface FragProps extends StepProps {
     indent?: number
 }
 
-const prepareTextCode = (code: string, indent: number = 0, fragments: Fragments) => {
-    const indentedCode = code
-        .split('\n')
-        .map(line => config.indent.repeat(indent) + line)
-        .join('\n')
-
-    return appendFragments(indentedCode, fragments)
-}
-
-const backgroundColorIn = 'rgba(255, 255, 255, 0.4)'
-const backgroundColorOut = 'rgba(255, 255, 255, 0.0)'
-
-export const Frag = (props: FragProps) => {
+export const Frag: FragFC<FragProps> = props => {
     const ref = useRef<HTMLDivElement>(null)
     const size = useElementSize(ref)
     const fragments = useContext(FragmentsProvider)
@@ -35,7 +24,7 @@ export const Frag = (props: FragProps) => {
 
     const code =
         typeof props.code === 'string'
-            ? prepareTextCode(props.code, props.indent, fragments)
+            ? prepareTextCode(props.code, fragments, props.indent)
             : props.code
 
     useStep(
@@ -90,6 +79,22 @@ export const Frag = (props: FragProps) => {
         </>
     )
 }
+
+// TODO this is not the best idea
+// This will differentiate this component from the <Frag />
+Frag._fragment = true
+
+const prepareTextCode = (code: string, fragments: Fragments, indent = 0) => {
+    const indentedCode = code
+        .split('\n')
+        .map(line => config.indent.repeat(indent) + line)
+        .join('\n')
+
+    return appendFragments(indentedCode, fragments)
+}
+
+const backgroundColorIn = 'rgba(255, 255, 255, 0.4)'
+const backgroundColorOut = 'rgba(255, 255, 255, 0.0)'
 
 const Element = styled.code<{ inline?: boolean }>`
     display: ${p => (p.inline ? 'inline-block' : 'block')};

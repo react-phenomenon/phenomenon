@@ -1,3 +1,4 @@
 import React, { FC } from 'react'
+import logoSrc from './assets/logo.png'
 
-export const Logo: FC = () => <img src={require('./assets/logo.png')} alt="Phenomenon" />
+export const Logo: FC = () => <img src={logoSrc} alt="Phenomenon" />

@@ -12,7 +12,6 @@ export interface TimelineOptions {
 interface Step {
     id: ID
     createStepTimeline: (tl: TimelineMax) => void
-    ref?: any
     options?: TimelineOptions
     _duration?: number
 }
@@ -21,7 +20,7 @@ type TimelineUpdateCallback = (ms: number, duration: number) => void
 
 const STEP_ADD_DEBOUNCE = 1000
 
-export const TimelineContext = createContext<Timeline>({} as any)
+export const TimelineContext = createContext<Timeline>({} as Timeline)
 
 export class Timeline {
     public steps: Step[] = []
@@ -88,6 +87,7 @@ export class Timeline {
 
     private handleUpdate = () => {
         if (!this.line || !this.onUpdateCB) return
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.onUpdateCB(this.getCurrentTime()!, this.getDuration()!)
     }
 

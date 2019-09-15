@@ -1,8 +1,8 @@
-import React, { FC, useRef, useEffect } from 'react'
-import { SubSteps } from '../SubSteps'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import { StepProps } from '../../types/StepProps'
 import { Expand } from '../Expand'
+import { SubSteps } from '../SubSteps'
 
 interface ConsoleProps extends StepProps {}
 

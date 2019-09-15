@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */ // TODO
 import React, { FC } from 'react'
 import { stringReplace } from './stringReplace'
 import styled from 'styled-components'
@@ -21,9 +22,11 @@ const highlight = (code: string, reg: RegExp, Comp: any) =>
         </Comp>
     ))
 
-const Color: FC<{ value: string }> = ({ value }) => (
-    <span style={{ color: value }}>{value}</span>
-)
+interface ColorProps {
+    value: string
+}
+
+const Color: FC<ColorProps> = ({ value }) => <span style={{ color: value }}>{value}</span>
 
 const styles: { reg: RegExp; Comp: any }[] = [
     {

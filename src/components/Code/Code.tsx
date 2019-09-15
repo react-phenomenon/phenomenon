@@ -1,11 +1,12 @@
-import React, { FC, Children } from 'react'
+import React, { Children, FC } from 'react'
 import styled from 'styled-components'
 import { stripIndent } from '../../helpers/stripIndent'
 import { StepProps } from '../../types/StepProps'
+import { Fade } from '../Fade'
 import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
-import { Fade } from '../Fade'
+import { FragFC } from './types/FragFC'
 
 interface CodeProps extends StepProps {
     code: string
@@ -16,7 +17,8 @@ export const Code: FC<CodeProps> = props => {
     const code = stripIndent(props.code)
     const codeWithFragments = appendFragments(code, fragments)
     const markers = Children.toArray(props.children).filter(
-        (node: any) => node.type._inline,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node: any) => !(node.type as FragFC<StepProps>)._fragment,
     )
 
     return (

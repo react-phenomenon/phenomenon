@@ -1,19 +1,21 @@
-import React, { Children, ReactNode } from 'react'
+import React, { Children, ReactNode, ReactElement } from 'react'
 import { Fragments } from '../types/Fragments'
 import { FragProps } from '../Frag'
 import { stripIndent } from '../../../helpers/stripIndent'
+import { FragFC } from '../types/FragFC'
 
 export const findFragments = (children: ReactNode): Fragments => {
     const fragments: Fragments = {}
 
     const fragmentNodes = Children.toArray(children).filter(
-        (node: any) => !node.type._inline,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node: any) => (node.type as FragFC<FragProps>)._fragment,
     )
 
     fragmentNodes.forEach((el, index) => {
-        const element = el as any
+        const element = el as ReactElement<FragProps>
         const Frag = element.type
-        const props: FragProps = element.props
+        const props = element.props
 
         const { code, inline, ...otherProps } = props
         const stripedCode = typeof code === 'string' && !inline ? stripIndent(code) : code
