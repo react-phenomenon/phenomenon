@@ -15,6 +15,7 @@ export const JavaScriptExample: FC = () => {
                 <Text>I will show you some code examples</Text>
             </Fade>
             <Code
+                filename="some.js"
                 code={`
                     $FULL_IF
 

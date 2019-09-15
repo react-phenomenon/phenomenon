@@ -38,6 +38,14 @@ Consider different name :) noScope, concurrent
     <Console unwrap />
 ```
 
+### Modal
+
+```jsx
+<Modal in={1} out={2}>
+    Content
+</Modal>
+```
+
 ### Flow steps
 
 A → B → C
@@ -105,7 +113,7 @@ It will be grate if video will be synced with timeline!
 Pause options also looks promising
 
 ```jsx
-<Videos src={require('./assets/mobile-demo.webm')} pauseAt={['10s', '2min', '-4min']} />
+<Video src={require('./assets/mobile-demo.webm')} pauseAt={['10s', '2min', '-4min']} />
 ```
 
 ### Gallery

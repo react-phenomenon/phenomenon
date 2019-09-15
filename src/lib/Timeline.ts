@@ -87,8 +87,19 @@ export class Timeline {
 
     private handleUpdate = () => {
         if (!this.line || !this.onUpdateCB) return
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.onUpdateCB(this.getCurrentTime()!, this.getDuration()!)
+        const currentTime = this.getCurrentTime()!
+        this.saveLastTime(currentTime)
+        this.onUpdateCB(currentTime, this.getDuration()!)
+    }
+
+    private saveLastTime = debounce((time: number) => {
+        localStorage.setItem('phenomenon:last-time', time.toString())
+    }, 100)
+
+    private getLastTime() {
+        const lastTime = localStorage.getItem('phenomenon:last-time')
+        if (!lastTime) return 0
+        return Number.parseFloat(lastTime) || 0
     }
 
     private createLine() {
@@ -106,6 +117,12 @@ export class Timeline {
         })
 
         this.line.eventCallback('onUpdate', this.handleUpdate)
+
+        const lastTime = this.getLastTime()
+
+        if (lastTime && lastTime < this.line.duration()) {
+            this.line.seek(lastTime - 0.1).play()
+        }
     }
 
     private addToLine(step: Step, index: number) {

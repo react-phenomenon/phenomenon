@@ -7,6 +7,7 @@ export const ReactExample: FC = () => (
         <Title>React</Title>
         <Code
             in={1}
+            filename="Input.tsx"
             code={`
                 $DIV_START $LABEL
                 $____<input$TYPE$ID />

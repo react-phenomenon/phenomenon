@@ -7,9 +7,11 @@ import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
 import { FragFC } from './types/FragFC'
+import { Tab } from './partials/Tab'
 
 interface CodeProps extends StepProps {
     code: string
+    filename?: string
 }
 
 export const Code: FC<CodeProps> = props => {
@@ -25,26 +27,33 @@ export const Code: FC<CodeProps> = props => {
         <Fade in={props.in} out={props.out} options={{ title: 'Code' }}>
             <SubSteps id={[props.in || 0]}>
                 <FragmentsProvider.Provider value={fragments}>
-                    <Wrapper>
-                        <Pre>
-                            {codeWithFragments}
-                            {markers}
-                        </Pre>
-                    </Wrapper>
+                    <Container>
+                        {props.filename && <Tab name={props.filename} />}
+                        <Background>
+                            <Pre>
+                                {codeWithFragments}
+                                {markers}
+                            </Pre>
+                        </Background>
+                    </Container>
                 </FragmentsProvider.Provider>
             </SubSteps>
         </Fade>
     )
 }
 
-const Wrapper = styled.div`
-    margin: 2em auto;
-    padding: 2em;
-    background-color: #20242b;
-    border-radius: 0.5em;
-    color: #f0f8ff;
+const Container = styled.div`
     line-height: 1.5em;
     font-size: 16px;
+    margin: 2em auto;
+    color: #f0f8ff;
+    font-family: 'Source Code Pro', monospace;
+`
+
+const Background = styled.div`
+    padding: 1em 2em;
+    background-color: #20242b;
+    border-radius: 3px;
 `
 
 const Pre = styled.pre`

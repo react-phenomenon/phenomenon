@@ -8,23 +8,24 @@ export const FullExample: FC = () => {
         <>
             <Title>Full example</Title>
             <Code
+                filename="App.jsx"
                 code={`
-                <Deck>
-                    $SLIDE1
-                    $SLIDE2
-                </Deck>
-            `}
+                    <Deck>
+                        $SLIDE1
+                        $SLIDE2
+                    </Deck>
+                `}
             >
                 <Frag
                     in={++i}
                     id="SLIDE1"
                     indent={1}
                     code={`
-                    <Slide>
-                        $SLIDE1_CONTENT1
-                        $SLIDE1_CONTENT2
-                    </Slide>
-                `}
+                        <Slide>
+                            $SLIDE1_CONTENT1
+                            $SLIDE1_CONTENT2
+                        </Slide>
+                    `}
                 />
                 <Frag
                     in={++i}

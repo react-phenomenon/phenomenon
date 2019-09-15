@@ -13,6 +13,7 @@ export const CssExample: FC = () => {
                 <Text>And now some CSS</Text>
             </Fade>
             <Code
+                filename="styles/global.css"
                 code={`
                         $BODY
                         .button {
