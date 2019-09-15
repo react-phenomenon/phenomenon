@@ -12,22 +12,22 @@
     "predeploy": "rm -rf dist && yarn build",
     "deploy": "gh-pages -d build"
   },
-  "browserslist": [
-    "> 2%",
-    "not dead"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*.{ts,tsx,js}": [
       "eslint --fix",
       "prettier --write",
       "git add"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "browserslist": [
+    "> 2%",
+    "not dead"
+  ],
   "dependencies": {
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",

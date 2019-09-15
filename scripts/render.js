@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const puppeteer = require('puppeteer')
 const ffmpeg = require('fluent-ffmpeg')
 const path = require('path')
@@ -22,7 +24,7 @@ const outputFilePath = frame => {
 
 const deleteFolderRecursive = p => {
     if (!fs.existsSync(p)) return
-    fs.readdirSync(p).forEach((file, index) => {
+    fs.readdirSync(p).forEach(file => {
         const curPath = path.resolve(p, file)
         if (fs.lstatSync(curPath).isDirectory()) {
             deleteFolderRecursive(curPath)
@@ -59,7 +61,7 @@ const main = async () => {
     console.log(`Rendering ${framesCount} frames`)
 
     for (let frame = 0; frame <= framesCount; frame++) {
-        let startMs = new Date()
+        const startMs = new Date()
 
         await page.evaluate(offset => {
             window.__TIMELINE.seek(offset)
@@ -67,7 +69,7 @@ const main = async () => {
 
         await page.screenshot({ path: outputFilePath(frame) })
 
-        var endMs = new Date() - startMs
+        const endMs = new Date() - startMs
         const leftTime = formatMs(endMs * (framesCount - frame))
         const percent = Math.round((frame / framesCount) * 100)
 
