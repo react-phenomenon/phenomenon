@@ -39,7 +39,7 @@ export const Slide: FC<SlideProps> = props => {
                         x: 0,
                         ease,
                     },
-                    `-=${duration}`,
+                    `-=${duration.slow}`,
                 )
         },
         { title: '→Slide', animateWithNext: true },
@@ -61,7 +61,7 @@ export const Slide: FC<SlideProps> = props => {
                         x: '-100%',
                         ease,
                     },
-                    `-=${duration}`,
+                    `-=${duration.slow}`,
                 )
         },
         { title: '←Slide' },

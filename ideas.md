@@ -16,6 +16,7 @@ $ npm install @phenomenon/react-timeline
 -   On timeline show `<Stop />` and other information
 -   Stop component can also "snap" timeline
 -   Add mobile swipe gesture to ease navigate on timeline
+-   Keep current slide in URL
 
 ## Components
 
