@@ -64,7 +64,7 @@ export class Timeline {
     public next() {
         if (!this.line) return
         if (this.line.isActive()) {
-            this.line.seek(this.line.time() + 1)
+            this.turboMode()
         }
         this.line.play()
     }
@@ -72,9 +72,20 @@ export class Timeline {
     public back() {
         if (!this.line) return
         if (this.line.isActive()) {
-            this.line.seek(this.line.time() - 1)
+            this.turboMode()
         }
         this.line.reverse()
+    }
+
+    private turboTimer: number | undefined
+    private turboMode() {
+        if (!this.line) return
+
+        this.line.timeScale(5)
+        clearTimeout(this.turboTimer)
+        this.turboTimer = setTimeout(() => {
+            this.line!.timeScale(1)
+        }, 1000)
     }
 
     public getDuration() {
