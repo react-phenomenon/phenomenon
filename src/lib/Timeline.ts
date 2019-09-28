@@ -13,7 +13,7 @@ interface Step {
     id: ID
     createStepTimeline: (tl: TimelineMax) => void
     options?: TimelineOptions
-    _duration?: number
+    _timeline?: TimelineMax
 }
 
 type TimelineUpdateCallback = (ms: number, duration: number) => void
@@ -104,13 +104,23 @@ export class Timeline {
 
     private createLine() {
         if (this.line) {
-            // tslint:disable-next-line: no-console
+            // eslint-disable-next-line no-console
             console.warn('[Timeline] this.line already exists!')
         }
 
         this.line = new TimelineMax({ paused: true })
 
         this.steps.sort(sortSteps)
+
+        this.steps.map(step => {
+            const { createStepTimeline } = step
+
+            const stepTimeline = new TimelineMax()
+            createStepTimeline(stepTimeline)
+
+            step._timeline = stepTimeline
+            return step
+        })
 
         this.steps.forEach((step, index) => {
             this.addToLine(step, index)
@@ -126,21 +136,14 @@ export class Timeline {
     }
 
     private addToLine(step: Step, index: number) {
-        const { id, createStepTimeline, options = {} } = step
-
         if (!this.line) return
 
-        const stepTimeline = new TimelineMax()
-        createStepTimeline(stepTimeline)
+        const stepTimeline = step._timeline!
 
-        // Store duration in steps for "same step" behavior
-        const duration = stepTimeline.duration()
-        this.steps[index]._duration = duration
+        const offset = this.getSameStepOffset(step, index)
 
-        const prevDuration = this.getSameStepOffset(id, index)
-
-        if ((options.animateWithNext || prevDuration) && index > 0) {
-            const offset = Math.min(duration, prevDuration || Infinity)
+        if (offset && index > 0) {
+            // const offset = Math.min(duration, prevDuration || Infinity)
 
             this.line.removePause(this.line.duration())
             this.line.add(stepTimeline, `-=${offset}`).addPause()
@@ -150,14 +153,28 @@ export class Timeline {
         this.line.add(stepTimeline).addPause()
     }
 
-    private getSameStepOffset(id: ID, index: number): number {
+    private getSameStepOffset(
+        { id, _timeline, options = {} }: Step,
+        index: number,
+    ): number {
+        const currentDuration = _timeline!.duration()
         const prevStep = this.steps[index - 1]
 
-        if (!prevStep || !isSameStep(id, prevStep.id)) {
-            return 0
+        if (prevStep && (options.animateWithNext || isSameStep(id, prevStep.id))) {
+            const prevDuration = prevStep._timeline!.duration() || 0
+            return Math.min(currentDuration, prevDuration || Infinity)
         }
 
-        return prevStep._duration || 0
+        // TODO `animateWithPrev`
+        // const nextStep = this.steps[index - 1]
+        // const nextOptions = (nextStep && nextStep.options) || {}
+
+        // if (nextStep && (nextOptions.animateWithPrev || isSameStep(id, nextStep.id))) {
+        //     const nextDuration = nextStep._timeline!.duration() || 0
+        //     return Math.min(currentDuration, nextDuration)
+        // }
+
+        return 0
     }
 }
 

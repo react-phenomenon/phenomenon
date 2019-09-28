@@ -1,4 +1,5 @@
 import React from 'react'
+import { Animate } from '../components/Animate'
 import { Deck } from '../components/Deck'
 import { Slide } from '../components/Slide'
 import {
@@ -18,8 +19,14 @@ import { ReactExample } from './ReactExample'
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
         <Slide config={{ backgroundImage: mainBackgroundImage }}>
-            <Logo />
-            <Text align="center">Click space or use arrow keys to navigate</Text>
+            <Animate
+                in={0}
+                from={{ opacity: 0, scale: 0.9, rotation: 10 }}
+                to={{ opacity: 1, scale: 1, rotation: 0 }}
+            >
+                <Logo />
+                <Text align="center">Click space or use arrow keys to navigate</Text>
+            </Animate>
         </Slide>
         <Slide>
             <HowToUse />
