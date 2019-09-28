@@ -27,16 +27,27 @@ export const Slide: FC<SlideProps> = props => {
         index,
         (timeline, { duration, ease }) => {
             timeline
-                .to(backgroundRef.current!, duration.slow, {
-                    opacity: 1,
-                    ease,
-                })
-                .to(
+                .fromTo(
+                    backgroundRef.current!,
+                    duration.slow,
+                    {
+                        opacity: 0,
+                    },
+                    {
+                        opacity: 1,
+                        ease,
+                    },
+                )
+                .fromTo(
                     contentRef.current!,
                     duration.slow,
                     {
+                        opacity: 0,
+                        scale: 0.8,
+                    },
+                    {
                         opacity: 1,
-                        x: 0,
+                        scale: 1,
                         ease,
                     },
                     `-=${duration.slow}`,
@@ -74,16 +85,9 @@ export const Slide: FC<SlideProps> = props => {
                 style={{
                     backgroundColor: config.backgroundColor,
                     backgroundImage: `url(${config.backgroundImage})`,
-                    opacity: 0,
                 }}
             >
-                <Content
-                    ref={contentRef}
-                    style={{
-                        transform: 'translateX(100%)',
-                        opacity: 0,
-                    }}
-                >
+                <Content ref={contentRef}>
                     <div>{children}</div>
                 </Content>
             </Background>
