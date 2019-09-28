@@ -24,7 +24,7 @@ export const Slide: FC<SlideProps> = props => {
     const backgroundRef = useRef<HTMLDivElement>(null)
 
     useStep(
-        index,
+        index === 1 ? undefined : index,
         (timeline, { duration, ease }) => {
             timeline
                 .fromTo(

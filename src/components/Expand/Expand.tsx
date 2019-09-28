@@ -28,6 +28,7 @@ export const Expand: FC<ExpandProps> = props => {
                     opacity: 1,
                     ease,
                 })
+                .set(el, { height: 'auto' })
         },
         { title: '→Expand', deps: [size !== null] },
     )

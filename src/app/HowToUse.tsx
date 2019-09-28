@@ -22,19 +22,15 @@ export const HowToUse: FC = () => {
                 />
             </Expand>
             <Expand in={++f}>
-                <Text>Next, you may want to add some basic fancy components:</Text>
+                <Text>Next, you may want to add some fancy components like:</Text>
             </Expand>
-            <Fade in={++f} out={f + 3}>
+            <Fade in={++f}>
                 <SubTitle>Fade component</SubTitle>
                 <Code code={`<Fade in={1}>Content</Fade>`} />
             </Fade>
-            <Expand in={++f} out={f + 2}>
+            <Expand in={++f}>
                 <SubTitle>Expand component</SubTitle>
                 <Code code={`<Expand in={2}>Content</Expand>`} />
-            </Expand>
-            <Expand in={++f}>
-                <Text>You can also hide those components using out prop eg:</Text>
-                <Code code={`<Expand in={1} out={2}>Content</Expand>`} />
             </Expand>
         </div>
     )

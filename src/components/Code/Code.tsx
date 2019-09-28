@@ -2,16 +2,16 @@ import React, { Children, FC } from 'react'
 import styled from 'styled-components'
 import { stripIndent } from '../../helpers/stripIndent'
 import { StepProps } from '../../types/StepProps'
-import { Fade } from '../Fade'
 import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
-import { FragFC } from './types/FragFC'
 import { Tab } from './partials/Tab'
+import { FragFC } from './types/FragFC'
 
-interface CodeProps extends StepProps {
+interface CodeProps {
     code: string
     filename?: string
+    start?: number
 }
 
 export const Code: FC<CodeProps> = props => {
@@ -24,21 +24,19 @@ export const Code: FC<CodeProps> = props => {
     )
 
     return (
-        <Fade in={props.in} out={props.out} options={{ title: 'Code' }}>
-            <SubSteps id={[props.in || 0]}>
-                <FragmentsProvider.Provider value={fragments}>
-                    <Container>
-                        {props.filename && <Tab name={props.filename} />}
-                        <Background>
-                            <Pre>
-                                {codeWithFragments}
-                                {markers}
-                            </Pre>
-                        </Background>
-                    </Container>
-                </FragmentsProvider.Provider>
-            </SubSteps>
-        </Fade>
+        <SubSteps id={[props.start || 0]}>
+            <FragmentsProvider.Provider value={fragments}>
+                <Container>
+                    {props.filename && <Tab name={props.filename} />}
+                    <Background>
+                        <Pre>
+                            {codeWithFragments}
+                            {markers}
+                        </Pre>
+                    </Background>
+                </Container>
+            </FragmentsProvider.Provider>
+        </SubSteps>
     )
 }
 

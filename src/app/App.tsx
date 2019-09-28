@@ -8,6 +8,7 @@ import {
     Logo,
     mainBackgroundImage,
     Text,
+    Title,
 } from '../themes/storm'
 import { ConsoleExample } from './ConsoleExample'
 import { CssExample } from './CssExample'
@@ -27,6 +28,9 @@ export const App = () => (
         </Slide>
         <Slide config={{ backgroundColor, backgroundImage: "''" }}>
             <FullExample />
+        </Slide>
+        <Slide>
+            <Title>More examples</Title>
         </Slide>
         <Slide>
             <ConsoleExample />

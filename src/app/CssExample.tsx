@@ -21,7 +21,7 @@ export const CssExample: FC = () => {
                             $HOVER
                         }
                     `}
-                in={++c}
+                start={++c}
             >
                 <Frag
                     id="BTN"
