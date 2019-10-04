@@ -1,20 +1,17 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { StepProps } from '../../types/StepProps'
-import { Expand } from '../Expand'
+import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
 
-interface ConsoleProps extends StepProps {}
+interface ConsoleProps extends SubStepsProps {}
 
 export const Console: FC<ConsoleProps> = props => {
     return (
-        <Expand in={props.in} out={props.out} options={{ title: 'Console' }}>
-            <SubSteps id={[props.in || 0]}>
-                <Container>
-                    <Scroll>{props.children}</Scroll>
-                </Container>
-            </SubSteps>
-        </Expand>
+        <SubSteps start={props.start} unwrap={props.unwrap}>
+            <Container>
+                <Scroll>{props.children}</Scroll>
+            </Container>
+        </SubSteps>
     )
 }
 
@@ -25,7 +22,6 @@ const Container = styled.div`
     max-width: 100%;
     height: 300px;
     background-color: #20242b;
-    padding: 2em;
     margin: 2em auto;
     border-radius: 0.5em;
     font-family: 'Source Code Pro', monospace;

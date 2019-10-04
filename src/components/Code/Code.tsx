@@ -2,16 +2,16 @@ import React, { Children, FC } from 'react'
 import styled from 'styled-components'
 import { stripIndent } from '../../helpers/stripIndent'
 import { StepProps } from '../../types/StepProps'
+import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
 import { Tab } from './partials/Tab'
 import { FragFC } from './types/FragFC'
 
-interface CodeProps {
+interface CodeProps extends SubStepsProps {
     code: string
     filename?: string
-    start?: number
 }
 
 export const Code: FC<CodeProps> = props => {
@@ -24,7 +24,7 @@ export const Code: FC<CodeProps> = props => {
     )
 
     return (
-        <SubSteps id={[props.start || 0]}>
+        <SubSteps start={props.start} unwrap={props.unwrap}>
             <FragmentsProvider.Provider value={fragments}>
                 <Container>
                     {props.filename && <Tab name={props.filename} />}

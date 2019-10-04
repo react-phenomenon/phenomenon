@@ -1,33 +1,27 @@
-import React, { FC, PropsWithChildren, useContext, useRef } from 'react'
+import React, { FC, useContext, useRef } from 'react'
 import styled from 'styled-components'
 import { useStep } from '../../hooks/useStep'
 import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
+import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
 
-interface SlideProps {
+export interface SlideProps extends SubStepsProps {
     config?: Partial<Config>
-}
-
-export interface SlideFilledProps extends SlideProps {
-    index: number
 }
 
 const inactiveZIndex = 1
 const activeZIndex = 2
 
 export const Slide: FC<SlideProps> = props => {
-    const filledProps = props as PropsWithChildren<SlideFilledProps>
-    const { index, children, config: slideConfig } = filledProps
-
     const baseConfig = useContext(ConfigContext)
-    const config = { ...baseConfig, ...slideConfig }
+    const config = { ...baseConfig, ...props.config }
 
     const contentRef = useRef<HTMLDivElement>(null)
     const backgroundRef = useRef<HTMLDivElement>(null)
 
     useStep(
-        index === 1 ? undefined : index, // Skip first slide enter animation
+        props.start === 1 ? undefined : props.start, // Skip first slide enter animation
         (timeline, { duration, ease }) => {
             timeline
                 .set(contentRef.current!, { zIndex: inactiveZIndex })
@@ -50,7 +44,7 @@ export const Slide: FC<SlideProps> = props => {
     )
 
     useStep(
-        -index,
+        -props.start!,
         (timeline, { duration, ease }) => {
             timeline
                 .to(backgroundRef.current!, duration.slow, {
@@ -69,7 +63,7 @@ export const Slide: FC<SlideProps> = props => {
     )
 
     return (
-        <SubSteps id={[index]}>
+        <SubSteps start={props.start} unwrap={props.unwrap}>
             <Background
                 ref={backgroundRef}
                 style={{
@@ -78,7 +72,7 @@ export const Slide: FC<SlideProps> = props => {
                 }}
             >
                 <Content ref={contentRef} style={{ zIndex: inactiveZIndex }}>
-                    <div>{children}</div>
+                    <div>{props.children}</div>
                 </Content>
             </Background>
         </SubSteps>

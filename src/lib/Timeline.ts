@@ -154,8 +154,6 @@ export class Timeline {
         const offset = this.getSameStepOffset(step, index)
 
         if (offset && index > 0) {
-            // const offset = Math.min(duration, prevDuration || Infinity)
-
             this.line.removePause(this.line.duration())
             this.line.add(stepTimeline, `-=${offset}`).addPause()
             return
@@ -173,10 +171,17 @@ export class Timeline {
 
         if (prevStep && (options.animateWithNext || isSameStep(id, prevStep.id))) {
             const prevDuration = prevStep._timeline!.duration() || 0
+            // @TODO
+            // This is how it should be, but:
+            //   - this breaks "same step" in Frag component… why?
+            //   - Without this `unwrap`ed steps may have problems… (eg. two step Cmd + one step SwapItem)
+            // BTW here we should take care about negative offset > timeline duration from this point of time
+            // return currentDuration
+
             return Math.min(currentDuration, prevDuration || Infinity)
         }
 
-        // TODO `animateWithPrev`
+        // @TODO `animateWithPrev`
         // const nextStep = this.steps[index - 1]
         // const nextOptions = (nextStep && nextStep.options) || {}
 

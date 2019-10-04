@@ -4,7 +4,7 @@ import { ConfigContext } from '../../lib/Config'
 import { Timeline, TimelineContext } from '../../lib/Timeline'
 import { Config } from '../../types/Config'
 import { Controls } from '../Controls'
-import { SlideFilledProps } from '../Slide'
+import { SlideProps } from '../Slide'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WINDOW = window as any
@@ -32,7 +32,7 @@ export const Deck: FC<DeckProps> = props => {
         })
     }, [timeline])
 
-    const childrenArray = Children.toArray<ReactElement<SlideFilledProps>>(
+    const childrenArray = Children.toArray<ReactElement<SlideProps>>(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         children as any,
     )
@@ -65,7 +65,7 @@ export const Deck: FC<DeckProps> = props => {
                         }}
                     >
                         {childrenArray.map((child, index) => (
-                            <child.type key={index} index={index + 1} {...child.props} />
+                            <child.type key={index} start={index + 1} {...child.props} />
                         ))}
                     </SlidesContainer>
                 </TimelineContext.Provider>
