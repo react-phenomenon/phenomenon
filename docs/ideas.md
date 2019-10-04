@@ -39,6 +39,16 @@ Consider different name :) noScope, concurrent
     <Console unwrap />
 ```
 
+### Swap
+
+```jsx
+<Swap start={1}>
+    <SwapItem>Content 1</SwapItem>
+    <SwapItem>Content 2</SwapItem>
+    <SwapItem>Content 3</SwapItem>
+</Swap>
+```
+
 ### Modal
 
 ```jsx

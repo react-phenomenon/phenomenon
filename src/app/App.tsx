@@ -45,7 +45,7 @@ export const App = () => (
             <CssExample />
         </Slide>
         <Slide>
-            <Text align="center">Presentation created by:</Text>
+            <Text align="center">Presentation powered by</Text>
             <Animate
                 in={1}
                 from={{ opacity: 0, scale: 0.9, rotation: 10 }}
