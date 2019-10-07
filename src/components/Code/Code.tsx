@@ -1,15 +1,14 @@
-import React, { Children, FC } from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import { stripIndent } from '../../helpers/stripIndent'
-import { StepProps } from '../../types/StepProps'
 import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
 import { Tab } from './partials/Tab'
-import { FragFC } from './types/FragFC'
+import { getChildrenByType } from './lib/getChildrenByType'
 
-interface CodeProps extends SubStepsProps {
+export interface CodeProps extends SubStepsProps {
     code: string
     filename?: string
 }
@@ -18,10 +17,7 @@ export const Code: FC<CodeProps> = props => {
     const fragments = findFragments(props.children)
     const code = stripIndent(props.code)
     const codeWithFragments = appendFragments(code, fragments)
-    const markers = Children.toArray(props.children).filter(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (node: any) => !(node.type as FragFC<StepProps>)._fragment,
-    )
+    const markers = getChildrenByType('mark', props.children)
 
     return (
         <SubSteps start={props.start} unwrap={props.unwrap}>

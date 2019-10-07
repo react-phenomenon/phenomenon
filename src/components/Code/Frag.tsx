@@ -82,7 +82,7 @@ export const Frag: FragFC<FragProps> = props => {
 
 // TODO this is not the best idea
 // This will differentiate this component from the <Frag />
-Frag._fragment = true
+Frag._type = 'frag'
 
 const prepareTextCode = (code: string, fragments: Fragments, indent = 0) => {
     const indentedCode = code

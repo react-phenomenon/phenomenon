@@ -36,6 +36,7 @@ export class Timeline {
     private addStepDone = debounce(() => {
         this.createLine()
         this.onRegisterCB && this.onRegisterCB()
+        this.runOnUpdateCB()
     }, STEP_ADD_DEBOUNCE)
 
     public onRegister(cb: () => void) {
@@ -96,11 +97,16 @@ export class Timeline {
         return this.line && this.line.time()
     }
 
+    private runOnUpdateCB() {
+        if (!this.onUpdateCB) return
+        this.onUpdateCB(this.getCurrentTime()!, this.getDuration()!)
+    }
+
     private handleUpdate = () => {
         if (!this.line || !this.onUpdateCB) return
         const currentTime = this.getCurrentTime()!
         this.saveLastTime(currentTime)
-        this.onUpdateCB(currentTime, this.getDuration()!)
+        this.runOnUpdateCB()
     }
 
     private saveLastTime = debounce((time: number) => {

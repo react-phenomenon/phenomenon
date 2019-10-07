@@ -2,12 +2,13 @@ import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
+import { FragFC } from './types/FragFC'
 
 interface MarkProps extends StepProps {
     line: number
 }
 
-export const Mark: FC<MarkProps> = props => {
+export const Mark: FragFC<MarkProps> = props => {
     const ref = useRef<HTMLDivElement>(null)
 
     useStep(
@@ -37,6 +38,8 @@ export const Mark: FC<MarkProps> = props => {
         </Marker>
     )
 }
+
+Mark._type = 'mark'
 
 const Marker = styled.mark`
     position: absolute;

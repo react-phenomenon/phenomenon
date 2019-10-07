@@ -4,7 +4,7 @@ import { useStep } from '../../hooks/useStep'
 import { useElementSize } from '../../hooks/useElementSize'
 import styled from 'styled-components'
 
-interface SwapItemProps extends StepProps {}
+export interface SwapItemProps extends StepProps {}
 
 export const SwapItem: FC<SwapItemProps> = props => {
     const ref = useRef(null)

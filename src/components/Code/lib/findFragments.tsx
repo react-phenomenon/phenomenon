@@ -9,7 +9,7 @@ export const findFragments = (children: ReactNode): Fragments => {
 
     const fragmentNodes = Children.toArray(children).filter(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (node: any) => (node.type as FragFC<FragProps>)._fragment,
+        (node: any) => (node.type as FragFC<FragProps>)._type === 'frag',
     )
 
     fragmentNodes.forEach((el, index) => {

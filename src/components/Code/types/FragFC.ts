@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
-export interface FragFC<P> extends FC<P> {
-    _fragment: boolean
+export type FragType = 'frag' | 'mark' | 'info'
+
+export interface FragFC<P = {}> extends FC<P> {
+    _type: FragType
 }

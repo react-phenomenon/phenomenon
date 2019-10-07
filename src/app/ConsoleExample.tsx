@@ -1,8 +1,7 @@
 import React, { FC } from 'react'
 import { Cmd, Console, Output } from '../components/Console'
 import { Expand } from '../components/Expand'
-import { Swap } from '../components/Swap'
-import { SwapItem } from '../components/Swap/SwapItem'
+import { Swap, SwapItem } from '../components/Swap'
 import { Text, Title } from '../themes/storm'
 
 export const ConsoleExample: FC = () => {

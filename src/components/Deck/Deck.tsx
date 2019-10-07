@@ -43,18 +43,13 @@ export const Deck: FC<DeckProps> = props => {
                 backgroundColor: config.backgroundColor,
             }}
         >
-            {rdy ? (
-                <>
-                    {!inRenderMode && <Controls timeline={timeline} />}
-                    {inRenderMode && (
-                        <div id="duration" style={{ display: 'none' }}>
-                            {timeline.getDuration()}
-                        </div>
-                    )}
-                </>
-            ) : (
-                <Loading />
+            {!inRenderMode && <Controls timeline={timeline} />}
+            {inRenderMode && (
+                <div id="duration" style={{ display: 'none' }}>
+                    {timeline.getDuration()}
+                </div>
             )}
+            {rdy || <Loading />}
             <ConfigContext.Provider value={config}>
                 <TimelineContext.Provider value={timeline}>
                     <SlidesContainer
