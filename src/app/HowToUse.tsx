@@ -1,37 +1,121 @@
 import React, { FC } from 'react'
-import { Code } from '../components/Code'
-import { Expand } from '../components/Expand'
-import { Fade } from '../components/Fade'
+import { Frag } from '../components/Code'
+import { CodeInfo, CodeWithText } from '../components/CodeWithText'
 import { SubTitle, Text, Title } from '../themes/storm'
 
 export const HowToUse: FC = () => {
-    let f = 0
+    let f = 1
     return (
-        <div>
+        <>
             <Title>How to use</Title>
-            <Expand in={++f} out={f + 1}>
-                <Text>To create slides you have to use two components:</Text>
-                <Code
+            <CodeWithText
+                filename="App.tsx"
+                code={`
+                    // @TODO presentation
+                    $DECK
+                `}
+            >
+                <CodeInfo out={++f}>
+                    <SubTitle>First</SubTitle>
+                    <Text>To create slides you have to use two components</Text>
+                </CodeInfo>
+
+                <Frag
+                    id="DECK"
+                    in={f}
                     code={`
                         <Deck>
-                            <Slide>Slide 1 content</Slide>
-                            <Slide>Slide 2 content</Slide>
-                            // …
+                            $SLIDES
                         </Deck>
                     `}
                 />
-            </Expand>
-            <Expand in={++f}>
-                <Text>Next, you may want to add some fancy components like:</Text>
-            </Expand>
-            <Fade in={++f}>
-                <SubTitle>Fade component</SubTitle>
-                <Code code={`<Fade in={1}>Content</Fade>`} />
-            </Fade>
-            <Expand in={++f}>
-                <SubTitle>Expand component</SubTitle>
-                <Code code={`<Expand in={2}>Content</Expand>`} />
-            </Expand>
-        </div>
+                <CodeInfo in={f} out={++f}>
+                    <SubTitle>{'<Deck>'}</SubTitle>
+                    <Text>That&apos;s hold your slides</Text>
+                </CodeInfo>
+
+                <Frag
+                    id="SLIDES"
+                    in={f}
+                    indent={1}
+                    code={`
+                        <Slide>
+                            $SIMPLE_CONTENT1$SIMPLE_CONTENT3
+                        </Slide>
+                        <Slide>
+                            $SIMPLE_CONTENT2
+                        </Slide>
+                    `}
+                />
+                <CodeInfo in={f} out={++f}>
+                    <SubTitle>And {'<Slide>'}</SubTitle>
+                    <Text>For each slide</Text>
+                </CodeInfo>
+
+                <Frag
+                    id="SIMPLE_CONTENT1"
+                    in={f}
+                    out={f + 3}
+                    indent={2}
+                    code={`
+                        <h1>My slide</h1>
+                        <p>And my slide content!</p>
+                    `}
+                />
+                <Frag
+                    id="SIMPLE_CONTENT2"
+                    in={f}
+                    out={f}
+                    indent={2}
+                    code={`
+                        <h1>OMG next slide!</h1>
+                    `}
+                />
+                <CodeInfo in={f} out={++f}>
+                    <Text>Where you can put your content</Text>
+                </CodeInfo>
+
+                <CodeInfo in={f} out={++f}>
+                    <SubTitle>And…</SubTitle>
+                    <Text>You have very boring presentation :)</Text>
+                </CodeInfo>
+
+                <CodeInfo in={f} out={f + 2}>
+                    <SubTitle>But you can add more stuff</SubTitle>
+                    <Text>
+                        Like {'<Fade>'}, {'<Fade>'} and more!
+                    </Text>
+                </CodeInfo>
+                <Frag
+                    id="SIMPLE_CONTENT3"
+                    in={++f}
+                    indent={2}
+                    code={`
+                        <h1>My slide</h1>
+                        <Fade in={1}>
+                            <p>And my slide content!</p>
+                        </Fade>
+                        <Expand in={2}>
+                            <p>And my second content!</p>
+                        </Expand>
+                    `}
+                />
+
+                <CodeInfo in={++f} out={++f}>
+                    <SubTitle>As you can see</SubTitle>
+                    <Text>You control order using `in` props</Text>
+                </CodeInfo>
+
+                <CodeInfo in={f} out={++f}>
+                    <SubTitle>There is more</SubTitle>
+                    <Text>It require more explanation</Text>
+                </CodeInfo>
+
+                <CodeInfo in={f}>
+                    <Text>But don&apos;t worry!</Text>
+                    <Text>You will understand it without a problem</Text>
+                </CodeInfo>
+            </CodeWithText>
+        </>
     )
 }

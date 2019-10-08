@@ -30,6 +30,12 @@ const Color: FC<ColorProps> = ({ value }) => <span style={{ color: value }}>{val
 
 const styles: { reg: RegExp; Comp: any }[] = [
     {
+        reg: /(\/\/.+)/g,
+        Comp: styled.span`
+            color: #999;
+        `,
+    },
+    {
         reg: /(if|else|return|for|while|of|=>)/g,
         Comp: styled.span`
             color: #c678dd;

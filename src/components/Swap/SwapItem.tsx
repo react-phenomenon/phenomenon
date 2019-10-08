@@ -15,7 +15,7 @@ export const SwapItem: FC<SwapItemProps> = props => {
         (timeline, { duration, ease }) => {
             timeline.fromTo(
                 ref.current!,
-                duration.fast,
+                duration.normal,
                 { height: 0, opacity: 0 },
                 { height: size!.height, opacity: 1, ease },
             )
@@ -26,7 +26,7 @@ export const SwapItem: FC<SwapItemProps> = props => {
     useStep(
         props.out,
         (timeline, { duration, ease }) => {
-            timeline.to(ref.current!, duration.fast, {
+            timeline.to(ref.current!, duration.normal, {
                 height: 0,
                 opacity: 0,
                 y: '-100%',

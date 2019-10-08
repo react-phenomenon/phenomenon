@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
