@@ -1,0 +1,12 @@
+{
+  "name": "@phenomenon/theme-storm",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@phenomenon/slides": "^1.0.0",
+    "styled-components": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^4.1.15"
+  }
+}

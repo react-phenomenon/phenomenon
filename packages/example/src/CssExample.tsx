@@ -1,7 +1,6 @@
+import { Code, Fade, Frag } from '@phenomenon/slides'
+import { Text, Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
-import { Title, Text } from '../themes/storm'
-import { Fade } from '../components/Fade'
-import { Code, Frag } from '../components/Code'
 
 export const CssExample: FC = () => {
     let c = 0

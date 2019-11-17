@@ -1,6 +1,6 @@
+import { Code, Frag } from '@phenomenon/slides'
+import { Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
-import { Title } from '../themes/storm'
-import { Code, Frag } from '../components/Code'
 
 export const ReactExample: FC = () => (
     <>

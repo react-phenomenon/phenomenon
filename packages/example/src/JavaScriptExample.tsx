@@ -1,6 +1,6 @@
+import { Code, Comment, Frag, Mark } from '@phenomenon/slides'
+import { Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
-import { Code, Comment, Frag, Mark } from '../components/Code'
-import { Title } from '../themes/storm'
 
 export const JavaScriptExample: FC = () => {
     let i = 0

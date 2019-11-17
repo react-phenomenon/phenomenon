@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const puppeteer = require('puppeteer')
 const ffmpeg = require('fluent-ffmpeg')

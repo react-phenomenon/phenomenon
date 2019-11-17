@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useRef } from 'react'
 import styled from 'styled-components'
-import { config } from '../../app/config'
+import { config } from '../../../../example/src/config'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
