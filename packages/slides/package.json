@@ -2,11 +2,14 @@
   "name": "@phenomenon/slides",
   "version": "1.0.0",
   "scripts": {
-    "test": "react-scripts test",
-    "typecheck": "tsc --noEmit",
-    "build-lib": "rm -rf dist && yarn run build-lib:babel && yarn run build-lib:ts",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:babel": "yarn run build-lib:babel --watch",
+    "watch:ts": "yarn run build-lib:ts --watch",
+    "build-lib": "npm-run-all clean build-lib:*",
     "build-lib:babel": "NODE_ENV=production babel src/ --out-dir dist --copy-files --extensions .ts,.tsx",
-    "build-lib:ts": "tsc --declaration --outDir dist/ --emitDeclarationOnly --declarationMap"
+    "build-lib:ts": "tsc --declaration --outDir dist/ --emitDeclarationOnly --declarationMap",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

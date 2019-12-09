@@ -6,12 +6,14 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint  --ext .ts,.tsx,.js packages/*/src/",
-    "prettier-check": "prettier --check 'packages/*/src/**/*.{ts,tsx}'",
-    "start-example": "yarn workspace @phenomenon/example run start",
+    "start": "npm-run-all --parallel watch start-example",
+    "watch": "yarn wsrun --exclude-missing watch",
     "build-lib": "yarn wsrun --exclude-missing build-lib",
     "typecheck": "yarn wsrun --exclude-missing typecheck",
-    "test": "yarn wsrun --exclude-missing test"
+    "test": "yarn wsrun --exclude-missing test",
+    "lint": "eslint  --ext .ts,.tsx,.js packages/*/src/",
+    "prettier-check": "prettier --check 'packages/*/src/**/*.{ts,tsx}'",
+    "start-example": "yarn workspace @phenomenon/example run start"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
@@ -46,6 +48,7 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "husky": ">=3.0.8",
     "lint-staged": ">=9.4.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.17.0",
     "typescript": "^3.5.1",
     "wsrun": "^5.1.0"

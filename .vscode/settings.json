@@ -3,7 +3,8 @@
     "cSpell.words": [
       "browserslist",
       "gsap",
-      "predeploy"
+      "predeploy",
+      "typecheck"
     ],
     "eslint.validate": [
       "javascript",
