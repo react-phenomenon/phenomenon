@@ -2,11 +2,16 @@
   "private": true,
   "author": "Kacper Kozak",
   "license": "MIT",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "lint": "eslint  --ext .ts,.tsx,.js packages/*/src/",
     "prettier-check": "prettier --check 'packages/*/src/**/*.{ts,tsx}'",
-    "typecheck": "yarn workspace @phenomenon/slides typecheck && yarn workspace @phenomenon/example typecheck"
+    "start-example": "yarn workspace @phenomenon/example run start",
+    "build-lib": "yarn wsrun --exclude-missing build-lib",
+    "typecheck": "yarn wsrun --exclude-missing typecheck",
+    "test": "yarn wsrun --exclude-missing test"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
@@ -31,9 +36,18 @@
   "devDependencies": {
     "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.1",
+    "@typescript-eslint/eslint-plugin": "^2.11.0",
+    "@typescript-eslint/parser": "^2.11.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "husky": ">=3.0.8",
     "lint-staged": ">=9.4.1",
     "prettier": "^1.17.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.1",
+    "wsrun": "^5.1.0"
   }
 }
