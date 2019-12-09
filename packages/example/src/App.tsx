@@ -1,7 +1,4 @@
-import React from 'react'
-import { Animate } from '../components/Animate'
-import { Deck } from '../components/Deck'
-import { Slide } from '../components/Slide'
+import { Animate, Deck, Slide } from '@phenomenon/slides'
 import {
     backgroundColor,
     backgroundImage,
@@ -9,7 +6,8 @@ import {
     mainBackgroundImage,
     Text,
     Title,
-} from '../themes/storm'
+} from '@phenomenon/theme-storm'
+import React from 'react'
 import { ConsoleExample } from './ConsoleExample'
 import { CssExample } from './CssExample'
 import { HowToUse } from './HowToUse'

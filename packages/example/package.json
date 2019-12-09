@@ -1,0 +1,25 @@
+{
+  "name": "@phenomenon/example",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "react-scripts build",
+    "build:local": "PUBLIC_URL='/' react-scripts build",
+    "start": "react-scripts start",
+    "lint": "eslint  --ext .ts,.tsx,.js src/",
+    "typecheck": "tsc --noEmit",
+    "prettier-check": "prettier --check 'src/**/*.{ts,tsx}' 'scripts/**/*.js'",
+    "predeploy": "rm -rf build && yarn build",
+    "deploy": "gh-pages -d build"
+  },
+  "dependencies": {
+    "@phenomenon/slides": "^1.0.0",
+    "@phenomenon/theme-storm": "^1.0.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  },
+  "devDependencies": {
+    "react-scripts": "^3.2.0",
+    "gh-pages": "^2.0.1"
+  }
+}

@@ -1,8 +1,6 @@
+import { Cmd, Console, Expand, Output, Swap, SwapItem } from '@phenomenon/slides'
+import { Text, Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
-import { Cmd, Console, Output } from '../components/Console'
-import { Expand } from '../components/Expand'
-import { Swap, SwapItem } from '../components/Swap'
-import { Text, Title } from '../themes/storm'
 
 export const ConsoleExample: FC = () => {
     let i = 1

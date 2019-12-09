@@ -1,7 +1,6 @@
+import { CodeInfo, CodeWithText, Frag } from '@phenomenon/slides'
+import { SubTitle, Text, Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
-import { Frag } from '../components/Code'
-import { CodeInfo, CodeWithText } from '../components/CodeWithText'
-import { SubTitle, Text, Title } from '../themes/storm'
 
 export const HowToUse: FC = () => {
     let f = 1
