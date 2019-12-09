@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "test": "react-scripts test",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "rm -rf dist && yarn run build:babel && yarn run build:ts",
+    "build:babel": "NODE_ENV=production babel src/ --out-dir dist --copy-files --extensions .ts,.tsx",
+    "build:ts": "tsc --declaration --outDir dist/ --emitDeclarationOnly --declarationMap"
   },
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
@@ -21,7 +25,8 @@
     "styled-components": "^4.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
     "@types/express": "^4.17.0",
@@ -36,6 +41,7 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-react-app": "^9.1.0",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",

@@ -1,12 +1,12 @@
 import React, { ReactNode, useContext, useRef } from 'react'
 import styled from 'styled-components'
-import { config } from '../../../../example/src/config'
+import { config } from '../../config'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
-import { Fragments } from './types/Fragments'
 import { FragFC } from './types/FragFC'
+import { Fragments } from './types/Fragments'
 
 export interface FragProps extends StepProps {
     id: string

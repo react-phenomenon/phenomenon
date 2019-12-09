@@ -7,18 +7,17 @@
         "esModuleInterop": true,
         "strict": true,
         "lib": ["dom", "dom.iterable", "esnext", "esnext.array"],
-        "locale": "pl",
         "noImplicitReturns": true,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
-        "allowJs": true,
+        "allowJs": false,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true
+        "isolatedModules": false,
+        "noEmit": false
     },
     "include": ["./src/**/*"]
 }

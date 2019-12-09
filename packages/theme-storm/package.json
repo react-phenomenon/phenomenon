@@ -1,12 +1,23 @@
 {
   "name": "@phenomenon/theme-storm",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist && yarn run build:babel && yarn run build:ts",
+    "build:babel": "NODE_ENV=production babel src/ --out-dir dist --copy-files --extensions .ts,.tsx",
+    "build:ts": "tsc --declaration --outDir dist/ --emitDeclarationOnly --declarationMap"
+  },
   "dependencies": {
     "@phenomenon/slides": "^1.0.0",
     "styled-components": "^4.4.0"
   },
   "devDependencies": {
-    "@types/styled-components": "^4.1.15"
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@types/styled-components": "^4.1.15",
+    "babel-preset-react-app": "^9.1.0",
+    "react-scripts": "^3.3.0",
+    "typescript": "^3.7.3"
   }
 }
