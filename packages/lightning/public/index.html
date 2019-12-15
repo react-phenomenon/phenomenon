@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lightning</title>
+        <link
+            rel="stylesheet"
+            href="https://kozakbartosz.github.io/Draft/draft.min.css"
+        />
+
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <style>
+            *,
+            *::after,
+            *::before {
+                box-sizing: inherit;
+            }
+            body {
+                box-sizing: border-box;
+                padding: 50px;
+            }
+
+            .controls {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 20px;
+                background-color: #2b3241;
+                display: grid;
+                grid-template-columns: 110px 110px 110px 1fr;
+                grid-template-rows: 60px;
+                grid-gap: 10px;
+            }
+
+            input[type='range'] {
+                width: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="a">Aaaa</h1>
+        <h1 id="b">Bbbb</h1>
+        <div class="controls">
+            <button id="play">Play</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+            <input id="seek" type="range" min="0" max="5000" step="0.01" value="0" />
+        </div>
+    </body>
+</html>

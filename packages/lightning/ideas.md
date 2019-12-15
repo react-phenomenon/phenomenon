@@ -90,17 +90,30 @@ interface Timeline extends Playable {
 ```ts
 enum Type {
     Tween,
+    Set,
     Action,
     Pause,
 }
 
 const serialized = [
-    { offset: 0,   type: Type.Tween, duration: 200, tween: fn, element: el }, // tween()
+    { offset: 0, duration: animate.duration(), type: Type.Action, action: fn }, // animate callback?
 
-    { offset: 200, type: Type.Tween, duration: 100, tween: fn, element: el },
-    { offset: 200, type: Type.Tween, duration: 120, tween: fn, element: el2 },
+    {
+        offset: 0,
+        type: Type.Tween,
+        duration: 200,
+        tween: fn,
+        element: el,
+        values: { opacity: [0, 1] }
+    }, // tween()
 
-    { offset: 200 + 120 type: Type.Action, action: fn }, // set() tap()
-    { offset: 200 + 120 type: Type.Pause }, // pause()
+    { offset: 200, duration: 100, type: Type.Tween, tween: fn, element: el, values: { ... } },
+    { offset: 200, duration: 120, type: Type.Tween, tween: fn, element: el2, values: { ... } },
+
+
+    { offset: 200 + 120, duration: 0, type: Type.Set, element: el, values: { ... } }, // set()
+
+    { offset: 200 + 120, duration: 0, type: Type.Action, action: fn }, // tap()
+    { offset: 200 + 120, duration: 0, type: Type.Pause }, // pause()
 ]
 ```

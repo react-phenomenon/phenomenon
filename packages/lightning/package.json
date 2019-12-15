@@ -1,0 +1,13 @@
+{
+  "name": "lightning",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-scripts start"
+  },
+  "devDependencies": {
+    "react-scripts": "^3.3.0",
+    "stats.js": "^0.17.0"
+  }
+}
