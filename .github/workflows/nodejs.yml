@@ -21,9 +21,11 @@ jobs:
       - name: GitHub Action for Yarn Pkg
         uses: funkyremi/yarn-github-action@1.0.0
 
-      - name: install, test and build
+      - name: install, lint, test and build
         run: |
           yarn install
+          yarn run prettier-check
+          yarn run lint
           yarn run build-lib
           yarn run typecheck
         env:
