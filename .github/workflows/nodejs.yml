@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,17 +11,20 @@ jobs:
         node-version: [8.x, 10.x, 12.x]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-    - name: GitHub Action for Yarn Pkg
-      uses: funkyremi/yarn-github-action@1.0.0
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: install, test and build
-      run: |
-        yarn install
-        yarn run typecheck
-        yarn run build-lib
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: GitHub Action for Yarn Pkg
+        uses: funkyremi/yarn-github-action@1.0.0
+
+      - name: install, test and build
+        run: |
+          yarn install
+          yarn run build-lib
+          yarn run typecheck
+        env:
+          CI: true
