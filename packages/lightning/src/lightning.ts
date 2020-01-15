@@ -1,38 +1,5 @@
 import { setCssValue, mapObjectValues, limit } from './helpers'
-
-export enum Type {
-    Tween,
-    Set,
-    Action,
-    Pause,
-}
-
-interface SerializedSetValues {
-    [key: string]: [any, any]
-}
-
-interface SerializedSet {
-    type: Type.Set
-    offset: number
-    duration: 0
-    element: HTMLElement
-    values: SerializedSetValues
-}
-
-interface SerializedTweenValues {
-    [key: string]: (p: number) => any
-}
-
-interface SerializedTween {
-    type: Type.Tween
-    offset: number
-    duration: number
-    element: HTMLElement
-    values: SerializedTweenValues
-    easing(p: number): number
-}
-
-export type SerializedItem = SerializedSet | SerializedTween
+import { SerializedItem, Type } from './types'
 
 const update = (time: number, serialized: SerializedItem[]) => {
     const reset = () => {

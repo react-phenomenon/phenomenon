@@ -17,6 +17,8 @@ export const easeOutElastic = (x: number) => {
     return x === 0 ? 0 : x === 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1
 }
 
+export const linear = (x: number) => x
+
 export const setCssValue = (el: HTMLElement, value: any) => {
     Object.assign(el.style, value)
 }

@@ -1,70 +1,33 @@
 /* eslint-disable no-console */
-import { lightning, SerializedItem, Type } from './lightning'
-import { val, easeOutElastic } from './helpers'
+import { easeOutElastic, val } from './helpers'
+import { lightning } from './lightning'
+import { animation } from './timeline/animation'
+import { fromTo, set, delay } from './timeline/operators'
+import { SerializedItem } from './types'
 
-const serialized: SerializedItem[] = [
-    {
-        type: Type.Tween,
-        offset: 500,
-        duration: 2000,
-        element: document.getElementById('b')!,
-        values: { opacity: val(0.5, 1), paddingTop: val(0, 100, 'px') },
-        easing: easeOutElastic,
-    },
+const serialized: SerializedItem[] = animation('#a', [
+    fromTo(
+        {
+            opacity: val(0.5, 1),
+            paddingTop: val(0, 100, 'px'),
+        },
+        2000,
+        easeOutElastic,
+    ),
+    set({
+        backgroundColor: ['black', 'navy'],
+    }),
+    delay(1000),
+    fromTo(
+        {
+            opacity: val(1, 0.5),
+            paddingBottom: val(0, 100, 'px'),
+        },
+        2000,
+    ),
+])
 
-    {
-        offset: 600,
-        duration: 0,
-        type: Type.Set,
-        element: document.getElementById('b')!,
-        values: { backgroundColor: ['black', 'navy'] },
-    },
-
-    {
-        offset: 3000,
-        duration: 2000,
-        type: Type.Tween,
-        element: document.getElementById('b')!,
-        values: { opacity: val(1, 0.5), paddingBottom: val(0, 100, 'px') },
-        easing: easeOutElastic,
-    },
-
-    {
-        offset: 500,
-        duration: 0,
-        type: Type.Set,
-        element: document.getElementById('a')!,
-        values: { backgroundColor: ['pink', 'hotpink'] },
-    },
-
-    {
-        offset: 1500,
-        duration: 0,
-        type: Type.Set,
-        element: document.getElementById('a')!,
-        values: { color: ['red', 'blue'] },
-    },
-
-    {
-        offset: 1000,
-        duration: 2000,
-        type: Type.Tween,
-        element: document.getElementById('a')!,
-        values: { opacity: val(1, 0.1) },
-        easing: easeOutElastic,
-    },
-
-    // { offset: 200 + 120, duration: 0, type: Type.Action, action: fn }, // tap()
-    // { offset: 200 + 120, duration: 0, type: Type.Pause }, // pause()
-
-    // { offset: 0, duration: animate.duration(), type: Type.Action, action: fn }, // animate callback?
-
-    // {
-    //     offset: 100,
-    //     duration: 0,
-    //     type: Type.Pause,
-    // },
-]
+console.log('serialized', serialized)
 
 const anim = lightning(serialized, {
     onComplete() {
@@ -76,8 +39,11 @@ const anim = lightning(serialized, {
     },
 })
 
-// anim.prepare()
-// anim.play()
+anim.prepare()
+
+setTimeout(() => {
+    anim.play()
+}, 200)
 
 const seekEl = document.getElementById('seek') as HTMLInputElement
 
