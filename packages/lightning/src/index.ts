@@ -4,8 +4,9 @@ import { lightning } from './lightning'
 import { animation } from './timeline/animation'
 import { fromTo, set, delay } from './timeline/operators'
 import { SerializedItem } from './types'
+import { timeline, totalDuration } from './timeline/timeline'
 
-const serialized: SerializedItem[] = animation('#a', [
+const animationA = animation('#a', [
     fromTo(
         {
             opacity: val(0.5, 1),
@@ -27,6 +28,46 @@ const serialized: SerializedItem[] = animation('#a', [
     ),
 ])
 
+const animationB = animation('#b', [
+    fromTo(
+        {
+            opacity: val(0.5, 1),
+            paddingBottom: val(0, 100, 'px'),
+        },
+        2000,
+    ),
+    set({
+        backgroundColor: ['black', 'hotpink'],
+    }),
+    fromTo(
+        {
+            opacity: val(1, 0.5),
+            paddingTop: val(0, 100, 'px'),
+        },
+        2000,
+        easeOutElastic,
+    ),
+])
+
+const animationC = animation('#c', [
+    fromTo(
+        {
+            opacity: val(0.0, 1),
+        },
+        1000,
+    ),
+])
+
+const serialized = timeline(
+    [
+        animationC,
+        timeline([animationA, animationB], {
+            type: 'parallel',
+        }),
+    ],
+    { type: 'sequence' },
+)
+
 console.log('serialized', serialized)
 
 const anim = lightning(serialized, {
@@ -46,6 +87,8 @@ setTimeout(() => {
 }, 200)
 
 const seekEl = document.getElementById('seek') as HTMLInputElement
+
+seekEl.setAttribute('max', totalDuration(serialized).toString())
 
 seekEl.addEventListener(
     'input',
