@@ -16,8 +16,8 @@ type Animation = ReturnType<typeof animation> | SerializedItem[]
 export const timeline = (
     animations: Animation[],
     userOptions: Partial<AnimationOptions> = {},
-) => {
-    const { startAt = defaultOptions.startAt, type = defaultOptions.type } = userOptions
+) => (timelineOffset: number = defaultOptions.startAt): SerializedItem[] => {
+    const { startAt = timelineOffset, type = defaultOptions.type } = userOptions
 
     if (type === 'parallel') {
         return animations.flatMap(animation => {
@@ -28,13 +28,18 @@ export const timeline = (
         })
     }
 
-    let offset = startAt
+    if (type === 'sequence') {
+        let offset = startAt
 
-    return animations.flatMap(animation => {
-        const serialized = typeof animation === 'function' ? animation(offset) : animation
-        offset += totalDuration(serialized)
-        return serialized
-    })
+        return animations.flatMap(animation => {
+            const serialized =
+                typeof animation === 'function' ? animation(offset) : animation
+            offset += totalDuration(serialized)
+            return serialized
+        })
+    }
+
+    throw new Error(`[timeline] Unknown timeline type [${type}]`)
 }
 
 export const totalDuration = (items: SerializedItem[]): number => {

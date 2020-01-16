@@ -1,5 +1,6 @@
 import { setCssValue, mapObjectValues, limit } from './helpers'
 import { SerializedItem, Type } from './types'
+import { totalDuration } from './timeline/timeline'
 
 const update = (time: number, serialized: SerializedItem[]) => {
     const reset = () => {
@@ -58,19 +59,20 @@ const update = (time: number, serialized: SerializedItem[]) => {
     leftApply()
 }
 
-const getTotal = (serialized: SerializedItem[]) =>
-    Math.max(...serialized.map(item => item.offset + item.duration))
-
 interface LightningOptions {
     onComplete?(): void
     onUpdate?(currentTime: number): void
 }
 
-export const lightning = (serialized: SerializedItem[], options?: LightningOptions) => {
+export const lightning = (
+    timeline: () => SerializedItem[],
+    options?: LightningOptions,
+) => {
     let currentTime = 0
     let playing = false
+    const serialized = timeline()
 
-    const total = getTotal(serialized)
+    const total = totalDuration(serialized)
 
     const prepare = () => {
         update(currentTime, serialized)
