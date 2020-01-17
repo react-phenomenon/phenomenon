@@ -42,7 +42,7 @@ export const set = (values: SetValues): OperatorFunction => (
 
 export const delay = (duration: number): OperatorFunction => (
     offset: number,
-    element: HTMLElement,
+    _element: HTMLElement,
 ): SerializedDelay => {
     return {
         type: Type.Delay,

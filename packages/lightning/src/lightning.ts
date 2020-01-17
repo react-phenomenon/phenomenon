@@ -1,6 +1,5 @@
-import { setCssValue, mapObjectValues, limit } from './helpers'
-import { SerializedItem, Type } from './types'
-import { totalDuration } from './timeline/timeline'
+import { setCssValue, mapObjectValues, limit, totalDuration } from './helpers'
+import { SerializedItem, Type, AnimationFunction } from './types'
 
 const update = (time: number, serialized: SerializedItem[]) => {
     const reset = () => {
@@ -64,14 +63,11 @@ interface LightningOptions {
     onUpdate?(currentTime: number): void
 }
 
-export const lightning = (
-    timeline: () => SerializedItem[],
-    options?: LightningOptions,
-) => {
+export const lightning = (animations: AnimationFunction, options?: LightningOptions) => {
     let currentTime = 0
     let playing = false
-    const serialized = timeline()
 
+    const serialized = animations(0)
     const total = totalDuration(serialized)
 
     const prepare = () => {
@@ -87,13 +83,12 @@ export const lightning = (
         let start = 0
         playing = true
 
-        const step = (timestamp: number) => {
+        const step = (time: number) => {
             stats.begin()
 
-            if (!start) start = timestamp
-            currentTime = timestamp - start
+            if (!start) start = time
+            currentTime = time - start
 
-            stats.end()
             if (currentTime < total && playing) {
                 seek(currentTime)
                 requestAnimationFrame(step)
@@ -101,6 +96,8 @@ export const lightning = (
             } else if (playing) {
                 options?.onComplete?.()
             }
+
+            stats.end()
         }
 
         requestAnimationFrame(step)

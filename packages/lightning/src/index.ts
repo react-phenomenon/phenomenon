@@ -1,24 +1,23 @@
 /* eslint-disable no-console */
 import { easeOutElastic } from './helpers'
 import { lightning } from './lightning'
-import { animation } from './timeline/animation'
+import { animate } from './timeline/animate'
 import { fromTo, set, delay } from './timeline/operators'
-import { timeline } from './timeline/timeline'
+import { sequence, parallel } from './timeline/timeline'
 import { val } from './values/val'
 import { color } from './values/color'
 import { transform } from './values/transform'
 
-const animationA = animation('#a', [
+const animationA = animate('#a', [
     fromTo(
         {
             opacity: val(0.5, 1),
             paddingTop: val(0, 100, 'px'),
             color: color('#ABC123', '#FF0000'),
             transform: transform({
-                y: val(-1000, 0, 'px'),
-                scale: val(0, 1),
-                rotate: val(50, 0, 'deg'),
-                skewY: val(50, 0, 'deg'),
+                y: val(-300, 0, 'px'),
+                scale: val(0.9, 1),
+                rotate: val(10, 0, 'deg'),
             }),
         },
         2000,
@@ -37,7 +36,7 @@ const animationA = animation('#a', [
     ),
 ])
 
-const animationB = animation('#b', [
+const animationB = animate('#b', [
     fromTo(
         {
             opacity: val(0.5, 1),
@@ -59,26 +58,19 @@ const animationB = animation('#b', [
     ),
 ])
 
-const animationC1 = animation('#c', [fromTo({ opacity: val(0, 1) }, 1000)])
-const animationC2 = animation('#c', [fromTo({ opacity: val(1, 0) }, 1000)])
+const animationC1 = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
+const animationC2 = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
-const serialized = timeline(
-    [
-        animationC1,
-        timeline([animationA, animationB], {
-            type: 'parallel',
-        }),
-        animationC2,
-    ],
-    { type: 'sequence' },
-)
-
-console.log('serialized', serialized)
+const serialized = sequence([
+    animationC1,
+    parallel([animationA, animationB]),
+    animationC2,
+])
 
 const anim = lightning(serialized, {
     onComplete() {
         console.log('onComplete')
-        anim.play()
+        // anim.play()
     },
     onUpdate(currentTime) {
         seekEl.value = currentTime.toString()

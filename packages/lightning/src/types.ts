@@ -40,3 +40,5 @@ export interface TweenValues {
 }
 
 export type Easing = (p: number) => number
+
+export type AnimationFunction = (startAt: number) => SerializedItem[]
