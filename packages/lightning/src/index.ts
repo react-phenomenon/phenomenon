@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
-import { easeOutElastic, val, color } from './helpers'
+import { easeOutElastic } from './helpers'
 import { lightning } from './lightning'
 import { animation } from './timeline/animation'
 import { fromTo, set, delay } from './timeline/operators'
 import { timeline } from './timeline/timeline'
+import { val } from './values/val'
+import { color } from './values/color'
+import { transform } from './values/transform'
 
 const animationA = animation('#a', [
     fromTo(
@@ -11,6 +14,12 @@ const animationA = animation('#a', [
             opacity: val(0.5, 1),
             paddingTop: val(0, 100, 'px'),
             color: color('#ABC123', '#FF0000'),
+            transform: transform({
+                y: val(-1000, 0, 'px'),
+                scale: val(0, 1),
+                rotate: val(50, 0, 'deg'),
+                skewY: val(50, 0, 'deg'),
+            }),
         },
         2000,
         easeOutElastic,
