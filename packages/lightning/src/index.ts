@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { easeOutElastic, val } from './helpers'
+import { easeOutElastic, val, color } from './helpers'
 import { lightning } from './lightning'
 import { animation } from './timeline/animation'
 import { fromTo, set, delay } from './timeline/operators'
@@ -10,6 +10,7 @@ const animationA = animation('#a', [
         {
             opacity: val(0.5, 1),
             paddingTop: val(0, 100, 'px'),
+            color: color('#ABC123', '#FF0000'),
         },
         2000,
         easeOutElastic,
@@ -36,12 +37,13 @@ const animationB = animation('#b', [
         2000,
     ),
     set({
-        backgroundColor: ['black', 'hotpink'],
+        textAlign: ['left', 'center'],
     }),
     fromTo(
         {
             opacity: val(1, 0.5),
             paddingTop: val(0, 100, 'px'),
+            backgroundColor: color('#ABC123', '#FF0000'),
         },
         2000,
         easeOutElastic,
