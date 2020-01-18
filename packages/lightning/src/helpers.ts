@@ -1,6 +1,6 @@
 import { SerializedItem } from './types'
 
-const { pow, sin, abs, floor } = Math
+const { pow, sin, max } = Math
 const PI = Math.PI
 const c1 = 1.70158
 const c2 = c1 * 1.525
@@ -26,7 +26,5 @@ export const mapObjectValues = <T, R>(
 export const limit = (value: number, min = 0, max = 1) =>
     Math.min(Math.max(value, min), max)
 
-export const totalDuration = (items: SerializedItem[]): number => {
-    const last = items[items.length - 1]
-    return last ? last.offset + last.duration : 0
-}
+export const totalDuration = (items: SerializedItem[]): number =>
+    max(...items.map(item => item.offset + item.duration))

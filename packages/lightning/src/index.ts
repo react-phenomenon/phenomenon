@@ -11,9 +11,7 @@ import { transform } from './values/transform'
 const animationA = animate('#a', [
     fromTo(
         {
-            opacity: val(0.5, 1),
             paddingTop: val(0, 100, 'px'),
-            color: color('#ABC123', '#FF0000'),
             transform: transform({
                 y: val(-300, 0, 'px'),
                 scale: val(0.9, 1),
@@ -23,51 +21,33 @@ const animationA = animate('#a', [
         2000,
         easeOutElastic,
     ),
-    set({
-        backgroundColor: ['black', 'navy'],
-    }),
+    set({ backgroundColor: ['black', 'navy'] }),
     delay(1000),
-    fromTo(
-        {
-            opacity: val(1, 0.5),
-            paddingBottom: val(0, 100, 'px'),
-        },
-        2000,
-    ),
+    fromTo({ paddingBottom: val(0, 100, 'px') }, 2000),
 ])
 
 const animationB = animate('#b', [
-    fromTo(
-        {
-            opacity: val(0.5, 1),
-            paddingBottom: val(0, 100, 'px'),
-        },
-        2000,
-    ),
-    set({
-        textAlign: ['left', 'center'],
-    }),
-    fromTo(
-        {
-            opacity: val(1, 0.5),
-            paddingTop: val(0, 100, 'px'),
-            backgroundColor: color('#ABC123', '#FF0000'),
-        },
-        2000,
-        easeOutElastic,
-    ),
+    fromTo({ paddingBottom: val(0, 100, 'px') }, 2000),
+    set({ fontWeight: ['bold', 'normal'] }),
+    fromTo({ paddingTop: val(0, 100, 'px') }, 2000, easeOutElastic),
 ])
 
 const animationC1 = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
 const animationC2 = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
-const serialized = sequence([
+const animationBColor = animate('#b', [
+    fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 3000),
+    fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 3000),
+    fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 3000),
+])
+
+const animation = sequence([
     animationC1,
-    parallel([animationA, animationB]),
+    parallel([animationBColor, animationA, animationB]),
     animationC2,
 ])
 
-const anim = lightning(serialized, {
+const anim = lightning(animation, {
     onComplete() {
         console.log('onComplete')
         // anim.play()
@@ -110,4 +90,5 @@ document.getElementById('pause')!.addEventListener('click', () => {
 document.getElementById('reset')!.addEventListener('click', () => {
     anim.pause()
     anim.seek(0)
+    seekEl.value = '0'
 })

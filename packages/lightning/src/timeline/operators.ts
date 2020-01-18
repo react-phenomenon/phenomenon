@@ -16,7 +16,7 @@ export const fromTo = (
     values: TweenValues,
     duration: number,
     easing: Easing = linear,
-): OperatorFunction => (offset: number, element: HTMLElement): SerializedTween => {
+): OperatorFunction => (offset, element): SerializedTween => {
     return {
         type: Type.Tween,
         offset,
@@ -28,8 +28,8 @@ export const fromTo = (
 }
 
 export const set = (values: SetValues): OperatorFunction => (
-    offset: number,
-    element: HTMLElement,
+    offset,
+    element,
 ): SerializedSet => {
     return {
         type: Type.Set,
@@ -41,8 +41,7 @@ export const set = (values: SetValues): OperatorFunction => (
 }
 
 export const delay = (duration: number): OperatorFunction => (
-    offset: number,
-    _element: HTMLElement,
+    offset,
 ): SerializedDelay => {
     return {
         type: Type.Delay,

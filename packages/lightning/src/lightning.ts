@@ -31,11 +31,7 @@ const update = (time: number, serialized: SerializedItem[]) => {
                     setCssValue(
                         item.element,
                         mapObjectValues(item.values, val => {
-                            const percent = limit(
-                                (time - item.offset) / item.duration,
-                                0,
-                                1,
-                            )
+                            const percent = limit((time - item.offset) / item.duration)
                             return val(item.easing(percent))
                         }),
                     )
@@ -86,7 +82,7 @@ export const lightning = (animations: AnimationFunction, options?: LightningOpti
         const step = (time: number) => {
             stats.begin()
 
-            if (!start) start = time
+            if (!start) start = time - currentTime
             currentTime = time - start
 
             if (currentTime < total && playing) {
