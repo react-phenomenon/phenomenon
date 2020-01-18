@@ -1,9 +1,9 @@
 export enum Type {
-    Tween,
-    Set,
-    Delay,
-    Action,
-    Pause,
+    Tween = 'Tween',
+    Set = 'Set',
+    Delay = 'Delay',
+    Action = 'Action',
+    Pause = 'Pause',
 }
 
 export interface SerializedSet {

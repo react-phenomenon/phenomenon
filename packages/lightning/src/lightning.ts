@@ -1,59 +1,6 @@
 import { setCssValue, mapObjectValues, limit, totalDuration } from './helpers'
 import { SerializedItem, Type, AnimationFunction } from './types'
 
-const update = (time: number, serialized: SerializedItem[]) => {
-    const reset = () => {
-        for (const item of serialized) {
-            switch (item.type) {
-                case Type.Tween:
-                    setCssValue(
-                        item.element,
-                        mapObjectValues(item.values, val => val(0)),
-                    )
-                    break
-
-                case Type.Set:
-                    setCssValue(
-                        item.element,
-                        mapObjectValues(item.values, val => val[0]),
-                    )
-                    break
-            }
-        }
-    }
-
-    const leftApply = () => {
-        for (const item of serialized) {
-            if (time < item.offset) continue
-
-            switch (item.type) {
-                case Type.Tween:
-                    setCssValue(
-                        item.element,
-                        mapObjectValues(item.values, val => {
-                            const percent = limit((time - item.offset) / item.duration)
-                            return val(item.easing(percent))
-                        }),
-                    )
-                    break
-
-                case Type.Set:
-                    setCssValue(
-                        item.element,
-                        mapObjectValues(
-                            item.values,
-                            val => val[time <= item.offset ? 0 : 1],
-                        ),
-                    )
-                    break
-            }
-        }
-    }
-
-    reset()
-    leftApply()
-}
-
 interface LightningOptions {
     onComplete?(): void
     onUpdate?(currentTime: number): void
@@ -63,7 +10,7 @@ export const lightning = (animations: AnimationFunction, options?: LightningOpti
     let currentTime = 0
     let playing = false
 
-    const serialized = animations(0)
+    const serialized = animations(0).sort((a, b) => a.offset - b.offset)
     const total = totalDuration(serialized)
 
     const prepare = () => {
@@ -104,6 +51,58 @@ export const lightning = (animations: AnimationFunction, options?: LightningOpti
     }
 
     return { prepare, play, pause, seek, total }
+}
+
+const update = (currentTime: number, serialized: SerializedItem[]) => {
+    for (let index = serialized.length - 1; index >= 0; index--) {
+        const item = serialized[index]
+        switch (item.type) {
+            case Type.Tween:
+                setCssValue(
+                    item.element,
+                    mapObjectValues(item.values, val => val(0)),
+                )
+                break
+
+            case Type.Set:
+                setCssValue(
+                    item.element,
+                    mapObjectValues(item.values, val => val[0]),
+                )
+                break
+        }
+    }
+
+    for (const item of serialized) {
+        if (currentTime < item.offset) continue
+
+        switch (item.type) {
+            case Type.Tween:
+                setCssValue(
+                    item.element,
+                    mapObjectValues(item.values, val => {
+                        const percent = limit((currentTime - item.offset) / item.duration)
+                        return val(item.easing(percent))
+                    }),
+                )
+                break
+
+            case Type.Set:
+                setCssValue(
+                    item.element,
+                    mapObjectValues(item.values, val => {
+                        const index =
+                            currentTime >= item.offset
+                                ? currentTime === 0 && item.offset === 0
+                                    ? 0
+                                    : 1
+                                : 0
+                        return val[index]
+                    }),
+                )
+                break
+        }
+    }
 }
 
 // DEV -------------------

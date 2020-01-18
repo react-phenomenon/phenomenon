@@ -27,24 +27,30 @@ const animationA = animate('#a', [
 ])
 
 const animationB = animate('#b', [
-    fromTo({ paddingBottom: val(0, 100, 'px') }, 2000),
+    fromTo({ paddingBottom: val(0, 100, 'px') }, 1000, easeOutElastic),
     set({ fontWeight: ['bold', 'normal'] }),
-    fromTo({ paddingTop: val(0, 100, 'px') }, 2000, easeOutElastic),
+    fromTo(
+        {
+            paddingTop: val(0, 100, 'px'),
+            paddingBottom: val(100, 0, 'px'),
+        },
+        1000,
+    ),
 ])
 
-const animationC1 = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
-const animationC2 = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
+const fadeIn = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
+const fadeOut = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
-const animationBColor = animate('#b', [
+const psychoBG = animate('#b', [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 3000),
     fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 3000),
     fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 3000),
 ])
 
 const animation = sequence([
-    animationC1,
-    parallel([animationBColor, animationA, animationB]),
-    animationC2,
+    fadeIn,
+    parallel([psychoBG, animationA, animationB]),
+    fadeOut,
 ])
 
 const anim = lightning(animation, {
