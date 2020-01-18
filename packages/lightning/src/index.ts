@@ -7,6 +7,7 @@ import { sequence, parallel } from './timeline/timeline'
 import { val } from './values/val'
 import { color } from './values/color'
 import { transform } from './values/transform'
+import { inspector } from './inspector'
 
 const animationA = animate('#a', [
     fromTo(
@@ -62,6 +63,8 @@ const anim = lightning(animation, {
         seekEl.value = currentTime.toString()
     },
 })
+
+inspector(anim)
 
 setTimeout(() => {
     anim.prepare()

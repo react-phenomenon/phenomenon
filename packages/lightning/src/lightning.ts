@@ -6,7 +6,22 @@ interface LightningOptions {
     onUpdate?(currentTime: number): void
 }
 
-export const lightning = (animations: AnimationFunction, options?: LightningOptions) => {
+interface LightingInstance {
+    prepare: () => void
+    play: () => void
+    pause: () => void
+    seek: (t: number) => void
+    total: number
+    __dev: {
+        options: LightningOptions
+        serialized: SerializedItem[]
+    }
+}
+
+export const lightning = (
+    animations: AnimationFunction,
+    options: LightningOptions = {},
+): LightingInstance => {
     let currentTime = 0
     let playing = false
 
@@ -35,9 +50,9 @@ export const lightning = (animations: AnimationFunction, options?: LightningOpti
             if (currentTime < total && playing) {
                 seek(currentTime)
                 requestAnimationFrame(step)
-                options?.onUpdate?.(currentTime)
+                options.onUpdate?.(currentTime)
             } else if (playing) {
-                options?.onComplete?.()
+                options.onComplete?.()
             }
 
             stats.end()
@@ -50,7 +65,7 @@ export const lightning = (animations: AnimationFunction, options?: LightningOpti
         playing = false
     }
 
-    return { prepare, play, pause, seek, total }
+    return { prepare, play, pause, seek, total, __dev: { options, serialized } }
 }
 
 const update = (currentTime: number, serialized: SerializedItem[]) => {
