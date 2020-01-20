@@ -1,25 +1,27 @@
 import { linear } from '../helpers'
 import {
     Easing,
+    SerializedDelay,
+    SerializedItem,
+    SerializedPause,
     SerializedSet,
     SerializedTween,
     SetValues,
     TweenValues,
     Type,
-    SerializedItem,
-    SerializedDelay,
 } from '../types'
 
-export type OperatorFunction = (offset: number, element: HTMLElement) => SerializedItem
+export type OperatorFunction = (start: number, element: HTMLElement) => SerializedItem
 
 export const fromTo = (
     values: TweenValues,
     duration: number,
     easing: Easing = linear,
-): OperatorFunction => (offset, element): SerializedTween => {
+): OperatorFunction => (start, element): SerializedTween => {
     return {
         type: Type.Tween,
-        offset,
+        start,
+        startIndex: 0,
         duration,
         element,
         values,
@@ -28,24 +30,33 @@ export const fromTo = (
 }
 
 export const set = (values: SetValues): OperatorFunction => (
-    offset,
+    start,
     element,
 ): SerializedSet => {
     return {
         type: Type.Set,
-        offset,
+        start,
+        startIndex: 0,
         duration: 0,
         element,
         values,
     }
 }
 
-export const delay = (duration: number): OperatorFunction => (
-    offset,
-): SerializedDelay => {
+export const delay = (duration: number): OperatorFunction => (start): SerializedDelay => {
     return {
         type: Type.Delay,
-        offset,
+        start,
+        startIndex: 0,
         duration,
+    }
+}
+
+export const pause = (): OperatorFunction => (start): SerializedPause => {
+    return {
+        type: Type.Pause,
+        start,
+        startIndex: 0,
+        duration: 0,
     }
 }

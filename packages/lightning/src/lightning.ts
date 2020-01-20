@@ -2,6 +2,7 @@ import { setCssValue, mapObjectValues, limit, totalDuration } from './helpers'
 import { SerializedItem, Type, AnimationFunction } from './types'
 
 interface LightningOptions {
+    onPause?(): void
     onComplete?(): void
     onUpdate?(currentTime: number): void
 }
@@ -23,18 +24,20 @@ export const lightning = (
     options: LightningOptions = {},
 ): LightingInstance => {
     let currentTime = 0
+    let currentTimeIndex = 0
     let playing = false
 
-    const serialized = animations(0).sort((a, b) => a.offset - b.offset)
+    const serialized = animations(0).sort((a, b) => a.start - b.start)
     const total = totalDuration(serialized)
 
     const prepare = () => {
-        update(currentTime, serialized)
+        update(currentTime, currentTimeIndex, serialized)
     }
 
-    const seek = (t: number) => {
-        currentTime = t
-        update(currentTime, serialized)
+    const seek = (time: number, offsetIndex = 0) => {
+        currentTime = time
+        currentTimeIndex = offsetIndex
+        update(currentTime, currentTimeIndex, serialized)
     }
 
     const play = () => {
@@ -45,15 +48,41 @@ export const lightning = (
             stats.begin()
 
             if (!start) start = time - currentTime
-            currentTime = time - start
+            const nextRafTime = time - start
 
-            if (currentTime < total && playing) {
-                seek(currentTime)
+            // skip first frame TODO?
+            if (nextRafTime === currentTime) {
                 requestAnimationFrame(step)
-                options.onUpdate?.(currentTime)
-            } else if (playing) {
-                options.onComplete?.()
+                return
             }
+
+            const { nextTime, nextTimeIndex, pause, end } = findTextStepTime(
+                currentTime,
+                currentTimeIndex,
+                time - start,
+                total,
+                serialized,
+            )
+
+            currentTime = nextTime
+            currentTimeIndex = nextTimeIndex
+
+            update(currentTime, currentTimeIndex, serialized)
+            options.onUpdate?.(currentTime)
+
+            if (end) {
+                playing = false
+                options.onComplete?.()
+                return
+            }
+
+            if (!playing || pause) {
+                playing = false
+                options.onPause?.()
+                return
+            }
+
+            requestAnimationFrame(step)
 
             stats.end()
         }
@@ -68,9 +97,60 @@ export const lightning = (
     return { prepare, play, pause, seek, total, __dev: { options, serialized } }
 }
 
-const update = (currentTime: number, serialized: SerializedItem[]) => {
-    for (let index = serialized.length - 1; index >= 0; index--) {
-        const item = serialized[index]
+interface NextStepTime {
+    nextTime: number
+    pause: boolean
+    end: boolean
+    nextTimeIndex: number
+}
+
+const findTextStepTime = (
+    prevTime: number,
+    prevTimeIndex: number,
+    nextTime: number,
+    total: number,
+    serialized: SerializedItem[],
+): NextStepTime => {
+    for (const item of serialized) {
+        if (
+            item.type === Type.Pause &&
+            item.start >= prevTime &&
+            item.start <= nextTime &&
+            item.startIndex > prevTimeIndex
+        ) {
+            return {
+                nextTime: item.start,
+                nextTimeIndex: item.startIndex,
+                pause: true,
+                end: false,
+            }
+        }
+    }
+
+    if (nextTime > total) {
+        return {
+            nextTime: total,
+            nextTimeIndex: 0,
+            pause: true,
+            end: true,
+        }
+    }
+
+    return {
+        nextTime: nextTime,
+        nextTimeIndex: 0,
+        pause: false,
+        end: false,
+    }
+}
+
+const update = (
+    currentTime: number,
+    currentOffsetIndex: number,
+    serialized: SerializedItem[],
+) => {
+    for (let i = serialized.length - 1; i >= 0; i--) {
+        const item = serialized[i]
         switch (item.type) {
             case Type.Tween:
                 setCssValue(
@@ -89,14 +169,15 @@ const update = (currentTime: number, serialized: SerializedItem[]) => {
     }
 
     for (const item of serialized) {
-        if (currentTime < item.offset) continue
+        if (item.start > currentTime) continue
+        if (item.start === currentTime && item.startIndex > currentOffsetIndex) continue
 
         switch (item.type) {
             case Type.Tween:
                 setCssValue(
                     item.element,
                     mapObjectValues(item.values, val => {
-                        const percent = limit((currentTime - item.offset) / item.duration)
+                        const percent = limit((currentTime - item.start) / item.duration)
                         return val(item.easing(percent))
                     }),
                 )
@@ -106,13 +187,8 @@ const update = (currentTime: number, serialized: SerializedItem[]) => {
                 setCssValue(
                     item.element,
                     mapObjectValues(item.values, val => {
-                        const index =
-                            currentTime >= item.offset
-                                ? currentTime === 0 && item.offset === 0
-                                    ? 0
-                                    : 1
-                                : 0
-                        return val[index]
+                        const [off, on] = val
+                        return currentTime >= item.start + item.duration ? on : off
                     }),
                 )
                 break

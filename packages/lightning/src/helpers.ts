@@ -27,4 +27,4 @@ export const limit = (value: number, min = 0, max = 1) =>
     Math.min(Math.max(value, min), max)
 
 export const totalDuration = (items: SerializedItem[]): number =>
-    max(...items.map(item => item.offset + item.duration))
+    max(...items.map(item => item.start + item.duration))

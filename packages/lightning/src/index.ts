@@ -2,7 +2,7 @@
 import { easeOutElastic } from './helpers'
 import { lightning } from './lightning'
 import { animate } from './timeline/animate'
-import { fromTo, set, delay } from './timeline/operators'
+import { fromTo, set, delay, pause } from './timeline/operators'
 import { sequence, parallel } from './timeline/timeline'
 import { val } from './values/val'
 import { color } from './values/color'
@@ -19,12 +19,14 @@ const animationA = animate('#a', [
                 rotate: val(10, 0, 'deg'),
             }),
         },
-        2000,
+        1000,
         easeOutElastic,
     ),
+    pause(),
     set({ backgroundColor: ['black', 'navy'] }),
-    delay(1000),
-    fromTo({ paddingBottom: val(0, 100, 'px') }, 2000),
+    pause(),
+    delay(500),
+    fromTo({ paddingBottom: val(0, 100, 'px') }, 1000),
 ])
 
 const animationB = animate('#b', [
@@ -44,7 +46,9 @@ const fadeOut = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
 const psychoBG = animate('#b', [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 3000),
+    pause(),
     fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 3000),
+    pause(),
     fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 3000),
 ])
 
@@ -57,9 +61,12 @@ const animation = sequence([
 const anim = lightning(animation, {
     onComplete() {
         console.log('onComplete')
-        // anim.play()
+    },
+    onPause() {
+        console.log('onPause')
     },
     onUpdate(currentTime) {
+        document.title = currentTime.toString()
         seekEl.value = currentTime.toString()
     },
 })

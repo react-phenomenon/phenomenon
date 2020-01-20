@@ -23,7 +23,7 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
             el.textContent = `${item.type} ${item.duration}`
         }
 
-        el.title = `[${item.offset} - ${item.offset + item.duration}]  ${item.type}`
+        el.title = `[${item.start} - ${item.start + item.duration}]  ${item.type}`
 
         if ('values' in item) {
             const values = ` (${Object.keys(item.values).join(', ')})`
@@ -45,7 +45,7 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
         el.style.whiteSpace = 'nowrap'
         el.style.backgroundColor = bg[item.type]
         el.style.marginBottom = '1px'
-        el.style.marginLeft = item.offset / scale + 'px'
+        el.style.marginLeft = item.start / scale + 'px'
         el.style.width = Math.max(100, item.duration / scale) + 'px'
 
         master.appendChild(el)
@@ -56,8 +56,8 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
 
 const bg: Record<Type, string> = {
     [Type.Tween]: '#abc123',
-    [Type.Set]: 'white',
-    [Type.Delay]: 'gray',
+    [Type.Set]: 'gray',
+    [Type.Delay]: 'white',
     [Type.Action]: 'gray',
     [Type.Pause]: 'gray',
 }

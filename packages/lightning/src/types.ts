@@ -6,30 +6,41 @@ export enum Type {
     Pause = 'Pause',
 }
 
-export interface SerializedSet {
+interface SerializedStep {
+    type: Type
+    start: number
+    startIndex: number
+    duration: number
+}
+
+export interface SerializedSet extends SerializedStep {
     type: Type.Set
-    offset: number
     duration: 0
     element: HTMLElement
     values: SetValues
 }
 
-export interface SerializedTween {
+export interface SerializedPause extends SerializedStep {
+    type: Type.Pause
+    duration: 0
+}
+
+export interface SerializedDelay extends SerializedStep {
+    type: Type.Delay
+}
+
+export interface SerializedTween extends SerializedStep {
     type: Type.Tween
-    offset: number
-    duration: number
     element: HTMLElement
     values: TweenValues
     easing: Easing
 }
 
-export interface SerializedDelay {
-    type: Type.Delay
-    offset: number
-    duration: number
-}
-
-export type SerializedItem = SerializedSet | SerializedTween | SerializedDelay
+export type SerializedItem =
+    | SerializedSet
+    | SerializedTween
+    | SerializedPause
+    | SerializedDelay
 
 export interface SetValues {
     [key: string]: [any, any]

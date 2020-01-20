@@ -14,10 +14,24 @@ export const animate = (
     return startAt => {
         let offset = startAt
 
-        return operators.map(operator => {
+        const serializedItems = operators.map(operator => {
             const serialized = operator(offset, element)
             offset += serialized.duration
             return serialized
         })
+
+        for (let i = 0; i < serializedItems.length; i++) {
+            const item = serializedItems[i]
+            const prevItem = serializedItems[i - 1]
+            const nextItem = serializedItems[i + 1]
+
+            if (prevItem && prevItem.start === item.start) {
+                item.startIndex = prevItem.startIndex! + 1
+            } else if (nextItem && nextItem.start === item.start) {
+                item.startIndex = 1
+            }
+        }
+
+        return serializedItems
     }
 }
