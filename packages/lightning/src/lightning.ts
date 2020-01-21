@@ -16,12 +16,13 @@ export interface LightingInstance {
     }
 }
 
-interface LightingStatus {
+export interface LightingStatus {
     playing: boolean
     ended: boolean
     started: boolean
     currentTime: number
     currentTimeIndex: number
+    total: number
 }
 
 interface LightningOptions {
@@ -118,6 +119,7 @@ export const lightning = (
         started: currentTime > 0,
         currentTime,
         currentTimeIndex,
+        total,
     })
 
     return {

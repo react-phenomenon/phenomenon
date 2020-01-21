@@ -5,13 +5,14 @@ import { inspectorOptions } from './inspectorOptions'
 import { createLineEl } from './el/createLineEl'
 import { createSeekEl } from './el/createSeekEl'
 import { shouldSkipItem } from '../renderer/render'
+import { createStatusEl } from './el/createStatusEl'
 
 export const inspector = (anim: ReturnType<typeof lightning>) => {
-    let currentTime = 0,
-        currentTimeIndex = 0
+    let status = anim.getStatus()
 
     const rootEl = createRootEl(inspectorOptions)
     const barsWrapperEl = document.createElement('div')
+    const statusEl = createStatusEl()
     const lineEl = createLineEl(inspectorOptions)
     const seekEl = createSeekEl(inspectorOptions, off => anim.seek(off))
 
@@ -20,10 +21,20 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
     inspectorOptions.scale = anim.total / (inspectorOptions.width - 100)
 
     anim.__dev.options.onUpdate = () => {
-        const status = anim.getStatus()
-        currentTime = status.currentTime
-        currentTimeIndex = status.currentTimeIndex
+        status = anim.getStatus()
         userOptions.onUpdate?.()
+        render()
+    }
+
+    anim.__dev.options.onPause = () => {
+        status = anim.getStatus()
+        userOptions.onPause?.()
+        render()
+    }
+
+    anim.__dev.options.onComplete = () => {
+        status = anim.getStatus()
+        userOptions.onComplete?.()
         render()
     }
 
@@ -34,16 +45,18 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
                 createBarEl(
                     item,
                     inspectorOptions,
-                    shouldSkipItem(currentTime, currentTimeIndex, item),
+                    shouldSkipItem(status.currentTime, status.currentTimeIndex, item),
                 ),
             )
         })
-        lineEl.update(currentTime)
+        lineEl.update(status.currentTime)
         lineEl.el.scrollIntoView({ behavior: 'auto', inline: 'center' })
+        statusEl.update(status)
     }
 
     render()
 
+    rootEl.appendChild(statusEl.el)
     rootEl.appendChild(seekEl)
     rootEl.appendChild(barsWrapperEl)
     rootEl.appendChild(lineEl.el)
