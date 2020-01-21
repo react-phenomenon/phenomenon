@@ -45,11 +45,11 @@ const fadeIn = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
 const fadeOut = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
 const psychoBG = animate('#b', [
-    fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 3000),
+    fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
     pause(),
-    fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 3000),
+    fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 1500),
     pause(),
-    fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 3000),
+    fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 1500),
 ])
 
 const animation = sequence([

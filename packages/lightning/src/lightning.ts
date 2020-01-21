@@ -1,13 +1,15 @@
-import { setCssValue, mapObjectValues, limit, totalDuration } from './helpers'
-import { SerializedItem, Type, AnimationFunction } from './types'
+import { totalDuration } from './helpers'
+import { SerializedItem, AnimationFunction } from './types'
+import { render } from './renderer/render'
+import { findTextStepTime } from './renderer/findTextStepTime'
 
 interface LightningOptions {
     onPause?(): void
     onComplete?(): void
-    onUpdate?(currentTime: number): void
+    onUpdate?(currentTime: number, currentTimeIndex: number): void
 }
 
-interface LightingInstance {
+export interface LightingInstance {
     prepare: () => void
     play: () => void
     pause: () => void
@@ -31,13 +33,18 @@ export const lightning = (
     const total = totalDuration(serialized)
 
     const prepare = () => {
-        update(currentTime, currentTimeIndex, serialized)
+        render(currentTime, currentTimeIndex, serialized)
     }
 
     const seek = (time: number, offsetIndex = 0) => {
         currentTime = time
         currentTimeIndex = offsetIndex
-        update(currentTime, currentTimeIndex, serialized)
+        updateOnCurrent()
+    }
+
+    const updateOnCurrent = () => {
+        render(currentTime, currentTimeIndex, serialized)
+        options.onUpdate?.(currentTime, currentTimeIndex)
     }
 
     const play = () => {
@@ -59,7 +66,7 @@ export const lightning = (
             const { nextTime, nextTimeIndex, pause, end } = findTextStepTime(
                 currentTime,
                 currentTimeIndex,
-                time - start,
+                nextRafTime,
                 total,
                 serialized,
             )
@@ -67,8 +74,7 @@ export const lightning = (
             currentTime = nextTime
             currentTimeIndex = nextTimeIndex
 
-            update(currentTime, currentTimeIndex, serialized)
-            options.onUpdate?.(currentTime)
+            updateOnCurrent()
 
             if (end) {
                 playing = false
@@ -97,103 +103,11 @@ export const lightning = (
     return { prepare, play, pause, seek, total, __dev: { options, serialized } }
 }
 
-interface NextStepTime {
+export interface NextStepTime {
     nextTime: number
     pause: boolean
     end: boolean
     nextTimeIndex: number
-}
-
-const findTextStepTime = (
-    prevTime: number,
-    prevTimeIndex: number,
-    nextTime: number,
-    total: number,
-    serialized: SerializedItem[],
-): NextStepTime => {
-    for (const item of serialized) {
-        if (
-            item.type === Type.Pause &&
-            item.start >= prevTime &&
-            item.start <= nextTime &&
-            item.startIndex > prevTimeIndex
-        ) {
-            return {
-                nextTime: item.start,
-                nextTimeIndex: item.startIndex,
-                pause: true,
-                end: false,
-            }
-        }
-    }
-
-    if (nextTime > total) {
-        return {
-            nextTime: total,
-            nextTimeIndex: 0,
-            pause: true,
-            end: true,
-        }
-    }
-
-    return {
-        nextTime: nextTime,
-        nextTimeIndex: 0,
-        pause: false,
-        end: false,
-    }
-}
-
-const update = (
-    currentTime: number,
-    currentOffsetIndex: number,
-    serialized: SerializedItem[],
-) => {
-    for (let i = serialized.length - 1; i >= 0; i--) {
-        const item = serialized[i]
-        switch (item.type) {
-            case Type.Tween:
-                setCssValue(
-                    item.element,
-                    mapObjectValues(item.values, val => val(0)),
-                )
-                break
-
-            case Type.Set:
-                setCssValue(
-                    item.element,
-                    mapObjectValues(item.values, val => val[0]),
-                )
-                break
-        }
-    }
-
-    for (const item of serialized) {
-        if (item.start > currentTime) continue
-        if (item.start === currentTime && item.startIndex > currentOffsetIndex) continue
-
-        switch (item.type) {
-            case Type.Tween:
-                setCssValue(
-                    item.element,
-                    mapObjectValues(item.values, val => {
-                        const percent = limit((currentTime - item.start) / item.duration)
-                        return val(item.easing(percent))
-                    }),
-                )
-                break
-
-            case Type.Set:
-                setCssValue(
-                    item.element,
-                    mapObjectValues(item.values, val => {
-                        const [off, on] = val
-                        return currentTime >= item.start + item.duration ? on : off
-                    }),
-                )
-                break
-        }
-    }
 }
 
 // DEV -------------------
