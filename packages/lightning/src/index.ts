@@ -74,13 +74,17 @@ const animation = sequence([
 ])
 
 const anim = lightning(animation, {
+    onPlay() {
+        console.log('onPlay')
+    },
     onComplete() {
         console.log('onComplete')
     },
     onPause() {
         console.log('onPause')
     },
-    onUpdate(currentTime) {
+    onUpdate() {
+        const { currentTime } = anim.getStatus()
         document.title = currentTime.toString()
         seekEl.value = currentTime.toString()
     },

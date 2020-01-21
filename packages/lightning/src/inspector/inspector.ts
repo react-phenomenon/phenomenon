@@ -19,10 +19,11 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
 
     inspectorOptions.scale = anim.total / (inspectorOptions.width - 100)
 
-    anim.__dev.options.onUpdate = (newCurrentTime, newCurrentTimeIndex) => {
-        currentTime = newCurrentTime
-        currentTimeIndex = newCurrentTimeIndex
-        userOptions.onUpdate?.(currentTime, currentTimeIndex)
+    anim.__dev.options.onUpdate = () => {
+        const status = anim.getStatus()
+        currentTime = status.currentTime
+        currentTimeIndex = status.currentTimeIndex
+        userOptions.onUpdate?.()
         render()
     }
 

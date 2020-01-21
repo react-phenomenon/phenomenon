@@ -3,22 +3,32 @@ import { SerializedItem, AnimationFunction } from './types'
 import { render } from './renderer/render'
 import { findTextStepTime } from './renderer/findTextStepTime'
 
-interface LightningOptions {
-    onPause?(): void
-    onComplete?(): void
-    onUpdate?(currentTime: number, currentTimeIndex: number): void
-}
-
 export interface LightingInstance {
     prepare: () => void
     play: () => void
     pause: () => void
-    seek: (t: number) => void
+    seek(t: number): void
+    getStatus(): LightingStatus
     total: number
     __dev: {
         options: LightningOptions
         serialized: SerializedItem[]
     }
+}
+
+interface LightingStatus {
+    playing: boolean
+    ended: boolean
+    started: boolean
+    currentTime: number
+    currentTimeIndex: number
+}
+
+interface LightningOptions {
+    onPlay?(): void
+    onPause?(): void
+    onComplete?(): void
+    onUpdate?(): void
 }
 
 export const lightning = (
@@ -44,12 +54,14 @@ export const lightning = (
 
     const updateOnCurrent = () => {
         render(currentTime, currentTimeIndex, serialized)
-        options.onUpdate?.(currentTime, currentTimeIndex)
+        options.onUpdate?.()
     }
 
     const play = () => {
         let start = 0
         playing = true
+
+        options.onPlay?.()
 
         const step = (time: number) => {
             stats.begin()
@@ -100,7 +112,23 @@ export const lightning = (
         playing = false
     }
 
-    return { prepare, play, pause, seek, total, __dev: { options, serialized } }
+    const getStatus = (): LightingStatus => ({
+        playing,
+        ended: currentTime === total,
+        started: currentTime > 0,
+        currentTime,
+        currentTimeIndex,
+    })
+
+    return {
+        prepare,
+        play,
+        pause,
+        seek,
+        total,
+        getStatus,
+        __dev: { options, serialized },
+    }
 }
 
 // DEV -------------------
