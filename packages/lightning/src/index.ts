@@ -3,7 +3,7 @@ import { easeOutElastic } from './helpers'
 import { lightning } from './lightning'
 import { animate } from './timeline/animate'
 import { fromTo, set, delay, pause } from './timeline/operators'
-import { sequence, parallel } from './timeline/timeline'
+import { sequence, parallel, cascade } from './timeline/timeline'
 import { val } from './values/val'
 import { color } from './values/color'
 import { transform } from './values/transform'
@@ -41,8 +41,8 @@ const animationB = animate('#b', [
     ),
 ])
 
-const fadeIn = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
-const fadeOut = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
+const mainFadeIn = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
+const mainFadeOut = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
 const psychoBG = animate('#b', [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
@@ -52,10 +52,25 @@ const psychoBG = animate('#b', [
     fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 1500),
 ])
 
+const fadeInAnim = (selector: string) =>
+    animate(selector, [fromTo({ opacity: val(0, 1) }, 500)])
+
+const cascadeAnim = cascade(
+    [
+        fadeInAnim('#e1'),
+        fadeInAnim('#e2'),
+        fadeInAnim('#e3'),
+        fadeInAnim('#e4'),
+        fadeInAnim('#e5'),
+    ],
+    { offset: i => i * 100 },
+)
+
 const animation = sequence([
-    fadeIn,
+    mainFadeIn,
+    cascadeAnim,
     parallel([psychoBG, animationA, animationB]),
-    fadeOut,
+    mainFadeOut,
 ])
 
 const anim = lightning(animation, {

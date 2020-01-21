@@ -9,6 +9,7 @@ export const createSeekEl = (
     el.style.backgroundColor = 'rgba(0,0,0,.5)'
     el.style.height = '50px'
     el.style.webkitUserSelect = null
+    el.style.cursor = 'col-resize'
 
     let seeking = false
 

@@ -15,3 +15,17 @@ export const sequence = (
         return serialized
     })
 }
+
+interface CascadeOptions {
+    offset: (index: number) => number
+}
+
+export const cascade = (
+    animations: AnimationFunction[],
+    options: CascadeOptions,
+): AnimationFunction => startAt =>
+    animations.flatMap((animation, index) => {
+        const offset = options.offset(index) + startAt
+        const serialized = animation(offset)
+        return serialized
+    })

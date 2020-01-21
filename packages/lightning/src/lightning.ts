@@ -103,13 +103,6 @@ export const lightning = (
     return { prepare, play, pause, seek, total, __dev: { options, serialized } }
 }
 
-export interface NextStepTime {
-    nextTime: number
-    pause: boolean
-    end: boolean
-    nextTimeIndex: number
-}
-
 // DEV -------------------
 // @ts-ignore
 // eslint-disable-next-line no-undef

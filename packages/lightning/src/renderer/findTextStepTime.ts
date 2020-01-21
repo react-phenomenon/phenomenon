@@ -1,5 +1,11 @@
 import { SerializedItem, Type } from '../types'
-import { NextStepTime } from '../lightning'
+
+interface NextStepTime {
+    nextTime: number
+    pause: boolean
+    end: boolean
+    nextTimeIndex: number
+}
 
 export const findTextStepTime = (
     prevTime: number,
