@@ -1,9 +1,8 @@
 export enum Type {
-    Tween = 'Tween',
-    Set = 'Set',
-    Delay = 'Delay',
-    Action = 'Action',
     Pause = 'Pause',
+    Delay = 'Delay',
+    Set = 'Set',
+    Tween = 'Tween',
 }
 
 interface SerializedStep {
@@ -13,12 +12,7 @@ interface SerializedStep {
     duration: number
 }
 
-export interface SerializedSet extends SerializedStep {
-    type: Type.Set
-    duration: 0
-    element: HTMLElement
-    values: SetValues
-}
+export type Renderer = (values: Values) => void
 
 export interface SerializedPause extends SerializedStep {
     type: Type.Pause
@@ -29,10 +23,17 @@ export interface SerializedDelay extends SerializedStep {
     type: Type.Delay
 }
 
+export interface SerializedSet extends SerializedStep {
+    type: Type.Set
+    duration: 0
+    values: SetValues
+    renderer: Renderer
+}
+
 export interface SerializedTween extends SerializedStep {
     type: Type.Tween
-    element: HTMLElement
     values: TweenValues
+    renderer: Renderer
     easing: Easing
 }
 
@@ -41,6 +42,10 @@ export type SerializedItem =
     | SerializedTween
     | SerializedPause
     | SerializedDelay
+
+export interface Values {
+    [key: string]: any
+}
 
 export interface SetValues {
     [key: string]: [any, any]
@@ -54,8 +59,8 @@ export type Easing = (p: number) => number
 
 export type AnimationFunction = (startAt: number) => SerializedItem[]
 
-export type ElementOperatorFunction = (
+export type RenderOperatorFunction = (
     startAt: number,
-) => (element: HTMLElement) => SerializedItem[]
+) => (renderer: Renderer) => SerializedItem[]
 
-export type OperatorFunction = ElementOperatorFunction | AnimationFunction
+export type OperatorFunction = RenderOperatorFunction | AnimationFunction

@@ -1,4 +1,4 @@
-import { setCssValue, mapObjectValues, limit } from '../helpers'
+import { limit, mapObjectValues } from '../helpers'
 import { SerializedItem, Type } from '../types'
 
 export const render = (
@@ -10,17 +10,11 @@ export const render = (
         const item = serialized[i]
         switch (item.type) {
             case Type.Tween:
-                setCssValue(
-                    item.element,
-                    mapObjectValues(item.values, val => val(0)),
-                )
+                item.renderer(mapObjectValues(item.values, val => val(0)))
                 break
 
             case Type.Set:
-                setCssValue(
-                    item.element,
-                    mapObjectValues(item.values, val => val[0]),
-                )
+                item.renderer(mapObjectValues(item.values, val => val[0]))
                 break
         }
     }
@@ -30,18 +24,16 @@ export const render = (
 
         switch (item.type) {
             case Type.Tween:
-                setCssValue(
-                    item.element,
+                item.renderer(
                     mapObjectValues(item.values, val => {
-                        const percent = limit((currentTime - item.start) / item.duration)
-                        return val(item.easing(percent))
+                        const n = limit((currentTime - item.start) / item.duration)
+                        return val(item.easing(n))
                     }),
                 )
                 break
 
             case Type.Set:
-                setCssValue(
-                    item.element,
+                item.renderer(
                     mapObjectValues(item.values, val => {
                         const [off, on] = val
                         return currentTime >= item.start + item.duration ? on : off

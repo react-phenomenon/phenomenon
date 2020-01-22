@@ -8,8 +8,9 @@ import { val } from './values/val'
 import { color } from './values/color'
 import { transform } from './values/transform'
 import { inspector } from './inspector'
+import { el } from './renderer/renderers'
 
-const animationA = animate('#a', [
+const animationA = animate(el('#a'), [
     fromTo(
         {
             paddingTop: val(0, 100, 'px'),
@@ -29,7 +30,7 @@ const animationA = animate('#a', [
     fromTo({ paddingBottom: val(0, 100, 'px') }, 1000),
 ])
 
-const animationB = animate('#b', [
+const animationB = animate(el('#b'), [
     fromTo({ paddingBottom: val(0, 100, 'px') }, 1000, easeOutElastic),
     set({ fontWeight: ['bold', 'normal'] }),
     fromTo(
@@ -41,10 +42,10 @@ const animationB = animate('#b', [
     ),
 ])
 
-const mainFadeIn = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
-const mainFadeOut = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
+const mainFadeIn = animate(el('main'), [fromTo({ opacity: val(0, 1) }, 500)])
+const mainFadeOut = animate(el('main'), [fromTo({ opacity: val(1, 0) }, 500)])
 
-const psychoBG = animate('#b', [
+const psychoBG = animate(el('#b'), [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
     pause(),
     fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 1500),
@@ -53,7 +54,7 @@ const psychoBG = animate('#b', [
 ])
 
 const fadeInAnim = (selector: string) =>
-    animate(selector, [fromTo({ opacity: val(0, 1) }, 500)])
+    animate(el(selector), [fromTo({ opacity: val(0, 1) }, 500)])
 
 const cascadeAnim = cascade(
     [
@@ -86,7 +87,6 @@ const anim = lightning(animation, {
     },
     onUpdate() {
         const { currentTime } = anim.getStatus()
-        document.title = currentTime.toString()
         seekEl.value = currentTime.toString()
     },
 })

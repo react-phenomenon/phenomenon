@@ -5,7 +5,6 @@ const bg: Record<Type, string> = {
     [Type.Tween]: '#abc123',
     [Type.Set]: 'lightgray',
     [Type.Delay]: 'white',
-    [Type.Action]: 'lightgray',
     [Type.Pause]: 'lightgray',
 }
 
@@ -15,9 +14,11 @@ export const createBarEl = (
     skipped: boolean,
 ) => {
     const el = document.createElement('div')
+    const htmlPayload =
+        ('renderer' in item && ((item.renderer as any)?.__EL as HTMLElement)) || undefined
 
-    if ('element' in item) {
-        el.textContent = `[${item.element.tagName}] `
+    if (htmlPayload) {
+        el.textContent = `[${htmlPayload.tagName}] `
     } else {
         el.textContent = `${item.type}`
     }
@@ -35,14 +36,14 @@ export const createBarEl = (
         console.log(item)
     }
 
-    if ('element' in item) {
+    if (htmlPayload) {
         el.onmouseover = () => {
-            item.element.style.outline = '2px solid red'
-            item.element.style.outlineOffset = '2px'
+            htmlPayload.style.outline = '2px solid red'
+            htmlPayload.style.outlineOffset = '2px'
         }
         el.onmouseout = () => {
-            item.element.style.outline = ''
-            item.element.style.outlineOffset = ''
+            htmlPayload.style.outline = ''
+            htmlPayload.style.outlineOffset = ''
         }
     }
 
