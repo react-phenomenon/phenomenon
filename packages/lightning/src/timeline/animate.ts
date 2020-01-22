@@ -1,5 +1,4 @@
-import { OperatorFunction } from './operators'
-import { AnimationFunction } from '../types'
+import { AnimationFunction, OperatorFunction } from '../types'
 
 export const animate = (
     selector: string,
@@ -14,23 +13,18 @@ export const animate = (
     return startAt => {
         let offset = startAt
 
-        const serializedItems = operators.map(operator => {
-            const serialized = operator(offset, element)
-            offset += serialized.duration
-            return serialized
-        })
+        const serializedItems = operators
+            .map(operator => {
+                let serialized = operator(offset)
 
-        for (let i = 0; i < serializedItems.length; i++) {
-            const item = serializedItems[i]
-            const prevItem = serializedItems[i - 1]
-            const nextItem = serializedItems[i + 1]
+                if (typeof serialized === 'function') {
+                    serialized = serialized(element)
+                }
 
-            if (prevItem && prevItem.start === item.start) {
-                item.startIndex = prevItem.startIndex! + 1
-            } else if (nextItem && nextItem.start === item.start) {
-                item.startIndex = 1
-            }
-        }
+                offset += Math.max(...serialized.map(item => item.duration))
+                return serialized
+            })
+            .flat()
 
         return serializedItems
     }

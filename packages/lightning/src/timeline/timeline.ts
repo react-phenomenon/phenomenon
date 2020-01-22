@@ -11,7 +11,7 @@ export const sequence = (
 
     return animations.flatMap(animation => {
         const serialized = animation(offset)
-        offset += totalDuration(serialized)
+        offset = totalDuration(serialized)
         return serialized
     })
 }

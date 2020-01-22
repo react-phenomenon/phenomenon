@@ -68,6 +68,7 @@ const cascadeAnim = cascade(
 
 const animation = sequence([
     mainFadeIn,
+    pause(),
     cascadeAnim,
     parallel([psychoBG, animationA, animationB]),
     mainFadeOut,

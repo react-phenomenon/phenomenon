@@ -2,6 +2,7 @@ import { totalDuration } from './helpers'
 import { SerializedItem, AnimationFunction } from './types'
 import { render } from './renderer/render'
 import { findTextStepTime } from './renderer/findTextStepTime'
+import { prepareItems } from './timeline/prepareItems'
 
 export interface LightingInstance {
     prepare: () => void
@@ -40,7 +41,7 @@ export const lightning = (
     let currentTimeIndex = 0
     let playing = false
 
-    const serialized = animations(0).sort((a, b) => a.start - b.start)
+    const serialized = prepareItems(animations(0))
     const total = totalDuration(serialized)
 
     const prepare = () => {
