@@ -12,7 +12,13 @@ export const el = (selector: HTMLElement | string): Renderer => {
     }
 
     const renderer: Renderer = values => {
-        setCssValue(element, values)
+        const { text, ...styles } = values
+
+        setCssValue(element, styles)
+
+        if (text !== undefined) {
+            element.textContent = text
+        }
     }
     ;(renderer as any).__EL = element
 

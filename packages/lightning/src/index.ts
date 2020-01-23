@@ -9,18 +9,18 @@ import { color } from './values/color'
 import { transform } from './values/transform'
 import { inspector } from './inspector'
 import { el } from './renderer/renderers'
+import { text } from './values/text'
 
 const animationA = animate(el('#a'), [
     fromTo(
         {
-            paddingTop: val(0, 100, 'px'),
             transform: transform({
-                y: val(-300, 0, 'px'),
+                y: val(-200, 0, 'px'),
                 scale: val(0.9, 1),
                 rotate: val(10, 0, 'deg'),
             }),
         },
-        1000,
+        1500,
         easeOutElastic,
     ),
     pause(),
@@ -31,7 +31,13 @@ const animationA = animate(el('#a'), [
 ])
 
 const animationB = animate(el('#b'), [
-    fromTo({ paddingBottom: val(0, 100, 'px') }, 1000, easeOutElastic),
+    fromTo(
+        {
+            paddingBottom: val(0, 100, 'px'),
+            text: text('Hello world!'),
+        },
+        1000,
+    ),
     set({ fontWeight: ['bold', 'normal'] }),
     fromTo(
         {
@@ -47,9 +53,7 @@ const mainFadeOut = animate(el('main'), [fromTo({ opacity: val(1, 0) }, 500)])
 
 const psychoBG = animate(el('#b'), [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
-    pause(),
     fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 1500),
-    pause(),
     fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 1500),
 ])
 
@@ -69,9 +73,9 @@ const cascadeAnim = cascade(
 
 const animation = sequence([
     mainFadeIn,
-    pause(),
     cascadeAnim,
     parallel([psychoBG, animationA, animationB]),
+    pause(),
     mainFadeOut,
 ])
 
