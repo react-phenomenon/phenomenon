@@ -1,4 +1,3 @@
-import { setCssValue } from '../helpers'
 import { Renderer } from '../types'
 
 export const el = (selector: HTMLElement | string): Renderer => {
@@ -8,7 +7,7 @@ export const el = (selector: HTMLElement | string): Renderer => {
             : selector
 
     if (!element) {
-        throw new Error(`[animation] Element ${selector} not found`)
+        throw new Error(`[lighting] Element (${selector}) not found`)
     }
 
     const renderer: Renderer = values => {
@@ -23,4 +22,8 @@ export const el = (selector: HTMLElement | string): Renderer => {
     ;(renderer as any).__EL = element
 
     return renderer
+}
+
+export const setCssValue = (el: HTMLElement, value: any) => {
+    Object.assign(el.style, value)
 }

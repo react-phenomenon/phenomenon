@@ -1,13 +1,13 @@
-import { AnimationFunction, OperatorFunction, Renderer } from '../types'
+import { FramesFunction, OperatorFunction, Renderer } from '../types'
 
 export const animate = (
     renderer: Renderer,
     operators: OperatorFunction[],
-): AnimationFunction => {
+): FramesFunction => {
     return startAt => {
         let offset = startAt
 
-        const serializedItems = operators
+        const serializedFrames = operators
             .map(operator => {
                 let serialized = operator(offset)
 
@@ -15,11 +15,11 @@ export const animate = (
                     serialized = serialized(renderer)
                 }
 
-                offset += Math.max(...serialized.map(item => item.duration))
+                offset += Math.max(...serialized.map(frame => frame.duration))
                 return serialized
             })
             .flat()
 
-        return serializedItems
+        return serializedFrames
     }
 }

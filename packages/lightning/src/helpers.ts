@@ -1,4 +1,4 @@
-import { SerializedItem } from './types'
+import { SerializedFrame } from './types'
 
 const { pow, sin, max } = Math
 const PI = Math.PI
@@ -14,10 +14,6 @@ export const easeOutElastic = (x: number) => {
 
 export const linear = (x: number) => x
 
-export const setCssValue = (el: HTMLElement, value: any) => {
-    Object.assign(el.style, value)
-}
-
 export const mapObjectValues = <T, R>(
     object: { [key: string]: T },
     cb: (value: T) => R,
@@ -26,5 +22,5 @@ export const mapObjectValues = <T, R>(
 export const limit = (value: number, min = 0, max = 1) =>
     Math.min(Math.max(value, min), max)
 
-export const totalDuration = (items: SerializedItem[]): number =>
-    max(...items.map(item => item.start + item.duration))
+export const totalDuration = (frames: SerializedFrame[]): number =>
+    max(...frames.map(frame => frame.start + frame.duration))

@@ -1,42 +1,42 @@
 import { limit, mapObjectValues } from '../helpers'
-import { SerializedItem, Type } from '../types'
+import { SerializedFrame, FrameType } from '../types'
 
 export const render = (
     currentTime: number,
     currentTimeIndex: number,
-    serialized: SerializedItem[],
+    serializedFrames: SerializedFrame[],
 ) => {
-    for (let i = serialized.length - 1; i >= 0; i--) {
-        const item = serialized[i]
-        switch (item.type) {
-            case Type.Tween:
-                item.renderer(mapObjectValues(item.values, val => val(0)))
+    for (let i = serializedFrames.length - 1; i >= 0; i--) {
+        const frame = serializedFrames[i]
+        switch (frame.type) {
+            case FrameType.Tween:
+                frame.renderer(mapObjectValues(frame.values, val => val(0)))
                 break
 
-            case Type.Set:
-                item.renderer(mapObjectValues(item.values, val => val[0]))
+            case FrameType.Set:
+                frame.renderer(mapObjectValues(frame.values, val => val[0]))
                 break
         }
     }
 
-    for (const item of serialized) {
-        if (shouldSkipItem(currentTime, currentTimeIndex, item)) continue
+    for (const frame of serializedFrames) {
+        if (shouldSkipFrame(currentTime, currentTimeIndex, frame)) continue
 
-        switch (item.type) {
-            case Type.Tween:
-                item.renderer(
-                    mapObjectValues(item.values, val => {
-                        const n = limit((currentTime - item.start) / item.duration)
-                        return val(item.easing(n))
+        switch (frame.type) {
+            case FrameType.Tween:
+                frame.renderer(
+                    mapObjectValues(frame.values, val => {
+                        const n = limit((currentTime - frame.start) / frame.duration)
+                        return val(frame.easing(n))
                     }),
                 )
                 break
 
-            case Type.Set:
-                item.renderer(
-                    mapObjectValues(item.values, val => {
+            case FrameType.Set:
+                frame.renderer(
+                    mapObjectValues(frame.values, val => {
                         const [off, on] = val
-                        return currentTime >= item.start + item.duration ? on : off
+                        return currentTime >= frame.start + frame.duration ? on : off
                     }),
                 )
                 break
@@ -44,12 +44,12 @@ export const render = (
     }
 }
 
-export const shouldSkipItem = (
+export const shouldSkipFrame = (
     currentTime: number,
     currentTimeIndex: number,
-    item: SerializedItem,
+    frame: SerializedFrame,
 ) => {
-    if (item.start > currentTime) return true
-    if (item.start === currentTime && item.startIndex > currentTimeIndex) return true
+    if (frame.start > currentTime) return true
+    if (frame.start === currentTime && frame.startIndex > currentTimeIndex) return true
     return false
 }

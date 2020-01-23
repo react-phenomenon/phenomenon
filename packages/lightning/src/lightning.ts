@@ -1,8 +1,8 @@
 import { totalDuration } from './helpers'
-import { SerializedItem, AnimationFunction } from './types'
+import { SerializedFrame, FramesFunction } from './types'
 import { render } from './renderer/render'
 import { findTextStepTime } from './renderer/findTextStepTime'
-import { prepareItems } from './timeline/prepareItems'
+import { prepareFrames } from './timeline/prepareFrames'
 
 export interface LightingInstance {
     prepare: () => void
@@ -13,7 +13,7 @@ export interface LightingInstance {
     total: number
     __dev: {
         options: LightningOptions
-        serialized: SerializedItem[]
+        serializedFrames: SerializedFrame[]
     }
 }
 
@@ -34,18 +34,18 @@ interface LightningOptions {
 }
 
 export const lightning = (
-    animations: AnimationFunction,
+    frames: FramesFunction,
     options: LightningOptions = {},
 ): LightingInstance => {
     let currentTime = 0
     let currentTimeIndex = 0
     let playing = false
 
-    const serialized = prepareItems(animations(0))
-    const total = totalDuration(serialized)
+    const serializedFrames = prepareFrames(frames(0))
+    const total = totalDuration(serializedFrames)
 
     const prepare = () => {
-        render(currentTime, currentTimeIndex, serialized)
+        render(currentTime, currentTimeIndex, serializedFrames)
     }
 
     const seek = (time: number, offsetIndex = 0) => {
@@ -55,7 +55,7 @@ export const lightning = (
     }
 
     const updateOnCurrent = () => {
-        render(currentTime, currentTimeIndex, serialized)
+        render(currentTime, currentTimeIndex, serializedFrames)
         options.onUpdate?.()
     }
 
@@ -82,7 +82,7 @@ export const lightning = (
                 currentTimeIndex,
                 nextRafTime,
                 total,
-                serialized,
+                serializedFrames,
             )
 
             currentTime = nextTime
@@ -130,7 +130,7 @@ export const lightning = (
         seek,
         total,
         getStatus,
-        __dev: { options, serialized },
+        __dev: { options, serializedFrames },
     }
 }
 

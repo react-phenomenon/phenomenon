@@ -1,12 +1,12 @@
-export enum Type {
+export enum FrameType {
     Pause = 'Pause',
     Delay = 'Delay',
     Set = 'Set',
     Tween = 'Tween',
 }
 
-interface SerializedStep {
-    type: Type
+interface SerializedFrameStep {
+    type: FrameType
     start: number
     startIndex: number
     duration: number
@@ -14,34 +14,34 @@ interface SerializedStep {
 
 export type Renderer = (values: Values) => void
 
-export interface SerializedPause extends SerializedStep {
-    type: Type.Pause
+export interface SerializedFramePause extends SerializedFrameStep {
+    type: FrameType.Pause
     duration: 0
 }
 
-export interface SerializedDelay extends SerializedStep {
-    type: Type.Delay
+export interface SerializedFrameDelay extends SerializedFrameStep {
+    type: FrameType.Delay
 }
 
-export interface SerializedSet extends SerializedStep {
-    type: Type.Set
+export interface SerializedFrameSet extends SerializedFrameStep {
+    type: FrameType.Set
     duration: 0
     values: SetValues
     renderer: Renderer
 }
 
-export interface SerializedTween extends SerializedStep {
-    type: Type.Tween
+export interface SerializedFrameTween extends SerializedFrameStep {
+    type: FrameType.Tween
     values: TweenValues
     renderer: Renderer
     easing: Easing
 }
 
-export type SerializedItem =
-    | SerializedSet
-    | SerializedTween
-    | SerializedPause
-    | SerializedDelay
+export type SerializedFrame =
+    | SerializedFrameSet
+    | SerializedFrameTween
+    | SerializedFramePause
+    | SerializedFrameDelay
 
 export interface Values {
     [key: string]: any
@@ -57,10 +57,10 @@ export interface TweenValues {
 
 export type Easing = (p: number) => number
 
-export type AnimationFunction = (startAt: number) => SerializedItem[]
+export type FramesFunction = (startAt: number) => SerializedFrame[]
 
 export type RenderOperatorFunction = (
     startAt: number,
-) => (renderer: Renderer) => SerializedItem[]
+) => (renderer: Renderer) => SerializedFrame[]
 
-export type OperatorFunction = RenderOperatorFunction | AnimationFunction
+export type OperatorFunction = RenderOperatorFunction | FramesFunction

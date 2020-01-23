@@ -1,4 +1,4 @@
-import { SerializedItem, Type } from '../types'
+import { SerializedFrame, FrameType } from '../types'
 
 interface NextStepTime {
     nextTime: number
@@ -12,18 +12,18 @@ export const findTextStepTime = (
     prevTimeIndex: number,
     nextTime: number,
     total: number,
-    serialized: SerializedItem[],
+    serializedFrames: SerializedFrame[],
 ): NextStepTime => {
-    for (const item of serialized) {
+    for (const frame of serializedFrames) {
         if (
-            item.type === Type.Pause &&
-            item.start >= prevTime &&
-            item.start <= nextTime &&
-            item.startIndex > prevTimeIndex
+            frame.type === FrameType.Pause &&
+            frame.start >= prevTime &&
+            frame.start <= nextTime &&
+            frame.startIndex > prevTimeIndex
         ) {
             return {
-                nextTime: item.start,
-                nextTimeIndex: item.startIndex,
+                nextTime: frame.start,
+                nextTimeIndex: frame.startIndex,
                 pause: true,
                 end: false,
             }

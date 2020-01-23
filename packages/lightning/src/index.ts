@@ -11,7 +11,7 @@ import { inspector } from './inspector'
 import { el } from './renderer/renderers'
 import { text } from './values/text'
 
-const animationA = animate(el('#a'), [
+const aFrames = animate(el('#a'), [
     fromTo(
         {
             transform: transform({
@@ -30,7 +30,7 @@ const animationA = animate(el('#a'), [
     fromTo({ paddingBottom: val(0, 100, 'px') }, 1000),
 ])
 
-const animationB = animate(el('#b'), [
+const bFrames = animate(el('#b'), [
     fromTo(
         {
             paddingBottom: val(0, 100, 'px'),
@@ -48,38 +48,38 @@ const animationB = animate(el('#b'), [
     ),
 ])
 
-const mainFadeIn = animate(el('main'), [fromTo({ opacity: val(0, 1) }, 500)])
-const mainFadeOut = animate(el('main'), [fromTo({ opacity: val(1, 0) }, 500)])
+const mainFadeInFrames = animate(el('main'), [fromTo({ opacity: val(0, 1) }, 500)])
+const mainFadeOutFrames = animate(el('main'), [fromTo({ opacity: val(1, 0) }, 500)])
 
-const psychoBG = animate(el('#b'), [
+const bgFrames = animate(el('#b'), [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
     fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 1500),
     fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 1500),
 ])
 
-const fadeInAnim = (selector: string) =>
+const getFadeInFrames = (selector: string) =>
     animate(el(selector), [fromTo({ opacity: val(0, 1) }, 500)])
 
-const cascadeAnim = cascade(
+const cascadeFrames = cascade(
     [
-        fadeInAnim('#e1'),
-        fadeInAnim('#e2'),
-        fadeInAnim('#e3'),
-        fadeInAnim('#e4'),
-        fadeInAnim('#e5'),
+        getFadeInFrames('#e1'),
+        getFadeInFrames('#e2'),
+        getFadeInFrames('#e3'),
+        getFadeInFrames('#e4'),
+        getFadeInFrames('#e5'),
     ],
     { offset: i => i * 100 },
 )
 
-const animation = sequence([
-    mainFadeIn,
-    cascadeAnim,
-    parallel([psychoBG, animationA, animationB]),
+const frames = sequence([
+    mainFadeInFrames,
+    cascadeFrames,
+    parallel([bgFrames, aFrames, bFrames]),
     pause(),
-    mainFadeOut,
+    mainFadeOutFrames,
 ])
 
-const anim = lightning(animation, {
+const anim = lightning(frames, {
     onPlay() {
         console.log('onPlay')
     },

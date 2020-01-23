@@ -1,16 +1,14 @@
-import { AnimationFunction } from '../types'
+import { FramesFunction } from '../types'
 import { totalDuration } from '../helpers'
 
-export const parallel = (animations: AnimationFunction[]): AnimationFunction => startAt =>
-    animations.flatMap(animation => animation(startAt))
+export const parallel = (frames: FramesFunction[]): FramesFunction => startAt =>
+    frames.flatMap(frameFn => frameFn(startAt))
 
-export const sequence = (
-    animations: AnimationFunction[],
-): AnimationFunction => startAt => {
+export const sequence = (frames: FramesFunction[]): FramesFunction => startAt => {
     let offset = startAt
 
-    return animations.flatMap(animation => {
-        const serialized = animation(offset)
+    return frames.flatMap(frameFn => {
+        const serialized = frameFn(offset)
         offset = totalDuration(serialized)
         return serialized
     })
@@ -21,11 +19,10 @@ interface CascadeOptions {
 }
 
 export const cascade = (
-    animations: AnimationFunction[],
+    frames: FramesFunction[],
     options: CascadeOptions,
-): AnimationFunction => startAt =>
-    animations.flatMap((animation, index) => {
+): FramesFunction => startAt =>
+    frames.flatMap((frameFn, index) => {
         const offset = options.offset(index) + startAt
-        const serialized = animation(offset)
-        return serialized
+        return frameFn(offset)
     })

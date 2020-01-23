@@ -4,7 +4,7 @@ import { createBarEl } from './el/createBarEl'
 import { inspectorOptions } from './inspectorOptions'
 import { createLineEl } from './el/createLineEl'
 import { createSeekEl } from './el/createSeekEl'
-import { shouldSkipItem } from '../renderer/render'
+import { shouldSkipFrame } from '../renderer/render'
 import { createStatusEl } from './el/createStatusEl'
 
 export const inspector = (anim: ReturnType<typeof lightning>) => {
@@ -40,12 +40,12 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
 
     const render = () => {
         barsWrapperEl.innerHTML = ''
-        anim.__dev.serialized.forEach(item => {
+        anim.__dev.serializedFrames.forEach(frame => {
             barsWrapperEl.appendChild(
                 createBarEl(
-                    item,
+                    frame,
                     inspectorOptions,
-                    shouldSkipItem(status.currentTime, status.currentTimeIndex, item),
+                    shouldSkipFrame(status.currentTime, status.currentTimeIndex, frame),
                 ),
             )
         })

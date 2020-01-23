@@ -4,8 +4,8 @@ import {
     RenderOperatorFunction,
     SetValues,
     TweenValues,
-    Type,
-    AnimationFunction,
+    FrameType,
+    FramesFunction,
 } from '../types'
 
 export const fromTo = (
@@ -15,7 +15,7 @@ export const fromTo = (
 ): RenderOperatorFunction => start => renderer => {
     return [
         {
-            type: Type.Tween,
+            type: FrameType.Tween,
             start,
             startIndex: 0,
             duration,
@@ -29,7 +29,7 @@ export const fromTo = (
 export const set = (values: SetValues): RenderOperatorFunction => start => renderer => {
     return [
         {
-            type: Type.Set,
+            type: FrameType.Set,
             start,
             startIndex: 0,
             duration: 0,
@@ -39,10 +39,10 @@ export const set = (values: SetValues): RenderOperatorFunction => start => rende
     ]
 }
 
-export const delay = (duration: number): AnimationFunction => start => {
+export const delay = (duration: number): FramesFunction => start => {
     return [
         {
-            type: Type.Delay,
+            type: FrameType.Delay,
             start,
             startIndex: 0,
             duration,
@@ -50,10 +50,10 @@ export const delay = (duration: number): AnimationFunction => start => {
     ]
 }
 
-export const pause = (): AnimationFunction => start => {
+export const pause = (): FramesFunction => start => {
     return [
         {
-            type: Type.Pause,
+            type: FrameType.Pause,
             start,
             startIndex: 0,
             duration: 0,
