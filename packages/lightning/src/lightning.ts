@@ -66,8 +66,6 @@ export const lightning = (
         options.onPlay?.()
 
         const step = (time: number) => {
-            stats.begin()
-
             if (!start) start = time - currentTime
             const nextRafTime = time - start
 
@@ -103,8 +101,6 @@ export const lightning = (
             }
 
             requestAnimationFrame(step)
-
-            stats.end()
         }
 
         requestAnimationFrame(step)
@@ -133,10 +129,3 @@ export const lightning = (
         __dev: { options, serializedFrames },
     }
 }
-
-// DEV -------------------
-// @ts-ignore
-// eslint-disable-next-line no-undef
-const stats = new require('stats.js')()
-stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild(stats.dom)

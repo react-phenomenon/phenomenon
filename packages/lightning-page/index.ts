@@ -1,0 +1,141 @@
+/* eslint-disable no-console */
+import {
+    lightning,
+    animate,
+    fromTo,
+    set,
+    delay,
+    pause,
+    sequence,
+    parallel,
+    cascade,
+    val,
+    color,
+    transform,
+    inspector,
+    el,
+    text,
+} from '@phenomenon/lightning'
+
+console.log(lightning)
+
+const aFrames = animate(el('#a'), [
+    fromTo(
+        {
+            transform: transform({
+                y: val(-200, 0, 'px'),
+                scale: val(0.9, 1),
+                rotate: val(10, 0, 'deg'),
+            }),
+        },
+        1500,
+    ),
+    pause(),
+    set({ backgroundColor: ['black', 'navy'] }),
+    pause(),
+    delay(500),
+    fromTo({ paddingBottom: val(0, 100, 'px') }, 1000),
+])
+
+const bFrames = animate(el('#b'), [
+    fromTo(
+        {
+            paddingBottom: val(0, 100, 'px'),
+            text: text('Hello world!'),
+        },
+        1000,
+    ),
+    set({ fontWeight: ['bold', 'normal'] }),
+    fromTo(
+        {
+            paddingTop: val(0, 100, 'px'),
+            paddingBottom: val(100, 0, 'px'),
+        },
+        1000,
+    ),
+])
+
+const mainFadeInFrames = animate(el('main'), [fromTo({ opacity: val(0, 1) }, 500)])
+const mainFadeOutFrames = animate(el('main'), [fromTo({ opacity: val(1, 0) }, 500)])
+
+const bgFrames = animate(el('#b'), [
+    fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
+    fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 1500),
+    fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 1500),
+])
+
+const getFadeInFrames = (selector: string) =>
+    animate(el(selector), [fromTo({ opacity: val(0, 1) }, 500)])
+
+const cascadeFrames = cascade(
+    [
+        getFadeInFrames('#e1'),
+        getFadeInFrames('#e2'),
+        getFadeInFrames('#e3'),
+        getFadeInFrames('#e4'),
+        getFadeInFrames('#e5'),
+    ],
+    { offset: i => i * 100 },
+)
+
+const frames = sequence([
+    mainFadeInFrames,
+    cascadeFrames,
+    parallel([bgFrames, aFrames, bFrames]),
+    pause(),
+    mainFadeOutFrames,
+])
+
+const anim = lightning(frames, {
+    onPlay() {
+        console.log('onPlay')
+    },
+    onComplete() {
+        console.log('onComplete')
+    },
+    onPause() {
+        console.log('onPause')
+    },
+    onUpdate() {
+        const { currentTime } = anim.getStatus()
+        seekEl.value = currentTime.toString()
+    },
+})
+
+inspector(anim)
+
+setTimeout(() => {
+    anim.prepare()
+}, 400)
+
+setTimeout(() => {
+    anim.play()
+}, 800)
+
+const seekEl = document.getElementById('seek') as HTMLInputElement
+
+seekEl.setAttribute('max', anim.total.toString())
+
+seekEl.addEventListener(
+    'input',
+    event => {
+        // @ts-ignore
+        const value = +event.target!.value
+        anim.seek(value)
+    },
+    false,
+)
+
+document.getElementById('play')!.addEventListener('click', () => {
+    anim.play()
+})
+
+document.getElementById('pause')!.addEventListener('click', () => {
+    anim.pause()
+})
+
+document.getElementById('reset')!.addEventListener('click', () => {
+    anim.pause()
+    anim.seek(0)
+    seekEl.value = '0'
+})

@@ -2,6 +2,12 @@
 
 The extensible TypeScript animation library.
 
+```
+yarn add @phenomenon/lightning
+
+npm install @phenomenon/lightning
+```
+
 ## Examples
 
 ```js

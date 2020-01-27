@@ -16,10 +16,11 @@
     "@phenomenon/slides": "^1.0.0",
     "@phenomenon/theme-storm": "^1.0.0",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "trim-right": "^1.0.1"
   },
   "devDependencies": {
-    "react-scripts": "^3.2.0",
-    "gh-pages": "^2.0.1"
+    "gh-pages": "^2.0.1",
+    "react-scripts": "^3.2.0"
   }
 }

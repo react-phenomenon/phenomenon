@@ -2,11 +2,7 @@ import { SerializedFrame } from './types'
 
 const { pow, sin, max } = Math
 const PI = Math.PI
-const c1 = 1.70158
-const c2 = c1 * 1.525
-const c3 = c1 + 1
 const c4 = (2 * PI) / 3
-const c5 = (2 * PI) / 4.5
 
 export const easeOutElastic = (x: number) => {
     return x === 0 ? 0 : x === 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1
