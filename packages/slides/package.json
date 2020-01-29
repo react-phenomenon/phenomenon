@@ -1,6 +1,6 @@
 {
   "name": "@phenomenon/slides",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "scripts": {
     "watch": "npm-run-all --parallel watch:*",
     "watch:babel": "yarn run build-lib:babel --watch",

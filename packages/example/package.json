@@ -1,6 +1,6 @@
 {
   "name": "@phenomenon/example",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "src/index.ts",
   "homepage": "https://react-phenomenon.github.io/phenomenon/",
   "scripts": {
