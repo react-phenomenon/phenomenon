@@ -1,3 +1,5 @@
+export * from './types'
+
 export { lightning } from './lightning'
 
 export { animate } from './timeline/animate'

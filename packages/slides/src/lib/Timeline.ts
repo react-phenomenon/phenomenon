@@ -78,7 +78,7 @@ export class Timeline {
         this.line.reverse()
     }
 
-    private turboTimer: number | undefined
+    private turboTimer: any
     private turboMode() {
         if (!this.line) return
 
