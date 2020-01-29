@@ -1,6 +1,6 @@
 import { Renderer } from '../types'
 
-export const el = (selector: HTMLElement | string): Renderer => {
+export const htmlElementRenderer = (selector: HTMLElement | string): Renderer => {
     const element =
         typeof selector === 'string'
             ? (document.querySelector(selector) as HTMLElement | null)

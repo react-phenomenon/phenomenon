@@ -11,6 +11,6 @@ export { color } from './values/color'
 export { transform } from './values/transform'
 export { text } from './values/text'
 
-export { el } from './renderer/renderers'
+export { htmlElementRenderer as el } from './renderer/renderers'
 
 export { inspector } from './inspector'

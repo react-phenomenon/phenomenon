@@ -1,13 +1,13 @@
 {
   "name": "@phenomenon/lightning",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
     "typecheck": "tsc --noEmit",
-    "build": "npm-run-all --parallel build:*",
-    "build:types": "tsc --emitDeclarationOnly",
-    "build:js": "rollup -c"
+    "build-lib": "npm-run-all --parallel build-lib:*",
+    "build-lib:types": "tsc --emitDeclarationOnly",
+    "build-lib:js": "rollup -c"
   },
   "main": "dist/phenomenon-lightning.cjs.js",
   "module": "dist/phenomenon-lightning.esm.js",

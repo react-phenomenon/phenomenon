@@ -13,13 +13,12 @@ import {
     color,
     transform,
     inspector,
-    el,
     text,
 } from '@phenomenon/lightning'
 
 console.log(lightning)
 
-const aFrames = animate(el('#a'), [
+const aFrames = animate('#a', [
     fromTo(
         {
             transform: transform({
@@ -37,7 +36,7 @@ const aFrames = animate(el('#a'), [
     fromTo({ paddingBottom: val(0, 100, 'px') }, 1000),
 ])
 
-const bFrames = animate(el('#b'), [
+const bFrames = animate('#b', [
     fromTo(
         {
             paddingBottom: val(0, 100, 'px'),
@@ -55,17 +54,17 @@ const bFrames = animate(el('#b'), [
     ),
 ])
 
-const mainFadeInFrames = animate(el('main'), [fromTo({ opacity: val(0, 1) }, 500)])
-const mainFadeOutFrames = animate(el('main'), [fromTo({ opacity: val(1, 0) }, 500)])
+const mainFadeInFrames = animate('main', [fromTo({ opacity: val(0, 1) }, 500)])
+const mainFadeOutFrames = animate('main', [fromTo({ opacity: val(1, 0) }, 500)])
 
-const bgFrames = animate(el('#b'), [
+const bgFrames = animate('#b', [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
     fromTo({ backgroundColor: color('#00FF00', '#0000FF') }, 1500),
     fromTo({ backgroundColor: color('#0000FF', '#FF0000') }, 1500),
 ])
 
 const getFadeInFrames = (selector: string) =>
-    animate(el(selector), [fromTo({ opacity: val(0, 1) }, 500)])
+    animate(selector, [fromTo({ opacity: val(0, 1) }, 500)])
 
 const cascadeFrames = cascade(
     [

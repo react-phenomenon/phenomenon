@@ -34,14 +34,14 @@ interface LightningOptions {
 }
 
 export const lightning = (
-    frames: FramesFunction,
+    framesFunction: FramesFunction,
     options: LightningOptions = {},
 ): LightingInstance => {
     let currentTime = 0
     let currentTimeIndex = 0
     let playing = false
 
-    const serializedFrames = prepareFrames(frames(0))
+    const serializedFrames = prepareFrames(framesFunction(0))
     const total = totalDuration(serializedFrames)
 
     const prepare = () => {

@@ -1,9 +1,12 @@
 import { FramesFunction, OperatorFunction, Renderer } from '../types'
+import { htmlElementRenderer } from '../renderer/renderers'
 
 export const animate = (
-    renderer: Renderer,
+    rendererOrSelector: Renderer | string | HTMLElement,
     operators: OperatorFunction[],
 ): FramesFunction => {
+    const renderer = findRenderer(rendererOrSelector)
+
     return startAt => {
         let offset = startAt
 
@@ -22,4 +25,18 @@ export const animate = (
 
         return serializedFrames
     }
+}
+
+const findRenderer = (rendererOrSelector: Renderer | string | HTMLElement): Renderer => {
+    if (typeof rendererOrSelector === 'function') {
+        return rendererOrSelector
+    }
+
+    if (rendererOrSelector === 'string' || rendererOrSelector instanceof HTMLElement) {
+        return htmlElementRenderer(rendererOrSelector)
+    }
+
+    throw new Error(
+        `[lighting:animate] Invalid renderer (${rendererOrSelector.toString()})`,
+    )
 }

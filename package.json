@@ -11,6 +11,7 @@
     "build-lib": "yarn wsrun --exclude-missing build-lib",
     "typecheck": "yarn wsrun --exclude-missing typecheck",
     "test": "yarn wsrun --exclude-missing test",
+    "deploy": "yarn wsrun --exclude-missing deploy",
     "lint": "eslint  --ext .ts,.tsx,.js packages/*/src/",
     "prettier-check": "prettier --check 'packages/*/src/**/*.{ts,tsx}'",
     "start-example": "yarn workspace @phenomenon/example run start"
