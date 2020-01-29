@@ -14,8 +14,8 @@
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
-    "@phenomenon/slides": "^1.0.0",
-    "@phenomenon/theme-storm": "^1.0.0",
+    "@phenomenon/slides": "*",
+    "@phenomenon/theme-storm": "*",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "trim-right": "^1.0.1"
