@@ -2,4 +2,4 @@
 
 Presentation library for developers
 
-https://react-phenomenon.github.io/slides/
+https://react-phenomenon.github.io/phenomenon/

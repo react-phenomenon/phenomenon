@@ -2,6 +2,7 @@
   "name": "@phenomenon/example",
   "version": "1.0.0",
   "main": "src/index.ts",
+  "homepage": "https://react-phenomenon.github.io/phenomenon/",
   "scripts": {
     "build": "react-scripts build",
     "build:local": "PUBLIC_URL='/' react-scripts build",
