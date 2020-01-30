@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
+import { animate, fromTo, val } from '@phenomenon/lightning'
 
 interface ExpandProps extends StepProps {
     horizontal?: boolean
@@ -15,38 +16,31 @@ export const Expand: FC<ExpandProps> = props => {
 
     useStep(
         props.in,
-        (timeline, { duration, ease }) => {
-            const el = ref.current!
-            timeline
-                .fromTo(
-                    el,
-                    duration.fast,
-                    { [direction]: 0, opacity: 0, ease },
-                    { [direction]: size![direction], ease },
-                )
-                .to(el, duration.fast, {
-                    opacity: 1,
-                    ease,
-                })
-                .set(el, { height: 'auto' })
-        },
+        ({ duration }) =>
+            animate(ref.current!, [
+                fromTo(
+                    {
+                        opacity: val(0, 1),
+                        [direction]: val(0, size![direction], 'px'),
+                    },
+                    duration.normal,
+                ),
+            ]),
         { title: '→Expand', deps: [size !== null] },
     )
 
     useStep(
         props.out,
-        (timeline, { duration, ease }) => {
-            const el = ref.current!
-            timeline
-                .to(el, duration.fast, {
-                    opacity: 0,
-                    ease,
-                })
-                .to(el, duration.fast, {
-                    [direction]: 0,
-                    ease,
-                })
-        },
+        ({ duration }) =>
+            animate(ref.current!, [
+                fromTo(
+                    {
+                        opacity: val(1, 0),
+                        [direction]: val(size![direction], 0, 'px'),
+                    },
+                    duration.normal,
+                ),
+            ]),
         { title: '←Expand' },
     )
 

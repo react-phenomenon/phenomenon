@@ -18,7 +18,7 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
 
     const userOptions = { ...anim.__dev.options }
 
-    inspectorOptions.scale = anim.total / (inspectorOptions.width - 100)
+    inspectorOptions.scale = anim.total / (inspectorOptions.width - 200)
 
     anim.__dev.options.onUpdate = () => {
         status = anim.getStatus()
@@ -38,6 +38,9 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
         render()
     }
 
+    barsWrapperEl.style.maxHeight = '70vh'
+    barsWrapperEl.style.overflow = 'auto'
+
     const render = () => {
         barsWrapperEl.innerHTML = ''
         anim.__dev.serializedFrames.forEach(frame => {
@@ -50,7 +53,7 @@ export const inspector = (anim: ReturnType<typeof lightning>) => {
             )
         })
         lineEl.update(status.currentTime)
-        lineEl.el.scrollIntoView({ behavior: 'auto', inline: 'center' })
+        lineEl.el.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'center' })
         statusEl.update(status)
     }
 

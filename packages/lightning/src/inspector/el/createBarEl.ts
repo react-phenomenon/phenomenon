@@ -2,7 +2,7 @@ import { SerializedFrame, FrameType } from '../../types'
 import { InspectorOptions } from '../inspectorOptions'
 
 const bg: Record<FrameType, string> = {
-    [FrameType.Tween]: '#abc123',
+    [FrameType.Tween]: '#4d7a16',
     [FrameType.Set]: 'lightgray',
     [FrameType.Delay]: 'white',
     [FrameType.Pause]: 'lightgray',
@@ -49,14 +49,14 @@ export const createBarEl = (
     }
 
     el.style.opacity = skipped ? '0.3' : '1'
-    el.style.height = '20px'
-    el.style.lineHeight = '20px'
+    el.style.height = '14px'
+    el.style.lineHeight = '14px'
     el.style.fontSize = '10px'
     el.style.textIndent = '5px'
-    el.style.color = 'black'
-    el.style.overflow = 'hidden'
+    // el.style.overflow = 'hidden'
     el.style.whiteSpace = 'nowrap'
     el.style.marginBottom = '1px'
+    el.style.color = 'white'
     el.style.marginLeft = frame.start / options.scale + 'px'
 
     switch (frame.type) {
@@ -70,6 +70,7 @@ export const createBarEl = (
         default:
             el.style.backgroundColor = bg[frame.type]
             el.style.width = frame.duration / options.scale + 'px'
+            el.style.borderRadius = '3px'
             break
     }
 

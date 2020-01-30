@@ -138,17 +138,3 @@ Image gallery with zoom
     <GalleryImage src={require('./asset/3.png')} />
 </Galley>
 ```
-
-## Creating components
-
-```js
-useStep(
-    props.start === 1 ? undefined : props.start, // Skip first slide enter animation
-    (timeline, { duration, ease }) => { … },
-    {
-        title: '→Slide',
-        // animateWithNext: true // instead of this
-        animationKey: 'slide' // join by key
-    },
-)
-```

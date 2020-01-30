@@ -5,6 +5,7 @@ import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
 import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
+import { animate, set, fromTo, val, parallel, transform } from '@phenomenon/lightning'
 
 export interface SlideProps extends SubStepsProps {
     config?: Partial<Config>
@@ -22,42 +23,51 @@ export const Slide: FC<SlideProps> = props => {
 
     useStep(
         props.start === 1 ? undefined : props.start, // Skip first slide enter animation
-        (timeline, { duration, ease }) => {
-            timeline
-                .set(contentRef.current!, { zIndex: inactiveZIndex })
-                .fromTo(
-                    backgroundRef.current!,
+        ({ duration }) => {
+            const contentFrames = animate(contentRef.current!, [
+                set({ zIndex: [undefined, inactiveZIndex] }),
+                fromTo(
+                    {
+                        opacity: val(0, 1),
+                        transform: transform({
+                            scale: val(0.8, 1),
+                        }),
+                    },
                     duration.slow,
-                    { opacity: 0 },
-                    { opacity: 1, ease },
-                )
-                .fromTo(
-                    contentRef.current!,
-                    duration.slow,
-                    { opacity: 0, scale: 0.8 },
-                    { opacity: 1, scale: 1, ease },
-                    `-=${duration.slow}`,
-                )
-                .set(contentRef.current!, { zIndex: activeZIndex })
+                ),
+                set({ zIndex: [inactiveZIndex, activeZIndex] }),
+            ])
+
+            const bgFrames = animate(backgroundRef.current!, [
+                fromTo({ opacity: val(0, 1) }, duration.slow),
+            ])
+
+            return parallel([contentFrames, bgFrames])
         },
         { title: '→Slide', animateWithNext: true },
     )
 
     useStep(
         -props.start!,
-        (timeline, { duration, ease }) => {
-            timeline
-                .to(backgroundRef.current!, duration.slow, {
-                    opacity: 0,
-                    ease,
-                })
-                .to(
-                    contentRef.current!,
+        ({ duration }) => {
+            const contentFrames = animate(contentRef.current!, [
+                fromTo(
+                    {
+                        opacity: val(1, 0),
+                        transform: transform({
+                            x: val(0, -100, '%'),
+                        }),
+                    },
                     duration.slow,
-                    { opacity: 0, x: '-100%', ease },
-                    `-=${duration.slow}`,
-                )
-                .set(contentRef.current!, { zIndex: inactiveZIndex })
+                ),
+                set({ zIndex: [activeZIndex, inactiveZIndex] }),
+            ])
+
+            const bgFrames = animate(backgroundRef.current!, [
+                fromTo({ opacity: val(1, 0) }, duration.slow),
+            ])
+
+            return parallel([contentFrames, bgFrames])
         },
         { title: '←Slide' },
     )

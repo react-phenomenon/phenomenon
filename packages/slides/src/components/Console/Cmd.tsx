@@ -2,6 +2,7 @@ import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
+import { animate, fromTo, val, set } from '@phenomenon/lightning'
 
 interface CmdProps {
     name: string
@@ -14,21 +15,18 @@ export const Cmd: FC<CmdProps> = props => {
 
     useStep(
         props.in,
-        (timeline, { duration, ease }) => {
-            const el = ref.current!
-            timeline
-                .fromTo(
-                    el,
-                    duration.fast,
-                    { height: 0, width: 0, opacity: 0 },
-                    { height: size!.height, ease },
-                )
-                .to(el, duration.fast, {
-                    opacity: 1,
-                    width: '100%',
-                    ease,
-                })
-        },
+        ({ duration }) =>
+            animate(ref.current!, [
+                set({ width: [0, 0], opacity: [0, 0] }),
+                fromTo({ height: val(0, size!.height, 'px') }, duration.normal),
+                fromTo(
+                    {
+                        width: val(0, size!.width, 'px'),
+                        opacity: val(0, 1),
+                    },
+                    duration.normal,
+                ),
+            ]),
         { title: 'Cmd', deps: [size !== null] },
     )
 

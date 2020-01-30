@@ -1,3 +1,4 @@
+import { fromTo, transform, val } from '@phenomenon/lightning'
 import { Animate, Deck, Slide } from '@phenomenon/slides'
 import {
     backgroundColor,
@@ -42,8 +43,31 @@ export const App = () => (
             <Text align="center">Presentation powered by</Text>
             <Animate
                 in={1}
-                from={{ opacity: 0, scale: 0.9, rotation: 10 }}
-                to={{ opacity: 1, scale: 1, rotation: 0 }}
+                out={2}
+                anim={[
+                    fromTo(
+                        {
+                            opacity: val(0, 1),
+                            transform: transform({
+                                scale: val(0.7, 1),
+                                rotate: val(0, 5, 'deg'),
+                            }),
+                        },
+                        1000,
+                    ),
+                ]}
+                exitAnim={[
+                    fromTo(
+                        {
+                            opacity: val(1, 0),
+                            transform: transform({
+                                scale: val(1, 0.1),
+                                rotate: val(5, 100, 'deg'),
+                            }),
+                        },
+                        1000,
+                    ),
+                ]}
             >
                 <Logo />
             </Animate>

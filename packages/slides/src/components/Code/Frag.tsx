@@ -7,6 +7,7 @@ import { StepProps } from '../../types/StepProps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { FragFC } from './types/FragFC'
 import { Fragments } from './types/Fragments'
+import { animate, fromTo, val, set } from '@phenomenon/lightning'
 
 export interface FragProps extends StepProps {
     id: string
@@ -20,7 +21,7 @@ export const Frag: FragFC<FragProps> = props => {
     const size = useElementSize(ref)
     const fragments = useContext(FragmentsProvider)
 
-    const key = props.inline ? 'width' : 'height'
+    const direction = props.inline ? 'width' : 'height'
 
     const code =
         typeof props.code === 'string'
@@ -29,40 +30,33 @@ export const Frag: FragFC<FragProps> = props => {
 
     useStep(
         props.in,
-        (timeline, { duration, ease }) => {
-            timeline
-                .fromTo(
-                    ref.current!,
+        ({ duration }) =>
+            animate(ref.current!, [
+                fromTo(
+                    {
+                        opacity: val(0, 1),
+                        [direction]: val(0, size![direction], 'px'),
+                    },
                     duration.normal,
-                    {
-                        [key]: 0,
-                        opacity: 0,
-                        backgroundColor: backgroundColorIn,
-                    },
-                    {
-                        [key]: size![key],
-                        opacity: 1,
-                        ease,
-                    },
-                )
-                .set(ref.current!, { [key]: 'auto' })
-                .to(ref.current!, duration.fast, {
-                    backgroundColor: backgroundColorOut,
-                })
-        },
+                ),
+                set({ [direction]: [size![direction], 'auto'] }),
+            ]),
         { title: '→Frag', deps: [size !== null] },
     )
 
     useStep(
         props.out,
-        (timeline, { duration, ease }) => {
-            timeline.to(ref.current!, duration.normal, {
-                [key]: 0,
-                opacity: 0,
-                ease,
-            })
-        },
-        { title: '←Frag' },
+        ({ duration }) =>
+            animate(ref.current!, [
+                fromTo(
+                    {
+                        opacity: val(1, 0),
+                        [direction]: val(size![direction], 0, 'px'),
+                    },
+                    duration.normal,
+                ),
+            ]),
+        { title: '←Frag', deps: [size !== null] },
     )
 
     return (
@@ -93,6 +87,7 @@ const prepareTextCode = (code: string, fragments: Fragments, indent = 0) => {
     return appendFragments(indentedCode, fragments)
 }
 
+// @TODO
 const backgroundColorIn = 'rgba(255, 255, 255, 0.4)'
 const backgroundColorOut = 'rgba(255, 255, 255, 0.0)'
 

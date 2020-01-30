@@ -4,3 +4,4 @@ render/
 node_modules/
 .history/
 .parcel-cache
+*.log

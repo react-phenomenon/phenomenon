@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { stripIndent } from '../../helpers/stripIndent'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
+import { animate, set, fromTo, val } from '@phenomenon/lightning'
 
 interface OutputProps {
     text: string
@@ -15,14 +16,16 @@ export const Output: FC<OutputProps> = props => {
 
     useStep(
         props.in,
-        (timeline, { duration, ease }) => {
-            timeline.fromTo(
-                ref.current!,
-                duration.normal,
-                { opacity: 0, height: 0 },
-                { opacity: 1, height: size!.height, ease },
-            )
-        },
+        ({ duration }) =>
+            animate(ref.current!, [
+                fromTo(
+                    {
+                        height: val(0, size!.height, 'px'),
+                        opacity: val(0, 1),
+                    },
+                    duration.normal,
+                ),
+            ]),
         { title: 'Output', deps: [size !== null] },
     )
 

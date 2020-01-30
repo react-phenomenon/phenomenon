@@ -1,6 +1,6 @@
 export * from './types'
 
-export { lightning } from './lightning'
+export { lightning, LightingInstance, LightingStatus } from './lightning'
 
 export { animate } from './timeline/animate'
 export { fromTo, set, delay, pause } from './timeline/operators'

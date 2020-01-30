@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
 import { FragFC } from './types/FragFC'
+import { animate, fromTo, val } from '@phenomenon/lightning'
+import { size } from 'lodash'
 
 interface MarkProps extends StepProps {
     line: number
@@ -13,22 +15,15 @@ export const Mark: FragFC<MarkProps> = props => {
 
     useStep(
         props.in,
-        (timeline, { duration, ease }) => {
-            timeline.fromTo(
-                ref.current!,
-                duration.normal,
-                { opacity: 0 },
-                { opacity: 1, ease },
-            )
-        },
+        ({ duration }) =>
+            animate(ref.current!, [fromTo({ opacity: val(0, 1) }, duration.normal)]),
         { title: '→Mark' },
     )
 
     useStep(
         props.out,
-        (timeline, { duration, ease }) => {
-            timeline.to(ref.current!, duration.normal, { opacity: 0, ease })
-        },
+        ({ duration }) =>
+            animate(ref.current!, [fromTo({ opacity: val(1, 0) }, duration.normal)]),
         { title: '→Mark' },
     )
 

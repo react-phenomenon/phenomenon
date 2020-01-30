@@ -3,7 +3,9 @@ import { InspectorOptions } from '../inspectorOptions'
 export const createRootEl = (options: InspectorOptions) => {
     const el = document.createElement('div')
 
+    el.style.zIndex = '10000'
     el.style.position = 'absolute'
+    el.style.fontFamily = 'monospace'
     el.style.overflow = 'auto'
     el.style.left = '10px'
     el.style.bottom = '110px'

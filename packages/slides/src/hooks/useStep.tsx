@@ -1,5 +1,5 @@
-import { Power2, TimelineMax, Ease } from 'gsap'
 import { useContext, useEffect } from 'react'
+import { FramesFunction } from '@phenomenon/lightning'
 import { SubStepsContext } from '../components/SubSteps'
 import { TimelineContext, TimelineOptions } from '../lib/Timeline'
 
@@ -10,22 +10,21 @@ interface Durations {
 }
 
 interface DefaultOptions {
-    ease: Ease
+    // ease: Ease
     duration: Durations
 }
 
 const defaultOptions: DefaultOptions = {
-    ease: Power2.easeInOut,
     duration: {
-        fast: 0.3,
-        normal: 0.4,
-        slow: 0.8,
+        fast: 300,
+        normal: 400,
+        slow: 800,
     },
 }
 
 export const useStep = (
     index?: number,
-    createTween?: (tween: TimelineMax, defaultOptions: DefaultOptions) => void,
+    createTween?: (defaultOptions: DefaultOptions) => FramesFunction,
     options: TimelineOptions = {},
 ) => {
     const timeline = useContext(TimelineContext)
@@ -37,7 +36,7 @@ export const useStep = (
 
         timeline.addStep({
             id: [...subId, index],
-            createStepTimeline: stepTimeline => createTween(stepTimeline, defaultOptions),
+            createStepTimeline: () => createTween(defaultOptions),
             options,
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps

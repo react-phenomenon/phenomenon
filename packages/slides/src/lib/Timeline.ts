@@ -1,7 +1,13 @@
 import { debounce, isEqual } from 'lodash'
 import { createContext } from 'react'
 import { ID } from '../types/ID'
-import { TimelineMax } from 'gsap'
+import {
+    FramesFunction,
+    LightingInstance,
+    lightning,
+    sequence,
+    pause,
+} from '@phenomenon/lightning'
 
 export interface TimelineOptions {
     animateWithNext?: boolean
@@ -11,9 +17,8 @@ export interface TimelineOptions {
 
 interface Step {
     id: ID
-    createStepTimeline: (tl: TimelineMax) => void
+    createStepTimeline: () => FramesFunction
     options?: TimelineOptions
-    _timeline?: TimelineMax
 }
 
 type TimelineUpdateCallback = (ms: number, duration: number) => void
@@ -24,7 +29,7 @@ export const TimelineContext = createContext<Timeline>({} as Timeline)
 
 export class Timeline {
     public steps: Step[] = []
-    private line?: TimelineMax
+    private line?: LightingInstance
     private onRegisterCB?: () => void
     private onUpdateCB?: TimelineUpdateCallback
 
@@ -54,7 +59,7 @@ export class Timeline {
 
     public seekByPercent(percent: number) {
         if (!this.line) return
-        const pos = percent * this.line.duration()
+        const pos = percent * this.line.total
         this.seek(pos)
     }
 
@@ -64,37 +69,37 @@ export class Timeline {
 
     public next() {
         if (!this.line) return
-        if (this.line.isActive()) {
-            this.turboMode()
-        }
+        // if (this.line.isActive()) {
+        //     this.turboMode()
+        // }
         this.line.play()
     }
 
     public back() {
         if (!this.line) return
-        if (this.line.isActive()) {
-            this.turboMode()
-        }
-        this.line.reverse()
+        // if (this.line.isActive()) {
+        //     this.turboMode()
+        // }
+        // this.line.reverse()
     }
 
-    private turboTimer: any
-    private turboMode() {
-        if (!this.line) return
+    // private turboTimer: any
+    // private turboMode() {
+    //     if (!this.line) return
 
-        this.line.timeScale(5)
-        clearTimeout(this.turboTimer)
-        this.turboTimer = setTimeout(() => {
-            this.line!.timeScale(1)
-        }, 1000)
-    }
+    //     this.line.timeScale(5)
+    //     clearTimeout(this.turboTimer)
+    //     this.turboTimer = setTimeout(() => {
+    //         this.line!.timeScale(1)
+    //     }, 1000)
+    // }
 
     public getDuration() {
-        return this.line && this.line.duration()
+        return this.line && this.line.total
     }
 
     public getCurrentTime() {
-        return this.line && this.line.time()
+        return this.line && this.line.getStatus().currentTime
     }
 
     private runOnUpdateCB() {
@@ -120,84 +125,66 @@ export class Timeline {
     }
 
     private createLine() {
-        if (this.line) {
-            // eslint-disable-next-line no-console
-            console.warn('[Timeline] this.line already exists!')
-        }
-
-        this.line = new TimelineMax({ paused: true })
-
         this.steps.sort(sortSteps)
+        const frames = sequence(
+            this.steps.map(step => sequence([step.createStepTimeline(), pause()])),
+        )
 
-        this.steps.map(step => {
-            const { createStepTimeline } = step
-
-            const stepTimeline = new TimelineMax()
-            createStepTimeline(stepTimeline)
-
-            step._timeline = stepTimeline
-            return step
+        this.line = lightning(frames, {
+            onUpdate: () => this.handleUpdate(),
         })
 
-        this.steps.forEach((step, index) => {
-            this.addToLine(step, index)
-        })
+        // inspector(this.line)
 
-        this.line.eventCallback('onUpdate', this.handleUpdate)
-
-        const lastTime = this.getLastTime()
-
-        if (lastTime && lastTime < this.line.duration()) {
-            this.line.seek(lastTime - 0.1).play()
-        }
+        this.line.prepare()
     }
 
-    private addToLine(step: Step, index: number) {
-        if (!this.line) return
+    // private addToLine(step: Step, index: number) {
+    //     if (!this.line) return
 
-        const stepTimeline = step._timeline!
+    //     const stepTimeline = step._timeline!
 
-        const offset = this.getSameStepOffset(step, index)
+    //     const offset = this.getSameStepOffset(step, index)
 
-        if (offset && index > 0) {
-            this.line.removePause(this.line.duration())
-            this.line.add(stepTimeline, `-=${offset}`).addPause()
-            return
-        }
+    //     if (offset && index > 0) {
+    //         this.line.removePause(this.line.duration())
+    //         this.line.add(stepTimeline, `-=${offset}`).addPause()
+    //         return
+    //     }
 
-        this.line.add(stepTimeline).addPause()
-    }
+    //     this.line.add(stepTimeline).addPause()
+    // }
 
-    private getSameStepOffset(
-        { id, _timeline, options = {} }: Step,
-        index: number,
-    ): number {
-        const currentDuration = _timeline!.duration()
-        const prevStep = this.steps[index - 1]
+    // private getSameStepOffset(
+    //     { id, _timeline, options = {} }: Step,
+    //     index: number,
+    // ): number {
+    //     const currentDuration = _timeline!.duration()
+    //     const prevStep = this.steps[index - 1]
 
-        if (prevStep && (options.animateWithNext || isSameStep(id, prevStep.id))) {
-            const prevDuration = prevStep._timeline!.duration() || 0
-            // @TODO
-            // This is how it should be, but:
-            //   - this breaks "same step" in Frag component… why?
-            //   - Without this `unwrap`ed steps may have problems… (eg. two step Cmd + one step SwapItem)
-            // BTW here we should take care about negative offset > timeline duration from this point of time
-            // return currentDuration
+    //     if (prevStep && (options.animateWithNext || isSameStep(id, prevStep.id))) {
+    //         const prevDuration = prevStep._timeline!.duration() || 0
+    //         // @TODO
+    //         // This is how it should be, but:
+    //         //   - this breaks "same step" in Frag component… why?
+    //         //   - Without this `unwrap`ed steps may have problems… (eg. two step Cmd + one step SwapItem)
+    //         // BTW here we should take care about negative offset > timeline duration from this point of time
+    //         // return currentDuration
 
-            return Math.min(currentDuration, prevDuration || Infinity)
-        }
+    //         return Math.min(currentDuration, prevDuration || Infinity)
+    //     }
 
-        // @TODO `animateWithPrev`
-        // const nextStep = this.steps[index - 1]
-        // const nextOptions = (nextStep && nextStep.options) || {}
+    //     // @TODO `animateWithPrev`
+    //     // const nextStep = this.steps[index - 1]
+    //     // const nextOptions = (nextStep && nextStep.options) || {}
 
-        // if (nextStep && (nextOptions.animateWithPrev || isSameStep(id, nextStep.id))) {
-        //     const nextDuration = nextStep._timeline!.duration() || 0
-        //     return Math.min(currentDuration, nextDuration)
-        // }
+    //     // if (nextStep && (nextOptions.animateWithPrev || isSameStep(id, nextStep.id))) {
+    //     //     const nextDuration = nextStep._timeline!.duration() || 0
+    //     //     return Math.min(currentDuration, nextDuration)
+    //     // }
 
-        return 0
-    }
+    //     return 0
+    // }
 }
 
 const isSameStep = (id1: ID, id2: ID) => {

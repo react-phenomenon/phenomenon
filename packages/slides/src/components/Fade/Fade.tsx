@@ -1,6 +1,7 @@
 import React, { FC, useRef } from 'react'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
+import { animate, fromTo, val } from '@phenomenon/lightning'
 
 interface TextProps extends StepProps {}
 
@@ -9,25 +10,15 @@ export const Fade: FC<TextProps> = props => {
 
     useStep(
         props.in,
-        (timeline, { duration, ease }) => {
-            timeline.fromTo(
-                ref.current!,
-                duration.normal,
-                { opacity: 0 },
-                { opacity: 1, ease },
-            )
-        },
+        ({ duration }) =>
+            animate(ref.current!, [fromTo({ opacity: val(0, 1) }, duration.normal)]),
         { title: '→Fade' },
     )
 
     useStep(
         props.out,
-        (timeline, { duration, ease }) => {
-            timeline.to(ref.current!, duration.normal, {
-                opacity: 0,
-                ease,
-            })
-        },
+        ({ duration }) =>
+            animate(ref.current!, [fromTo({ opacity: val(1, 0) }, duration.normal)]),
         { title: '←Fade' },
     )
 
