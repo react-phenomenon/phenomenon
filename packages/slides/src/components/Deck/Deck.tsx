@@ -100,7 +100,7 @@ const Loading = styled.div`
         border-radius: ${height}px;
         height: 100%;
         background: rgba(255, 255, 255, 0.8);
-        animation: 1.5s ${grow} ease-out both;
+        animation: 1s ${grow} ease-out both;
     }
 `
 

@@ -7,6 +7,8 @@ import {
     lightning,
     sequence,
     pause,
+    parallel,
+    inspector,
 } from '@phenomenon/lightning'
 
 export interface TimelineOptions {
@@ -17,13 +19,13 @@ export interface TimelineOptions {
 
 interface Step {
     id: ID
-    createStepTimeline: () => FramesFunction
+    getStepFrames: () => FramesFunction
     options?: TimelineOptions
 }
 
 type TimelineUpdateCallback = (ms: number, duration: number) => void
 
-const STEP_ADD_DEBOUNCE = 1000
+const STEP_ADD_DEBOUNCE = 700
 
 export const TimelineContext = createContext<Timeline>({} as Timeline)
 
@@ -126,69 +128,45 @@ export class Timeline {
 
     private createLine() {
         this.steps.sort(sortSteps)
+
         const frames = sequence(
-            this.steps.map(step => sequence([step.createStepTimeline(), pause()])),
+            this.getGroupedSteps().flatMap(group => [
+                parallel(group.map(step => step.getStepFrames())),
+                pause(),
+            ]),
         )
 
         this.line = lightning(frames, {
             onUpdate: () => this.handleUpdate(),
         })
 
-        // inspector(this.line)
+        inspector(this.line)
 
         this.line.prepare()
+
+        this.line.seek(this.getLastTime())
+        // this.line.play()  // Seeks before pause() TODO?
     }
 
-    // private addToLine(step: Step, index: number) {
-    //     if (!this.line) return
+    private getGroupedSteps(): Step[][] {
+        const groupedSteps: Step[][] = []
 
-    //     const stepTimeline = step._timeline!
+        for (let i = 0; i < this.steps.length; i++) {
+            const step = this.steps[i]
+            const lastGroup = groupedSteps[groupedSteps.length - 1]
 
-    //     const offset = this.getSameStepOffset(step, index)
+            if (
+                lastGroup &&
+                (step.options?.animateWithNext || isEqual(step.id, lastGroup[0].id))
+            ) {
+                lastGroup.push(step)
+            } else {
+                groupedSteps.push([step])
+            }
+        }
 
-    //     if (offset && index > 0) {
-    //         this.line.removePause(this.line.duration())
-    //         this.line.add(stepTimeline, `-=${offset}`).addPause()
-    //         return
-    //     }
-
-    //     this.line.add(stepTimeline).addPause()
-    // }
-
-    // private getSameStepOffset(
-    //     { id, _timeline, options = {} }: Step,
-    //     index: number,
-    // ): number {
-    //     const currentDuration = _timeline!.duration()
-    //     const prevStep = this.steps[index - 1]
-
-    //     if (prevStep && (options.animateWithNext || isSameStep(id, prevStep.id))) {
-    //         const prevDuration = prevStep._timeline!.duration() || 0
-    //         // @TODO
-    //         // This is how it should be, but:
-    //         //   - this breaks "same step" in Frag component… why?
-    //         //   - Without this `unwrap`ed steps may have problems… (eg. two step Cmd + one step SwapItem)
-    //         // BTW here we should take care about negative offset > timeline duration from this point of time
-    //         // return currentDuration
-
-    //         return Math.min(currentDuration, prevDuration || Infinity)
-    //     }
-
-    //     // @TODO `animateWithPrev`
-    //     // const nextStep = this.steps[index - 1]
-    //     // const nextOptions = (nextStep && nextStep.options) || {}
-
-    //     // if (nextStep && (nextOptions.animateWithPrev || isSameStep(id, nextStep.id))) {
-    //     //     const nextDuration = nextStep._timeline!.duration() || 0
-    //     //     return Math.min(currentDuration, nextDuration)
-    //     // }
-
-    //     return 0
-    // }
-}
-
-const isSameStep = (id1: ID, id2: ID) => {
-    return isEqual(id1, id2)
+        return groupedSteps
+    }
 }
 
 const sortSteps = (a: Step, b: Step) => {

@@ -34,7 +34,7 @@ export const SwapItem: FC<SwapItemProps> = props => {
                     {
                         height: val(size!.height, 0, 'px'),
                         opacity: val(0, 1),
-                        tran: transform({
+                        transform: transform({
                             y: val(0, -100, '%'),
                         }),
                     },

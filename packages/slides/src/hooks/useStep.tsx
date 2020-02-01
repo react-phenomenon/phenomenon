@@ -24,7 +24,7 @@ const defaultOptions: DefaultOptions = {
 
 export const useStep = (
     index?: number,
-    createTween?: (defaultOptions: DefaultOptions) => FramesFunction,
+    getFrames?: (defaultOptions: DefaultOptions) => FramesFunction,
     options: TimelineOptions = {},
 ) => {
     const timeline = useContext(TimelineContext)
@@ -32,11 +32,11 @@ export const useStep = (
     const { deps = [] } = options
 
     useEffect(() => {
-        if (index === undefined || !createTween || !deps.every(d => d)) return
+        if (index === undefined || !getFrames || !deps.every(d => d)) return
 
         timeline.addStep({
             id: [...subId, index],
-            createStepTimeline: () => createTween(defaultOptions),
+            getStepFrames: () => getFrames(defaultOptions),
             options,
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
