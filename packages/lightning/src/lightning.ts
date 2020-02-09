@@ -66,19 +66,20 @@ export const lightning = (
         options.onPlay?.()
 
         const step = (time: number) => {
-            if (!start) start = time - currentTime
-            const nextRafTime = time - start
-
-            // skip first frame TODO?
-            if (nextRafTime === currentTime) {
+            if (!start) {
+                start = time
+                // skip first frame
                 requestAnimationFrame(step)
                 return
             }
 
+            const diff = time - start
+            start = time
+
             const { nextTime, nextTimeIndex, pause, end } = findTextStepTime(
                 currentTime,
                 currentTimeIndex,
-                nextRafTime,
+                currentTime + diff,
                 total,
                 serializedFrames,
             )

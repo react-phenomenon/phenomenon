@@ -8,7 +8,7 @@
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:jsx-a11y/recommended",
-        "prettier/react",
+        "prettier",
         "prettier/@typescript-eslint"
     ],
     "globals": {

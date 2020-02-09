@@ -4,7 +4,7 @@ import { InspectorOptions } from '../inspectorOptions'
 const bg: Record<FrameType, string> = {
     [FrameType.Tween]: '#4d7a16',
     [FrameType.Set]: 'lightgray',
-    [FrameType.Delay]: 'white',
+    [FrameType.Delay]: '#666',
     [FrameType.Pause]: 'lightgray',
 }
 

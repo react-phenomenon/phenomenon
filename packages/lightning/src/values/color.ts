@@ -1,40 +1,49 @@
 import { limit } from '../helpers'
 
-const { abs, floor } = Math
+type Color = [number, number, number, number]
 
-const toHex = (r: number, g: number, b: number) => {
-    const R = r.toString(16)
-    const G = g.toString(16)
-    const B = b.toString(16)
-    return (
-        '#' +
-        (R.length === 1 ? '0' + R : R) +
-        (G.length === 1 ? '0' + G : G) +
-        (B.length === 1 ? '0' + B : B)
-    )
-}
+const colorToString = (color: Color): string => `rgba(${color.join(', ')})`
 
-const toRGB = (color: string) => {
+const colorFromHEX = (color: string): Color => {
     const r = parseInt(color.substring(1, 3), 16)
     const g = parseInt(color.substring(3, 5), 16)
     const b = parseInt(color.substring(5, 7), 16)
-    return {
-        r: r,
-        g: g,
-        b: b,
+    return [r, g, b, 1]
+}
+
+const colorFromRGB = (color: string): Color => {
+    const [r, g, b, a = 1] = color.match(/(\d|\.)+/g)!.map(Number)
+    return [r, g, b, a]
+}
+
+const getColor = (color: string): Color => {
+    if (color.startsWith('#')) {
+        return colorFromHEX(color)
     }
+
+    if (color.startsWith('rgb')) {
+        return colorFromRGB(color)
+    }
+
+    throw new Error(`[lighting:color] Unknown color "${color}", use hex, rgb or rgba`)
 }
 
 export const color = (color1: string, color2: string) => {
-    const c1 = toRGB(color1)
-    const c2 = toRGB(color2)
+    const c1 = getColor(color1)
+    const c2 = getColor(color2)
 
     return (p: number) => {
         const n = limit(p)
-        return toHex(
-            abs(floor(c2.r * n + c1.r * (1 - n))),
-            abs(floor(c2.g * n + c1.g * (1 - n))),
-            abs(floor(c2.b * n + c1.b * (1 - n))),
-        )
+        const c = []
+
+        for (let i = 0; i < 3; i++) {
+            const ce1 = c1[i] * c1[i]
+            const ce2 = c2[i] * c2[i]
+            c[i] = Math.sqrt(n * (ce2 - ce1) + ce1) >> 0
+        }
+
+        c[3] = (c2[3] - c1[3]) * n + c1[3]
+
+        return colorToString(c as Color)
     }
 }

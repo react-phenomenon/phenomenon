@@ -32,11 +32,14 @@ const findRenderer = (rendererOrSelector: Renderer | string | HTMLElement): Rend
         return rendererOrSelector
     }
 
-    if (rendererOrSelector === 'string' || rendererOrSelector instanceof HTMLElement) {
+    if (
+        typeof rendererOrSelector === 'string' ||
+        rendererOrSelector instanceof HTMLElement
+    ) {
         return htmlElementRenderer(rendererOrSelector)
     }
 
     throw new Error(
-        `[lighting:animate] Invalid renderer (${rendererOrSelector.toString()})`,
+        `[lighting:animate] Invalid renderer (${rendererOrSelector!.toString()})`,
     )
 }

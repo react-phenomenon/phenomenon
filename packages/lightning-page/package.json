@@ -5,12 +5,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "parcel index.html"
+    "start": "react-scripts start"
   },
   "dependencies": {
     "@phenomenon/lightning": "*"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-alpha.3.2"
+    "react-scripts": "^3.2.0"
   }
 }
