@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build-lib": "rm -rf dist && rollup --config",
+    "build": "rm -rf dist && rollup --config",
     "watch": "rollup --config --watch"
   },
   "main": "dist/phenomenon-lightning.esm.js",

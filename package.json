@@ -8,7 +8,7 @@
   "scripts": {
     "start": "npm-run-all --parallel watch start-example",
     "watch": "yarn wsrun --exclude-missing watch",
-    "build-lib": "yarn wsrun --exclude-missing build-lib",
+    "build": "yarn wsrun --stages --exclude-missing build",
     "typecheck": "yarn wsrun --exclude-missing typecheck",
     "test": "yarn wsrun --exclude-missing test",
     "deploy": "yarn wsrun --exclude-missing deploy",

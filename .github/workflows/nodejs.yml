@@ -23,7 +23,7 @@ jobs:
           npx yarn install
           npx yarn run prettier-check
           npx yarn run lint
-          npx yarn run build-lib
+          npx yarn run build
           npx yarn run typecheck
         env:
           CI: true
