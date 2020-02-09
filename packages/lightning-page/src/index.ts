@@ -136,3 +136,29 @@ document.getElementById('reset')!.addEventListener('click', () => {
     anim.seek(0)
     seekEl.value = '0'
 })
+
+document.addEventListener('keydown', ({ key }) => {
+    switch (key) {
+        case ' ': {
+            const { playing } = anim.getStatus()
+            playing ? anim.pause() : anim.play()
+
+            break
+        }
+
+        case 'Home': {
+            anim.seek(0)
+            break
+        }
+
+        case 'ArrowRight':
+        case 'ArrowLeft': {
+            const { currentTime } = anim.getStatus()
+            const offset = key === 'ArrowLeft' ? -1000 : 1000
+            anim.seek(currentTime + offset)
+            break
+        }
+    }
+
+    console.log('key', key)
+})
