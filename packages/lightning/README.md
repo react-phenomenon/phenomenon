@@ -1,6 +1,6 @@
 # Lighting
 
-The extensible TypeScript animation library.
+The extendable TypeScript animation library.
 
 ```
 yarn add @phenomenon/lightning
