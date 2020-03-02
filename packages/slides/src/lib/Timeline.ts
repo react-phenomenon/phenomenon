@@ -79,6 +79,9 @@ export class Timeline {
 
     public back() {
         if (!this.line) return
+        const { currentTime } = this.line.getStatus()
+        this.line.seek(currentTime - 1000)
+        this.line.play()
         // if (this.line.isActive()) {
         //     this.turboMode()
         // }
@@ -140,7 +143,7 @@ export class Timeline {
             onUpdate: () => this.handleUpdate(),
         })
 
-        inspector(this.line)
+        // inspector(this.line)
 
         this.line.prepare()
 

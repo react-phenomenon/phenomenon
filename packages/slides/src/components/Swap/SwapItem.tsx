@@ -1,9 +1,9 @@
+import { animate, fromTo, transform, val } from '@phenomenon/lightning'
 import React, { FC, useRef } from 'react'
-import { StepProps } from '../../types/StepProps'
-import { useStep } from '../../hooks/useStep'
-import { useElementSize } from '../../hooks/useElementSize'
 import styled from 'styled-components'
-import { animate, set, fromTo, val, transform } from '@phenomenon/lightning'
+import { useElementSize } from '../../hooks/useElementSize'
+import { useStep } from '../../hooks/useStep'
+import { StepProps } from '../../types/StepProps'
 
 export interface SwapItemProps extends StepProps {}
 
@@ -33,7 +33,7 @@ export const SwapItem: FC<SwapItemProps> = props => {
                 fromTo(
                     {
                         height: val(size!.height, 0, 'px'),
-                        opacity: val(0, 1),
+                        opacity: val(1, 0),
                         transform: transform({
                             y: val(0, -100, '%'),
                         }),

@@ -7,7 +7,7 @@ import { StepProps } from '../../types/StepProps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { FragFC } from './types/FragFC'
 import { Fragments } from './types/Fragments'
-import { animate, fromTo, val, set } from '@phenomenon/lightning'
+import { animate, fromTo, val, set, color } from '@phenomenon/lightning'
 
 export interface FragProps extends StepProps {
     id: string
@@ -34,10 +34,17 @@ export const Frag: FragFC<FragProps> = props => {
             animate(ref.current!, [
                 fromTo(
                     {
+                        backgroundColor: color(bgColorOut, bgColorIn),
                         opacity: val(0, 1),
                         [direction]: val(0, size![direction], 'px'),
                     },
                     duration.normal,
+                ),
+                fromTo(
+                    {
+                        backgroundColor: color(bgColorIn, bgColorOut),
+                    },
+                    duration.fast,
                 ),
                 set({ [direction]: [size![direction], 'auto'] }),
             ]),
@@ -74,8 +81,6 @@ export const Frag: FragFC<FragProps> = props => {
     )
 }
 
-// TODO this is not the best idea
-// This will differentiate this component from the <Frag />
 Frag._type = 'frag'
 
 const prepareTextCode = (code: string, fragments: Fragments, indent = 0) => {
@@ -87,9 +92,8 @@ const prepareTextCode = (code: string, fragments: Fragments, indent = 0) => {
     return appendFragments(indentedCode, fragments)
 }
 
-// @TODO
-const backgroundColorIn = 'rgba(255, 255, 255, 0.4)'
-const backgroundColorOut = 'rgba(255, 255, 255, 0.0)'
+const bgColorIn = 'rgba(255, 255, 255, 0.3)'
+const bgColorOut = 'rgba(255, 255, 255, 0.0)'
 
 const Element = styled.code<{ inline?: boolean }>`
     display: ${p => (p.inline ? 'inline-block' : 'block')};

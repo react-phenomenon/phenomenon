@@ -1,4 +1,4 @@
-import { CodeInfo, CodeWithText, Frag } from '@phenomenon/slides'
+import { CodeInfo, CodeWithText, Frag, Code } from '@phenomenon/slides'
 import { SubTitle, Text, Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
 
@@ -14,14 +14,14 @@ export const HowToUse: FC = () => {
                     $DECK
                 `}
             >
-                <CodeInfo out={++f}>
+                <CodeInfo out={f + 1}>
                     <SubTitle>First</SubTitle>
                     <Text>To create slides you have to use two components</Text>
                 </CodeInfo>
 
                 <Frag
                     id="DECK"
-                    in={f}
+                    in={++f}
                     code={`
                         <Deck>
                             $SLIDES
@@ -47,7 +47,7 @@ export const HowToUse: FC = () => {
                     `}
                 />
                 <CodeInfo in={f} out={++f}>
-                    <SubTitle>And {'<Slide>'}</SubTitle>
+                    <SubTitle>{'<Slide>'}</SubTitle>
                     <Text>For each slide</Text>
                 </CodeInfo>
 
@@ -64,7 +64,6 @@ export const HowToUse: FC = () => {
                 <Frag
                     id="SIMPLE_CONTENT2"
                     in={f}
-                    out={f}
                     indent={2}
                     code={`
                         <h1>OMG next slide!</h1>
@@ -75,8 +74,7 @@ export const HowToUse: FC = () => {
                 </CodeInfo>
 
                 <CodeInfo in={f} out={++f}>
-                    <SubTitle>And…</SubTitle>
-                    <Text>You have very boring presentation :)</Text>
+                    <Text>And you have a little bit boring presentation :)</Text>
                 </CodeInfo>
 
                 <CodeInfo in={f} out={f + 2}>
@@ -106,13 +104,7 @@ export const HowToUse: FC = () => {
                 </CodeInfo>
 
                 <CodeInfo in={f} out={++f}>
-                    <SubTitle>There is more</SubTitle>
-                    <Text>It require more explanation</Text>
-                </CodeInfo>
-
-                <CodeInfo in={f}>
-                    <Text>But don&apos;t worry!</Text>
-                    <Text>You will understand it without a problem</Text>
+                    <Text>And there is more!</Text>
                 </CodeInfo>
             </CodeWithText>
         </>
