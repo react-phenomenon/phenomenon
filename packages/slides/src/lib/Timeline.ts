@@ -1,15 +1,14 @@
-import { debounce, isEqual } from 'lodash'
-import { createContext } from 'react'
-import { ID } from '../types/ID'
 import {
     FramesFunction,
     LightingInstance,
     lightning,
-    sequence,
-    pause,
     parallel,
-    inspector,
+    pause,
+    sequence,
 } from '@phenomenon/lightning'
+import { debounce, isEqual } from 'lodash'
+import { createContext } from 'react'
+import { ID } from '../types/ID'
 
 export interface TimelineOptions {
     animateWithNext?: boolean
@@ -142,8 +141,6 @@ export class Timeline {
         this.line = lightning(frames, {
             onUpdate: () => this.handleUpdate(),
         })
-
-        // inspector(this.line)
 
         this.line.prepare()
 

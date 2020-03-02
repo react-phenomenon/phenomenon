@@ -14,6 +14,7 @@ import { CssExample } from './CssExample'
 import { HowToUse } from './HowToUse'
 import { JavaScriptExample } from './JavaScriptExample'
 import { ReactExample } from './ReactExample'
+import { ThreeExample } from './ThreeExample'
 
 export const App = () => (
     <Deck config={{ backgroundImage, backgroundColor }}>
@@ -38,6 +39,9 @@ export const App = () => (
         </Slide>
         <Slide>
             <CssExample />
+        </Slide>
+        <Slide>
+            <ThreeExample in={1} out={2} />
         </Slide>
         <Slide>
             <Text align="center">Presentation powered by</Text>

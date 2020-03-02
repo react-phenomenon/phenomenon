@@ -1,4 +1,4 @@
-import { CodeInfo, CodeWithText, Frag, Code } from '@phenomenon/slides'
+import { CodeInfo, CodeWithText, Frag } from '@phenomenon/slides'
 import { SubTitle, Text, Title } from '@phenomenon/theme-storm'
 import React, { FC } from 'react'
 

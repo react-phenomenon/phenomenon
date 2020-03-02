@@ -18,6 +18,8 @@
     "@phenomenon/theme-storm": "*",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-three-fiber": "^4.0.19",
+    "three": "^0.114.0",
     "trim-right": "^1.0.1"
   },
   "devDependencies": {
