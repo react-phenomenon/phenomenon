@@ -1,8 +1,5 @@
 import 'core-js'
-import { lightning } from './lightning'
-import { animate } from './timeline/animate'
-import { set, delay, fromTo } from './timeline/operators'
-import { val } from './values/val'
+import { animate, delay, fromTo, lightning, set, val } from './'
 
 /* eslint-disable no-undef */
 
@@ -12,12 +9,7 @@ describe('lightning', () => {
     const frames = animate(frameValues => Object.assign(values, frameValues), [
         delay(100),
         set({ a: [0, 1] }),
-        fromTo(
-            {
-                b: val(10, 100),
-            },
-            100,
-        ),
+        fromTo({ b: val(10, 100) }, 100),
     ])
 
     const anim = lightning(frames)

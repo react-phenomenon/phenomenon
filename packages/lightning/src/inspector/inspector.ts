@@ -4,7 +4,7 @@ import { createBarEl } from './el/createBarEl'
 import { inspectorOptions } from './inspectorOptions'
 import { createLineEl } from './el/createLineEl'
 import { createSeekEl } from './el/createSeekEl'
-import { shouldSkipFrame } from '../renderer/render'
+import { shouldSkipFrame } from '../timeline/shouldSkipFrame'
 import { createStatusEl } from './el/createStatusEl'
 
 export const inspector = (anim: ReturnType<typeof lightning>) => {

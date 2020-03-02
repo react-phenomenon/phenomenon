@@ -24,7 +24,7 @@ export const createBarEl = (
         el.textContent = `${frame.type}`
     }
 
-    el.title = `[${frame.start} - ${frame.start + frame.duration}] ${frame.type}`
+    el.title = `[${frame.startAt} - ${frame.startAt + frame.duration}] ${frame.type}`
 
     if ('values' in frame) {
         const values = ` (${Object.keys(frame.values).join(', ')})`
@@ -57,7 +57,7 @@ export const createBarEl = (
     el.style.whiteSpace = 'nowrap'
     el.style.marginBottom = '1px'
     el.style.color = 'white'
-    el.style.marginLeft = frame.start / options.scale + 'px'
+    el.style.marginLeft = frame.startAt / options.scale + 'px'
 
     switch (frame.type) {
         case FrameType.Pause:

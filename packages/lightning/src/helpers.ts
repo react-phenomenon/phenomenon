@@ -19,4 +19,4 @@ export const limit = (value: number, min = 0, max = 1) =>
     Math.min(Math.max(value, min), max)
 
 export const totalDuration = (frames: SerializedFrame[]): number =>
-    max(...frames.map(frame => frame.start + frame.duration))
+    max(...frames.map(frame => frame.startAt + frame.duration))

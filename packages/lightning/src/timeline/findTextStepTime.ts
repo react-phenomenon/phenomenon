@@ -17,12 +17,12 @@ export const findTextStepTime = (
     for (const frame of serializedFrames) {
         if (
             frame.type === FrameType.Pause &&
-            frame.start >= prevTime &&
-            frame.start <= nextTime &&
+            frame.startAt >= prevTime &&
+            frame.startAt <= nextTime &&
             frame.startIndex > prevTimeIndex
         ) {
             return {
-                nextTime: frame.start,
+                nextTime: frame.startAt,
                 nextTimeIndex: frame.startIndex,
                 pause: true,
                 end: false,
@@ -40,7 +40,7 @@ export const findTextStepTime = (
     }
 
     return {
-        nextTime: nextTime,
+        nextTime,
         nextTimeIndex: 0,
         pause: false,
         end: false,

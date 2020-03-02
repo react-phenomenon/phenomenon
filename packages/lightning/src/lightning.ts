@@ -1,7 +1,7 @@
 import { totalDuration } from './helpers'
 import { SerializedFrame, FramesFunction } from './types'
-import { render } from './renderer/render'
-import { findTextStepTime } from './renderer/findTextStepTime'
+import { render } from './timeline/render'
+import { findTextStepTime } from './timeline/findTextStepTime'
 import { prepareFrames } from './timeline/prepareFrames'
 
 export interface LightingInstance {

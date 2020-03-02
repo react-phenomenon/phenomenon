@@ -40,6 +40,8 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "no-console": "error",
+        "object-shorthand": ["error", "always"],
+        "no-useless-rename": "error",
         "for-direction": "off"
     }
 }

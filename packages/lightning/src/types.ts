@@ -7,7 +7,7 @@ export enum FrameType {
 
 interface SerializedFrameStep {
     type: FrameType
-    start: number
+    startAt: number
     startIndex: number
     duration: number
 }

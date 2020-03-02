@@ -1,5 +1,6 @@
 import { limit, mapObjectValues } from '../helpers'
 import { SerializedFrame, FrameType } from '../types'
+import { shouldSkipFrame } from './shouldSkipFrame'
 
 export const render = (
     currentTime: number,
@@ -26,7 +27,7 @@ export const render = (
             case FrameType.Tween:
                 frame.renderer(
                     mapObjectValues(frame.values, val => {
-                        const n = limit((currentTime - frame.start) / frame.duration)
+                        const n = limit((currentTime - frame.startAt) / frame.duration)
                         return val(frame.easing(n))
                     }),
                 )
@@ -36,20 +37,10 @@ export const render = (
                 frame.renderer(
                     mapObjectValues(frame.values, val => {
                         const [off, on] = val
-                        return currentTime >= frame.start + frame.duration ? on : off
+                        return currentTime >= frame.startAt + frame.duration ? on : off
                     }),
                 )
                 break
         }
     }
-}
-
-export const shouldSkipFrame = (
-    currentTime: number,
-    currentTimeIndex: number,
-    frame: SerializedFrame,
-) => {
-    if (frame.start > currentTime) return true
-    if (frame.start === currentTime && frame.startIndex > currentTimeIndex) return true
-    return false
 }
