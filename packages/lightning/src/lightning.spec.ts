@@ -1,8 +1,6 @@
 import 'core-js'
 import { animate, delay, fromTo, lightning, set, val } from './'
 
-/* eslint-disable no-undef */
-
 describe('lightning', () => {
     const values = { a: null, b: null }
 

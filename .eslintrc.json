@@ -9,7 +9,8 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:jsx-a11y/recommended",
         "prettier",
-        "prettier/@typescript-eslint"
+        "prettier/@typescript-eslint",
+        "plugin:jest/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -29,7 +30,7 @@
             "version": "detect"
         }
     },
-    "plugins": ["react", "react-hooks", "jsx-a11y", "@typescript-eslint"],
+    "plugins": ["react", "react-hooks", "jsx-a11y", "@typescript-eslint", "jest"],
     "rules": {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
