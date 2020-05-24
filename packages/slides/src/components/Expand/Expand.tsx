@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
-import { animate, fromTo, val } from '@phenomenon/lightning'
+import { trail, fromTo, val } from 'light-trails'
 
 interface ExpandProps extends StepProps {
     horizontal?: boolean
@@ -17,7 +17,7 @@ export const Expand: FC<ExpandProps> = props => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         opacity: val(0, 1),
@@ -32,7 +32,7 @@ export const Expand: FC<ExpandProps> = props => {
     useStep(
         props.out,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         opacity: val(1, 0),

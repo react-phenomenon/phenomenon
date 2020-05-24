@@ -1,11 +1,11 @@
 import {
-    FramesFunction,
-    LightingInstance,
-    lightning,
+    SimpleTrailFunction,
+    LightTrailsInstance,
+    lightTrails,
     parallel,
     pause,
     sequence,
-} from '@phenomenon/lightning'
+} from 'light-trails'
 import { debounce, isEqual } from 'lodash'
 import { createContext } from 'react'
 import { ID } from '../types/ID'
@@ -18,7 +18,7 @@ export interface TimelineOptions {
 
 interface Step {
     id: ID
-    getStepFrames: () => FramesFunction
+    getStepFrames: () => SimpleTrailFunction
     options?: TimelineOptions
 }
 
@@ -30,7 +30,7 @@ export const TimelineContext = createContext<Timeline>({} as Timeline)
 
 export class Timeline {
     public steps: Step[] = []
-    private line?: LightingInstance
+    private line?: LightTrailsInstance
     private onRegisterCB?: () => void
     private onUpdateCB?: TimelineUpdateCallback
 
@@ -138,7 +138,7 @@ export class Timeline {
             ]),
         )
 
-        this.line = lightning(frames, {
+        this.line = lightTrails(frames, {
             onUpdate: () => this.handleUpdate(),
         })
 

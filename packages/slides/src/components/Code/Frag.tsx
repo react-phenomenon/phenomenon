@@ -7,7 +7,7 @@ import { StepProps } from '../../types/StepProps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { FragFC } from './types/FragFC'
 import { Fragments } from './types/Fragments'
-import { animate, fromTo, val, set, color } from '@phenomenon/lightning'
+import { trail, fromTo, val, set, color } from 'light-trails'
 
 export interface FragProps extends StepProps {
     id: string
@@ -31,7 +31,7 @@ export const Frag: FragFC<FragProps> = props => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         backgroundColor: color(bgColorOut, bgColorIn),
@@ -54,7 +54,7 @@ export const Frag: FragFC<FragProps> = props => {
     useStep(
         props.out,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         opacity: val(1, 0),

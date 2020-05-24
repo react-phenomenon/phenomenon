@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { stripIndent } from '../../helpers/stripIndent'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
-import { animate, set, fromTo, val } from '@phenomenon/lightning'
+import { trail, set, fromTo, val } from 'light-trails'
 
 interface OutputProps {
     text: string
@@ -17,7 +17,7 @@ export const Output: FC<OutputProps> = props => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         height: val(0, size!.height, 'px'),

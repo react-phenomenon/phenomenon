@@ -5,7 +5,7 @@ import { ConfigContext } from '../../lib/Config'
 import { Config } from '../../types/Config'
 import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
-import { animate, set, fromTo, val, parallel, transform } from '@phenomenon/lightning'
+import { trail, set, fromTo, val, parallel } from 'light-trails'
 
 export interface SlideProps extends SubStepsProps {
     config?: Partial<Config>
@@ -24,21 +24,19 @@ export const Slide: FC<SlideProps> = props => {
     useStep(
         props.start === 1 ? undefined : props.start, // Skip first slide enter animation
         ({ duration }) => {
-            const contentFrames = animate(contentRef.current!, [
+            const contentFrames = trail(contentRef.current!, [
                 set({ zIndex: [undefined, inactiveZIndex] }),
                 fromTo(
                     {
                         opacity: val(0, 1),
-                        transform: transform({
-                            scale: val(0.8, 1),
-                        }),
+                        scale: val(0.8, 1),
                     },
                     duration.slow,
                 ),
                 set({ zIndex: [inactiveZIndex, activeZIndex] }),
             ])
 
-            const bgFrames = animate(backgroundRef.current!, [
+            const bgFrames = trail(backgroundRef.current!, [
                 fromTo({ opacity: val(0, 1) }, duration.slow),
             ])
 
@@ -50,20 +48,18 @@ export const Slide: FC<SlideProps> = props => {
     useStep(
         -props.start!,
         ({ duration }) => {
-            const contentFrames = animate(contentRef.current!, [
+            const contentFrames = trail(contentRef.current!, [
                 fromTo(
                     {
                         opacity: val(1, 0),
-                        transform: transform({
-                            x: val(0, -100, '%'),
-                        }),
+                        x: val(0, -100, '%'),
                     },
                     duration.slow,
                 ),
                 set({ zIndex: [activeZIndex, inactiveZIndex] }),
             ])
 
-            const bgFrames = animate(backgroundRef.current!, [
+            const bgFrames = trail(backgroundRef.current!, [
                 fromTo({ opacity: val(1, 0) }, duration.slow),
             ])
 

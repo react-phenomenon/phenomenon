@@ -1,4 +1,4 @@
-import { animate, fromTo, val } from '@phenomenon/lightning'
+import { trail, fromTo, val } from 'light-trails'
 import { useStep } from '@phenomenon/slides'
 import React, { useRef } from 'react'
 import { Canvas } from 'react-three-fiber'
@@ -9,7 +9,7 @@ export const ThreeExample = (props: any) => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(
+            trail(
                 values => {
                     mesh.current.rotation.x = values.x
                     mesh.current.rotation.y = values.y
@@ -30,7 +30,7 @@ export const ThreeExample = (props: any) => {
     useStep(
         props.out,
         ({ duration }) =>
-            animate(
+            trail(
                 values => {
                     mesh.current.scale.x = values.scale
                     mesh.current.scale.y = values.scale

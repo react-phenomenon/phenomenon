@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@phenomenon/lightning": "*",
+    "light-trails": "*",
+    "light-trails": "^0.5.0",
     "lodash": "^4.17.11",
     "puppeteer": "^1.17.0",
     "react": "^16.10.2",

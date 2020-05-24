@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useStep } from '../../hooks/useStep'
 import { StepProps } from '../../types/StepProps'
 import { FragFC } from './types/FragFC'
-import { animate, fromTo, val } from '@phenomenon/lightning'
+import { trail, fromTo, val } from 'light-trails'
 import { size } from 'lodash'
 
 interface MarkProps extends StepProps {
@@ -16,14 +16,14 @@ export const Mark: FragFC<MarkProps> = props => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(ref.current!, [fromTo({ opacity: val(0, 1) }, duration.normal)]),
+            trail(ref.current!, [fromTo({ opacity: val(0, 1) }, duration.normal)]),
         { title: '→Mark' },
     )
 
     useStep(
         props.out,
         ({ duration }) =>
-            animate(ref.current!, [fromTo({ opacity: val(1, 0) }, duration.normal)]),
+            trail(ref.current!, [fromTo({ opacity: val(1, 0) }, duration.normal)]),
         { title: '→Mark' },
     )
 

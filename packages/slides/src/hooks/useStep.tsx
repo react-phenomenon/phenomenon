@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { FramesFunction } from '@phenomenon/lightning'
+import { SimpleTrailFunction } from 'light-trails'
 import { SubStepsContext } from '../components/SubSteps'
 import { TimelineContext, TimelineOptions } from '../lib/Timeline'
 
@@ -24,7 +24,7 @@ const defaultOptions: DefaultOptions = {
 
 export const useStep = (
     index?: number,
-    getFrames?: (defaultOptions: DefaultOptions) => FramesFunction,
+    getFrames?: (defaultOptions: DefaultOptions) => SimpleTrailFunction,
     options: TimelineOptions = {},
 ) => {
     const timeline = useContext(TimelineContext)

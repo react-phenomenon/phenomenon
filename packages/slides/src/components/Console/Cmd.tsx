@@ -2,7 +2,7 @@ import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useStep } from '../../hooks/useStep'
-import { animate, fromTo, val, set } from '@phenomenon/lightning'
+import { trail, fromTo, val, set } from 'light-trails'
 
 interface CmdProps {
     name: string
@@ -16,7 +16,7 @@ export const Cmd: FC<CmdProps> = props => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 set({ width: [0, 0], opacity: [0, 0] }),
                 fromTo({ height: val(0, size!.height, 'px') }, duration.normal),
                 fromTo(

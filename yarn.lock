@@ -9508,6 +9508,11 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+light-trails@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/light-trails/-/light-trails-0.5.0.tgz#5230c8fcdf93b3f89297b75b83d04569c2f4f85e"
+  integrity sha512-NoCN47lmrbzjFbOaG1+JBhOPcbUFXm0Wys+IXQR7FQEitYOh2cFUIt52Ig/n1jZ8QKet1J/aoSBifssFOlWmIg==
+
 lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"

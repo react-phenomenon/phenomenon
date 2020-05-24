@@ -1,4 +1,4 @@
-import { animate, fromTo, transform, val } from '@phenomenon/lightning'
+import { fromTo, trail, val } from 'light-trails'
 import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import { useElementSize } from '../../hooks/useElementSize'
@@ -14,7 +14,7 @@ export const SwapItem: FC<SwapItemProps> = props => {
     useStep(
         props.in,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         height: val(0, size!.height, 'px'),
@@ -29,14 +29,12 @@ export const SwapItem: FC<SwapItemProps> = props => {
     useStep(
         props.out,
         ({ duration }) =>
-            animate(ref.current!, [
+            trail(ref.current!, [
                 fromTo(
                     {
                         height: val(size!.height, 0, 'px'),
                         opacity: val(1, 0),
-                        transform: transform({
-                            y: val(0, -100, '%'),
-                        }),
+                        y: val(0, -100, '%'),
                     },
                     duration.normal,
                 ),
