@@ -21,7 +21,6 @@
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@types/styled-components": "^4.1.15",
-    "babel-preset-react-app": "^9.1.0",
-    "typescript": "^3.7.3"
+    "babel-preset-react-app": "^9.1.0"
   }
 }

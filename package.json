@@ -32,10 +32,6 @@
     "> 2%",
     "not dead"
   ],
-  "dependencies": {
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2"
-  },
   "devDependencies": {
     "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.1",
