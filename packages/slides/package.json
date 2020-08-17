@@ -1,6 +1,6 @@
 {
   "name": "@phenomenon/slides",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "watch": "npm-run-all --parallel watch:*",
     "watch:babel": "yarn run build:babel --watch",
@@ -14,6 +14,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@babel/runtime": "^7.11.2",
     "light-trails": "^0.5.0",
     "lodash": "^4.17.11",
     "react": "^16.10.2",
