@@ -6,38 +6,38 @@ import { SubSteps } from '../SubSteps'
 import { appendFragments, FragmentsProvider } from './lib/appendFragments'
 import { findFragments } from './lib/findFragments'
 import { Tab } from './partials/Tab'
-import { getChildrenByType } from './lib/getChildrenByType'
 
 export interface CodeProps extends SubStepsProps {
     code: string
     filename?: string
     maxHeight?: string | number
+    minWidth?: string | number
 }
 
 export const Code: FC<CodeProps> = props => {
     const fragments = findFragments(props.children)
     const code = stripIndent(props.code)
     const codeWithFragments = appendFragments(code, fragments)
-    const markers = getChildrenByType('mark', props.children)
-    const maxHeight =
-        typeof props.maxHeight === 'number' ? `${props.maxHeight}px` : props.maxHeight
+
+    const maxHeight = props.maxHeight && normalizeSize(props.maxHeight)
+    const minWidth = props.minWidth && normalizeSize(props.minWidth)
 
     return (
         <SubSteps start={props.start} unwrap={props.unwrap}>
             <FragmentsProvider.Provider value={fragments}>
                 <Container>
                     {props.filename && <Tab name={props.filename} />}
-                    <Background style={{ maxHeight }}>
-                        <Pre>
-                            {codeWithFragments}
-                            {markers}
-                        </Pre>
+                    <Background style={{ maxHeight, minWidth }}>
+                        <Pre>{codeWithFragments}</Pre>
                     </Background>
                 </Container>
             </FragmentsProvider.Provider>
         </SubSteps>
     )
 }
+
+const normalizeSize = (size: number | string) =>
+    typeof size === 'number' ? `${size}px` : size
 
 const Container = styled.div`
     line-height: 1.5em;

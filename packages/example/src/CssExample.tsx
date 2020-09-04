@@ -22,6 +22,7 @@ export const CssExample: FC = () => {
                     `}
                 start={++c}
                 maxHeight={400}
+                minWidth={600}
             >
                 <Frag
                     id="BTN"
