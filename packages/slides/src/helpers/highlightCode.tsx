@@ -58,7 +58,7 @@ const styles: { reg: RegExp; Comp: any }[] = [
         `,
     },
     {
-        reg: /\b(\d+(%|em|rem|px|s|vh|vw|vmax|vmin|ex|ch|\.)*)\b/g,
+        reg: /\b(\d+(%|em|rem|px|s|vh|vw|vmax|vmin|ex|ch|deg|turn|rad|grad|\.)*)\b/g,
         Comp: styled.span`
             color: #d19a66;
         `,

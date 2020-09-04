@@ -15,7 +15,6 @@ export const CssExample: FC = () => {
                 filename="styles/global.css"
                 code={`
                         $BODY
-                        "test" aa "test"
                         .button {
                             $BTN
                             $HOVER
