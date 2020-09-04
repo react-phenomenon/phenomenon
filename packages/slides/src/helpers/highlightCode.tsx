@@ -52,7 +52,7 @@ const styles: { reg: RegExp; Comp: any }[] = [
         `,
     },
     {
-        reg: /(["'`](.+)?["'`])/g,
+        reg: /(["'`](.*?)["'`])/g,
         Comp: styled.span`
             color: #98c379;
         `,
