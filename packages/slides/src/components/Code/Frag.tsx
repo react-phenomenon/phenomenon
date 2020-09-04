@@ -14,6 +14,8 @@ export interface FragProps extends StepProps {
     code: ReactNode
     inline?: boolean
     indent?: number
+    hlIn?: number
+    hlOut?: number
 }
 
 export const Frag: FragFC<FragProps> = props => {
@@ -22,6 +24,7 @@ export const Frag: FragFC<FragProps> = props => {
     const fragments = useContext(FragmentsProvider)
 
     const direction = props.inline ? 'width' : 'height'
+    const hlScale = props.inline ? 1.3 : 1.1
 
     const code =
         typeof props.code === 'string'
@@ -46,7 +49,10 @@ export const Frag: FragFC<FragProps> = props => {
                     },
                     duration.fast,
                 ),
-                set({ [direction]: [size![direction], 'auto'] }),
+                set({
+                    [direction]: [size![direction], 'auto'],
+                    overflow: ['hidden', 'visible'],
+                }),
             ]),
         { title: '→Frag', deps: [size !== null] },
     )
@@ -64,6 +70,34 @@ export const Frag: FragFC<FragProps> = props => {
                 ),
             ]),
         { title: '←Frag', deps: [size !== null] },
+    )
+
+    useStep(
+        props.hlIn,
+        ({ duration }) =>
+            trail(ref.current!, [
+                fromTo(
+                    {
+                        scale: val(1, hlScale),
+                        backgroundColor: color(bgHlColorOut, bgHlColorIn),
+                    },
+                    duration.normal,
+                ),
+                fromTo({ scale: val(hlScale, 1) }, duration.normal),
+            ]),
+        { title: '→Frag hl' },
+    )
+
+    useStep(
+        props.hlOut,
+        ({ duration }) =>
+            trail(ref.current!, [
+                fromTo(
+                    { backgroundColor: color(bgHlColorIn, bgHlColorOut) },
+                    duration.normal,
+                ),
+            ]),
+        { title: '←Frag hl' },
     )
 
     return (
@@ -94,6 +128,9 @@ const prepareTextCode = (code: string, fragments: Fragments, indent = 0) => {
 
 const bgColorIn = 'rgba(255, 255, 255, 0.3)'
 const bgColorOut = 'rgba(255, 255, 255, 0.0)'
+
+const bgHlColorIn = 'rgba(255, 180, 0, 0.3)'
+const bgHlColorOut = 'rgba(255, 180, 0, 0.0)'
 
 const Element = styled.code<{ inline?: boolean }>`
     display: ${p => (p.inline ? 'inline-block' : 'block')};
