@@ -36,7 +36,7 @@ const styles: { reg: RegExp; Comp: any }[] = [
         `,
     },
     {
-        reg: /(if|else|return|for|while|of|=>)/g,
+        reg: /\b(if|else|return|for|while|of|=>)\b/g,
         Comp: styled.span`
             color: #c678dd;
         `,
@@ -46,19 +46,19 @@ const styles: { reg: RegExp; Comp: any }[] = [
         Comp: Color,
     },
     {
-        reg: /(true|false|undefined|null)/g,
+        reg: /\b(true|false|undefined|null)\b/g,
         Comp: styled.span`
             color: #d19a66;
         `,
     },
     {
-        reg: /(["'`].+["'`])/g,
+        reg: /(["'`](.+)?["'`])/g,
         Comp: styled.span`
             color: #98c379;
         `,
     },
     {
-        reg: /(\d+(%|px|\.)*)/g,
+        reg: /\b(\d+(%|em|rem|px|s|vh|vw|vmax|vmin|ex|ch|\.)*)\b/g,
         Comp: styled.span`
             color: #d19a66;
         `,

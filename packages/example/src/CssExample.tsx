@@ -28,6 +28,7 @@ export const CssExample: FC = () => {
                     in={++i}
                     code={`
                         background: red;
+                        transform: scaleX(0);
                         $BODY2
                     `}
                     indent={1}
@@ -60,7 +61,8 @@ export const CssExample: FC = () => {
                     in={++i}
                     indent={1}
                     code={`
-                        line-height: 1.6;
+                        content: "";
+                        line-height: 1.6em;
                         background-color: #923abc;
                         color: aliceblue;
                         font-family: 'Source Code Pro';
