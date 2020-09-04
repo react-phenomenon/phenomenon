@@ -21,12 +21,14 @@ export const CssExample: FC = () => {
                         }
                     `}
                 start={++c}
+                maxHeight={400}
             >
                 <Frag
                     id="BTN"
                     in={++i}
                     code={`
                         background: red;
+                        $BODY2
                     `}
                     indent={1}
                 />
@@ -49,7 +51,6 @@ export const CssExample: FC = () => {
                             height: 100%;
                             margin: 0;
                             padding: 10px;
-                            $BODY2
                         }
                         
                     `}
