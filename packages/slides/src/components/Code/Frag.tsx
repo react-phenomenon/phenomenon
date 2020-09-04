@@ -43,12 +43,7 @@ export const Frag: FragFC<FragProps> = props => {
                     },
                     duration.normal,
                 ),
-                fromTo(
-                    {
-                        backgroundColor: color(bgColorIn, bgColorOut),
-                    },
-                    duration.fast,
-                ),
+                fromTo({ backgroundColor: color(bgColorIn, bgColorOut) }, duration.fast),
                 set({
                     [direction]: [size![direction], 'auto'],
                     overflow: ['hidden', 'visible'],
@@ -61,6 +56,7 @@ export const Frag: FragFC<FragProps> = props => {
         props.out,
         ({ duration }) =>
             trail(ref.current!, [
+                set({ overflow: ['visible', 'hidden'] }),
                 fromTo(
                     {
                         opacity: val(1, 0),
