@@ -87,4 +87,5 @@ const Background = styled.div`
 
 const Pre = styled.pre`
     position: relative;
+    font-family: inherit;
 `
