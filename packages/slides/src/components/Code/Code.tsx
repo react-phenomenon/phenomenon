@@ -12,6 +12,7 @@ export interface CodeProps extends SubStepsProps {
     filename?: string
     maxHeight?: string | number
     minWidth?: string | number
+    scale?: number
 }
 
 export const Code: FC<CodeProps> = props => {
@@ -22,15 +23,19 @@ export const Code: FC<CodeProps> = props => {
     const maxHeight = props.maxHeight && normalizeSize(props.maxHeight)
     const minWidth = props.minWidth && normalizeSize(props.minWidth)
 
+    const { filename, start, unwrap, scale = 1 } = props
+
     return (
-        <SubSteps start={props.start} unwrap={props.unwrap}>
+        <SubSteps start={start} unwrap={unwrap}>
             <FragmentsProvider.Provider value={fragments}>
-                <Container>
-                    {props.filename && <Tab name={props.filename} />}
-                    <Background style={{ maxHeight, minWidth }}>
-                        <Pre>{codeWithFragments}</Pre>
-                    </Background>
-                </Container>
+                <Wrapper>
+                    <Container style={{ fontSize: `${scale}em` }}>
+                        {filename && <Tab name={filename} />}
+                        <Background style={{ maxHeight, minWidth }}>
+                            <Pre>{codeWithFragments}</Pre>
+                        </Background>
+                    </Container>
+                </Wrapper>
             </FragmentsProvider.Provider>
         </SubSteps>
     )
@@ -39,12 +44,15 @@ export const Code: FC<CodeProps> = props => {
 const normalizeSize = (size: number | string) =>
     typeof size === 'number' ? `${size}px` : size
 
-const Container = styled.div`
-    line-height: 1.5em;
-    font-size: 16px;
-    margin: 2em auto;
-    color: #f0f8ff;
+const Wrapper = styled.div`
     font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+`
+
+const Container = styled.div`
+    margin: 2em auto;
+    line-height: 1.5em;
+    color: #f0f8ff;
 `
 
 const Background = styled.div`
@@ -62,7 +70,7 @@ const Background = styled.div`
         top: 0;
         left: 0;
         right: 0;
-        height: 30px;
+        height: 2em;
         background-image: linear-gradient(
             to top,
             transparent 0%,

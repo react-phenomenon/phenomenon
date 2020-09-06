@@ -3,34 +3,47 @@ import styled from 'styled-components'
 import { SubStepsProps } from '../../types/SubStepsProps'
 import { SubSteps } from '../SubSteps'
 
-interface ConsoleProps extends SubStepsProps {}
+interface ConsoleProps extends SubStepsProps {
+    scale?: number
+    width?: number
+    height?: number
+}
 
-export const Console: FC<ConsoleProps> = props => {
+export const Console: FC<ConsoleProps> = ({
+    scale = 1,
+    width = 600,
+    height = 300,
+    start,
+    unwrap,
+    children,
+}) => {
     return (
-        <SubSteps start={props.start} unwrap={props.unwrap}>
-            <Container>
-                <div>{props.children}</div>
-            </Container>
+        <SubSteps start={start} unwrap={unwrap}>
+            <Wrapper>
+                <Container style={{ fontSize: `${scale}em`, width, height }}>
+                    <div>{children}</div>
+                </Container>
+            </Wrapper>
         </SubSteps>
     )
 }
 
+const Wrapper = styled.div`
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+`
+
 const Container = styled.div`
     overflow: hidden;
     position: relative;
-    width: 500px;
-    max-width: 100%;
-    height: 300px;
     margin: 2em auto;
-    padding: 0 10px 10px 10px;
+    padding: 0 0.5em 0.5em 0.5em;
     display: flex;
     align-items: flex-end;
     background-color: #20242b;
     border-radius: 0.5em;
-    font-family: 'Source Code Pro', monospace;
-    font-size: 16px;
     color: #f0f8ff;
-    line-height: 1.6;
+    line-height: 1.6em;
 
     &::before {
         content: '';
@@ -38,7 +51,7 @@ const Container = styled.div`
         top: 0;
         left: 0;
         right: 0;
-        height: 30px;
+        height: 2em;
         background-image: linear-gradient(
             to top,
             transparent 0%,

@@ -47,7 +47,7 @@ export const Cmd: FC<CmdProps> = props => {
 const Container = styled.div`
     overflow: hidden;
     white-space: nowrap;
-    line-height: 1.4;
+    line-height: 1.4em;
 `
 
 const Line = styled.div`

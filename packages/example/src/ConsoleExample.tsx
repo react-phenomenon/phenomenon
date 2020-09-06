@@ -24,7 +24,7 @@ export const ConsoleExample: FC = () => {
                 </SwapItem>
             </Swap>
             <Expand in={1}>
-                <Console unwrap>
+                <Console scale={1.3} unwrap>
                     <Cmd in={++i} name="rm -rf /dev/null" />
                     <Output
                         in={++i}
