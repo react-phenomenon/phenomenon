@@ -74,7 +74,8 @@ export const Slide: FC<SlideProps> = props => {
                 ref={backgroundRef}
                 style={{
                     backgroundColor: config.backgroundColor,
-                    backgroundImage: `url(${config.backgroundImage})`,
+                    backgroundImage:
+                        config.backgroundImage && `url(${config.backgroundImage})`,
                 }}
             >
                 <Content ref={contentRef} style={{ zIndex: inactiveZIndex }}>
