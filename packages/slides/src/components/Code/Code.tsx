@@ -20,10 +20,10 @@ export const Code: FC<CodeProps> = props => {
     const code = stripIndent(props.code)
     const codeWithFragments = appendFragments(code, fragments)
 
-    const maxHeight = props.maxHeight && normalizeSize(props.maxHeight)
-    const minWidth = props.minWidth && normalizeSize(props.minWidth)
-
     const { filename, start, unwrap, scale = 1 } = props
+
+    const maxHeight = props.maxHeight && normalizeSize(props.maxHeight, scale)
+    const minWidth = props.minWidth && normalizeSize(props.minWidth, scale)
 
     return (
         <SubSteps start={start} unwrap={unwrap}>
@@ -41,8 +41,8 @@ export const Code: FC<CodeProps> = props => {
     )
 }
 
-const normalizeSize = (size: number | string) =>
-    typeof size === 'number' ? `${size}px` : size
+const normalizeSize = (size: number | string, scale: number) =>
+    typeof size === 'number' ? `${size * scale}px` : size
 
 const Wrapper = styled.div`
     font-family: 'Source Code Pro', monospace;
