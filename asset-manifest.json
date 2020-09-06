@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/phenomenon/static/js/main.2a9ac874.chunk.js",
-    "main.js.map": "/phenomenon/static/js/main.2a9ac874.chunk.js.map",
+    "main.js": "/phenomenon/static/js/main.5b71a412.chunk.js",
+    "main.js.map": "/phenomenon/static/js/main.5b71a412.chunk.js.map",
     "runtime-main.js": "/phenomenon/static/js/runtime-main.a8c33f3c.js",
     "runtime-main.js.map": "/phenomenon/static/js/runtime-main.a8c33f3c.js.map",
-    "static/js/2.ac8918f7.chunk.js": "/phenomenon/static/js/2.ac8918f7.chunk.js",
-    "static/js/2.ac8918f7.chunk.js.map": "/phenomenon/static/js/2.ac8918f7.chunk.js.map",
+    "static/js/2.1d8b15fb.chunk.js": "/phenomenon/static/js/2.1d8b15fb.chunk.js",
+    "static/js/2.1d8b15fb.chunk.js.map": "/phenomenon/static/js/2.1d8b15fb.chunk.js.map",
     "index.html": "/phenomenon/index.html",
-    "precache-manifest.7db6b60207f049ff677980af3e8729de.js": "/phenomenon/precache-manifest.7db6b60207f049ff677980af3e8729de.js",
+    "precache-manifest.78e9c3cff3e9fe7981d10f2b376cf91f.js": "/phenomenon/precache-manifest.78e9c3cff3e9fe7981d10f2b376cf91f.js",
     "service-worker.js": "/phenomenon/service-worker.js",
     "static/media/background-blurred.jpg": "/phenomenon/static/media/background-blurred.998f280d.jpg",
     "static/media/background.jpg": "/phenomenon/static/media/background.f19b53aa.jpg",
@@ -15,7 +15,7 @@
   },
   "entrypoints": [
     "static/js/runtime-main.a8c33f3c.js",
-    "static/js/2.ac8918f7.chunk.js",
-    "static/js/main.2a9ac874.chunk.js"
+    "static/js/2.1d8b15fb.chunk.js",
+    "static/js/main.5b71a412.chunk.js"
   ]
 }
