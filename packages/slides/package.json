@@ -9,7 +9,8 @@
     "build:babel": "NODE_ENV=production babel src/ --out-dir dist --copy-files --extensions .ts,.tsx",
     "build:ts": "tsc --emitDeclarationOnly --outDir dist/",
     "clean": "rm -rf dist",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "yarn build"
   },
   "files": ["dist/**/*"],
   "main": "dist/index.js",
