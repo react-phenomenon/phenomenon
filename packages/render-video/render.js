@@ -24,7 +24,7 @@ const currentDateTime = new Date()
     .slice(0, 19)
     .replace('T', ' ')
 
-const dir = path.resolve(__dirname, `video-render ${currentDateTime}`)
+const dir = path.resolve(process.cwd(), `video-render ${currentDateTime}`)
 
 const outputFilePath = frame => {
     const fr = frame.toString().padStart(5, '0')
