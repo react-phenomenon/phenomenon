@@ -9,6 +9,6 @@
   "dependencies": {
     "fluent-ffmpeg": "^2.1.2",
     "pretty-ms": "^5.1.0",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^5.2.1"
   }
 }
