@@ -37,6 +37,8 @@ export const Deck: FC<DeckProps> = props => {
         children as any,
     )
 
+    const duration = timeline.getDuration()
+
     return (
         <Wrapper
             style={{
@@ -44,7 +46,7 @@ export const Deck: FC<DeckProps> = props => {
             }}
         >
             {!inRenderMode && <Controls timeline={timeline} />}
-            {inRenderMode && (
+            {inRenderMode && duration && (
                 <div id="duration" style={{ display: 'none' }}>
                     {timeline.getDuration()}
                 </div>

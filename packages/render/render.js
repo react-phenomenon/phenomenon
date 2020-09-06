@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /* eslint-disable no-undef, no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const puppeteer = require('puppeteer')
@@ -6,16 +8,23 @@ const path = require('path')
 const fs = require('fs')
 const prettyMs = require('pretty-ms')
 
+const fps = 60
+
 const config = {
     url: 'http://localhost:3000',
     viewport: { width: 1920, height: 1080 },
-    step: 1000 / 60,
-    output: 'output.mp4',
+    step: 1000 / fps,
+    output: 'video.mp4',
 }
 
 const formatMs = ms => prettyMs(ms, { compact: true })
 
-const dir = path.resolve(__dirname, '../render')
+const currentDateTime = new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace('T', ' ')
+
+const dir = path.resolve(__dirname, `video-render ${currentDateTime}`)
 
 const outputFilePath = frame => {
     const fr = frame.toString().padStart(5, '0')
@@ -35,9 +44,6 @@ const deleteFolderRecursive = p => {
     fs.rmdirSync(p)
 }
 
-if (fs.existsSync(dir)) deleteFolderRecursive(dir)
-fs.mkdirSync(dir)
-
 const main = async () => {
     console.log(`Starting browser`)
 
@@ -50,7 +56,13 @@ const main = async () => {
 
     console.log(`Url: ${config.url}`)
 
-    await page.goto(config.url)
+    try {
+        await page.goto(config.url)
+    } catch (e) {
+        console.error(`Unable to load, start your presentation first (npm start)`)
+        process.exit()
+    }
+
     const durationEl = await page.waitForSelector('#duration')
     const duration = await page.evaluate(el => el.textContent, durationEl)
 
@@ -58,7 +70,11 @@ const main = async () => {
 
     const framesCount = Math.round(duration / config.step)
 
-    console.log(`Rendering ${framesCount} frames`)
+    console.log(`${framesCount} frames`)
+
+    fs.mkdirSync(dir)
+
+    console.log(`Output dir ${dir}`)
 
     for (let frame = 0; frame <= framesCount; frame++) {
         const startMs = new Date()
@@ -73,7 +89,7 @@ const main = async () => {
         const leftTime = formatMs(endMs * (framesCount - frame))
         const percent = Math.round((frame / framesCount) * 100)
 
-        process.stdout.write(`${percent}% ${leftTime} left\r`)
+        process.stdout.write(`Rendering… ${percent}% ${leftTime} left\r`)
     }
 
     await browser.close()
@@ -83,11 +99,11 @@ const main = async () => {
     await ffmpeg()
         .videoBitrate('2048k')
         .videoCodec('libx264')
-        .outputFPS(60)
+        .outputFPS(fps)
         .size('1920x1080')
         .autoPad()
         .addInput(`${dir}/frame_%05d.png`)
-        .inputFps(60)
+        .inputFps(fps)
         .save(`${dir}/${config.output}`)
         .on('end', () => {
             console.log('Render done!')

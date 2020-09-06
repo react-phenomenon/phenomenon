@@ -1,8 +1,11 @@
 {
-  "name": "@phenomenon/renderer",
+  "name": "@phenomenon/render-video",
   "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "render-video": "./render.js"
+  },
   "dependencies": {
     "fluent-ffmpeg": "^2.1.2",
     "pretty-ms": "^5.1.0",

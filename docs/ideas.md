@@ -74,6 +74,7 @@ A → B → C
 
 -   Add code tabs on to to show what current file we editing
 -   Add sidebar
+-   Add fragments function resolver
 
 ```jsx
     <Code
