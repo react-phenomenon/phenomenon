@@ -1,12 +1,13 @@
 {
   "name": "@phenomenon/render-video",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "index.js",
   "license": "MIT",
   "bin": {
     "render-video": "./render.js"
   },
   "dependencies": {
+    "@caporal/core": "^2.0.2",
     "fluent-ffmpeg": "^2.1.2",
     "pretty-ms": "^5.1.0",
     "puppeteer": "^5.2.1"

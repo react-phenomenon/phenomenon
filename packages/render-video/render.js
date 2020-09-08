@@ -7,57 +7,49 @@ const ffmpeg = require('fluent-ffmpeg')
 const path = require('path')
 const fs = require('fs')
 const prettyMs = require('pretty-ms')
-
-const fps = 60
-
-const config = {
-    url: 'http://localhost:3000',
-    viewport: { width: 1920, height: 1080 },
-    step: 1000 / fps,
-    output: 'video.mp4',
-}
+const { program } = require('@caporal/core')
+const package = require('./package.json')
 
 const formatMs = ms => prettyMs(ms, { compact: true })
 
-const currentDateTime = new Date()
-    .toISOString()
-    .slice(0, 19)
-    .replace('T', ' ')
-
-const dir = path.resolve(process.cwd(), `video-render ${currentDateTime}`)
+const tmpDir = path.resolve(process.cwd(), `tmp-video-render-frames`)
 
 const outputFilePath = frame => {
     const fr = frame.toString().padStart(5, '0')
-    return path.resolve(dir, `frame_${fr}.png`)
+    return path.resolve(tmpDir, `frame_${fr}.png`)
 }
 
-const deleteFolderRecursive = p => {
-    if (!fs.existsSync(p)) return
-    fs.readdirSync(p).forEach(file => {
-        const curPath = path.resolve(p, file)
+const deleteFolderRecursive = dir => {
+    if (!fs.existsSync(dir)) return
+    fs.readdirSync(dir).forEach(file => {
+        const curPath = path.resolve(dir, file)
         if (fs.lstatSync(curPath).isDirectory()) {
             deleteFolderRecursive(curPath)
         } else {
             fs.unlinkSync(curPath)
         }
     })
-    fs.rmdirSync(p)
+    fs.rmdirSync(dir)
 }
 
-const main = async () => {
-    console.log(`Starting browser`)
+const main = async ({ width, height, fps, url, output, codec, bitrate }) => {
+    console.log(`Starting render…`)
+
+    console.log(`Url: ${url}`)
+    console.log(`Resolution: ${width}x${height}`)
+    console.log(`FPS: ${fps}`)
+
+    const step = 1000 / fps
 
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.evaluateOnNewDocument(() => {
         window.__RENDER__ = true
     })
-    await page.setViewport(config.viewport)
-
-    console.log(`Url: ${config.url}`)
+    await page.setViewport({ width, height })
 
     try {
-        await page.goto(config.url)
+        await page.goto(url)
     } catch (e) {
         console.error(`Unable to load, start your presentation first (npm start)`)
         process.exit()
@@ -68,20 +60,21 @@ const main = async () => {
 
     console.log(`Slides duration: ${duration / 1000}s`)
 
-    const framesCount = Math.round(duration / config.step)
+    const framesCount = 100 // Math.round(duration / step)
 
     console.log(`${framesCount} frames`)
 
-    fs.mkdirSync(dir)
+    if (fs.existsSync(tmpDir)) deleteFolderRecursive(tmpDir)
+    fs.mkdirSync(tmpDir)
 
-    console.log(`Output dir ${dir}`)
+    console.log(`Output dir ${tmpDir}`)
 
     for (let frame = 0; frame <= framesCount; frame++) {
         const startMs = new Date()
 
         await page.evaluate(offset => {
             window.__TIMELINE.seek(offset)
-        }, frame * config.step)
+        }, frame * step)
 
         await page.screenshot({ path: outputFilePath(frame) })
 
@@ -97,18 +90,43 @@ const main = async () => {
     console.log(`Converting PNG files to video`)
 
     await ffmpeg()
-        .videoBitrate('2048k')
-        .videoCodec('libx264')
+        .videoBitrate(bitrate)
+        .videoCodec(codec)
         .outputFPS(fps)
-        .size('1920x1080')
+        .size(`${width}x${height}`)
         .autoPad()
-        .addInput(`${dir}/frame_%05d.png`)
+        .addInput(`${tmpDir}/frame_%05d.png`)
         .inputFps(fps)
-        .save(`${dir}/${config.output}`)
+        .save(`${output}`)
         .on('end', () => {
             console.log('Render done!')
-            console.log(`File: ${dir}/${config.output}`)
+            console.log(`Video file: ${output}`)
         })
 }
 
-main()
+program
+    .version(package.version)
+    .option('-f, --fps <fps>', 'Frames per second', { default: 60 })
+    .option('-r, --resolution <resolution>', 'Video resolution eg. 1920x1080', {
+        default: '1920x1080',
+    })
+    .option('--url <url>', 'Presentation server url', {
+        default: 'http://localhost:3000',
+    })
+    .option('-o, --output <output>', 'Output file name', { default: 'video.mp4' })
+    .option('--codec <codec>', 'Video codec', { default: 'libx264' })
+    .option('--bitrate <bitrate>', 'Video bitrate', { default: '2048k' })
+    .action(({ logger, options }) => {
+        const [width, height] = options.resolution
+            .split('x')
+            .map(val => Number.parseInt(val))
+
+        if (!width || !height) {
+            logger.error('Invalid resolution')
+            process.exit(1)
+        }
+
+        main({ width, height, ...options })
+    })
+
+program.run()

@@ -1,7 +1,7 @@
 .DS_Store
 build/
 dist/
-video-render*/
+tmp-*/
 node_modules/
 .history/
 .parcel-cache
