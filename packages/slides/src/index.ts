@@ -11,3 +11,4 @@ export * from './components/SubSteps'
 export * from './components/Swap'
 
 export * from './hooks/useStep'
+export { inRenderMode } from './env'
