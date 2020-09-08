@@ -60,7 +60,7 @@ const main = async ({ width, height, fps, url, output, codec, bitrate }) => {
 
     console.log(`Slides duration: ${duration / 1000}s`)
 
-    const framesCount = 100 // Math.round(duration / step)
+    const framesCount = Math.round(duration / step)
 
     console.log(`${framesCount} frames`)
 
