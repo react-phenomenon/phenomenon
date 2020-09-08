@@ -5,10 +5,12 @@ import {
     parallel,
     pause,
     sequence,
+    delay,
 } from 'light-trails'
 import { debounce, isEqual } from 'lodash'
 import { createContext } from 'react'
 import { ID } from '../types/ID'
+import { inRenderMode } from '../env'
 
 export interface TimelineOptions {
     animateWithNext?: boolean
@@ -70,9 +72,6 @@ export class Timeline {
 
     public next() {
         if (!this.line) return
-        // if (this.line.isActive()) {
-        //     this.turboMode()
-        // }
         this.line.play()
     }
 
@@ -81,22 +80,7 @@ export class Timeline {
         const { currentTime } = this.line.getStatus()
         this.line.seek(currentTime - 1000)
         this.line.play()
-        // if (this.line.isActive()) {
-        //     this.turboMode()
-        // }
-        // this.line.reverse()
     }
-
-    // private turboTimer: any
-    // private turboMode() {
-    //     if (!this.line) return
-
-    //     this.line.timeScale(5)
-    //     clearTimeout(this.turboTimer)
-    //     this.turboTimer = setTimeout(() => {
-    //         this.line!.timeScale(1)
-    //     }, 1000)
-    // }
 
     public getDuration() {
         return this.line && this.line.total
@@ -134,7 +118,7 @@ export class Timeline {
         const frames = sequence(
             this.getGroupedSteps().flatMap(group => [
                 parallel(group.map(step => step.getStepFrames())),
-                pause(),
+                inRenderMode ? delay(5000) : pause(),
             ]),
         )
 
@@ -145,7 +129,6 @@ export class Timeline {
         this.line.prepare()
 
         this.line.seek(this.getLastTime())
-        // this.line.play()  // Seeks before pause() TODO?
     }
 
     private getGroupedSteps(): Step[][] {

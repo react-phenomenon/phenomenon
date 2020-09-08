@@ -1,32 +1,24 @@
-import React, { FC, useEffect, useRef, useState, Children, ReactElement } from 'react'
+import React, { Children, FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { inRenderMode } from '../../env'
 import { ConfigContext } from '../../lib/Config'
 import { Timeline, TimelineContext } from '../../lib/Timeline'
 import { Config } from '../../types/Config'
 import { Controls } from '../Controls'
 import { SlideProps } from '../Slide'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const WINDOW = window as any
-const inRenderMode: boolean = WINDOW.__RENDER__
-
 interface DeckProps {
     config?: Partial<Config>
 }
 
-export const Deck: FC<DeckProps> = props => {
-    const { children, config = {} } = props
-
-    const timelineRef = useRef(new Timeline())
-    const timeline = timelineRef.current
-
+export const Deck: FC<DeckProps> = ({ children, config = {} }) => {
+    const timeline = useMemo(() => new Timeline(), [])
     const [rdy, setRdy] = useState(false)
 
-    // if (inRenderMode) {
-    WINDOW.__TIMELINE = timeline
-    // }
-
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ;(window as any).__TIMELINE = timeline
+
         timeline.onRegister(() => {
             setRdy(true)
         })
