@@ -40,7 +40,7 @@ export const Controls: FC<ControlsProps> = props => {
     ) => {
         event.preventDefault()
         event.target.blur()
-        timeline.next()
+        timeline.snapToClosestPause()
     }
 
     return (

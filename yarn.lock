@@ -8036,10 +8036,22 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-light-trails@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/light-trails/-/light-trails-0.5.0.tgz#5230c8fcdf93b3f89297b75b83d04569c2f4f85e"
-  integrity sha512-NoCN47lmrbzjFbOaG1+JBhOPcbUFXm0Wys+IXQR7FQEitYOh2cFUIt52Ig/n1jZ8QKet1J/aoSBifssFOlWmIg==
+light-trails-inspector@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/light-trails-inspector/-/light-trails-inspector-0.4.1.tgz#bc29189051b8c416129dc63372878b5b65c3f7cd"
+  integrity sha512-bw9MOc4+35oieayXDRWhdDPtDUZubXVuRnpsqKeCuFJVgUmrtCZmEkvzcI8xxMuBHS7AEYsBeEHqergSXKt/FQ==
+  dependencies:
+    light-trails "*"
+
+light-trails@*:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/light-trails/-/light-trails-0.6.0.tgz#3320105a9a963ddef7b978c58c55fd1541164b5d"
+  integrity sha512-njeZPdFevPoksdMBHwNbH1C817SQ5JCVi1Ir6XAQCP9Z9RJiITNdp90GLG70tPQRjDDJmVzN85s3O8/0idSi4w==
+
+light-trails@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/light-trails/-/light-trails-0.6.1.tgz#8b77a3a77b0a30e1c7f4af72201e3bb58958d477"
+  integrity sha512-8e5JxAPA9HiTnmFQtHeRgLgFsjmyz/0dLZEMkQrkHdaFvXlI8DnUEDVF+sP3FQpGlRQpCPX3Mui/NLlqvczhVA==
 
 lines-and-columns@^1.1.6:
   version "1.1.6"

@@ -20,12 +20,13 @@
     "*.{ts,tsx,js}": [
       "eslint --fix",
       "prettier --write",
+      "bash -c yarn typecheck",
       "git add"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn typecheck && lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "browserslist": [

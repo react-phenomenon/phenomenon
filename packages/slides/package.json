@@ -12,12 +12,15 @@
     "typecheck": "tsc --noEmit",
     "prepare": "yarn build"
   },
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "light-trails": "^0.5.0",
+    "light-trails": "^0.6.1",
+    "light-trails-inspector": "^0.4.1",
     "lodash": "^4.17.11",
     "react": "^16.10.2",
     "react-use": "^13.12.1",

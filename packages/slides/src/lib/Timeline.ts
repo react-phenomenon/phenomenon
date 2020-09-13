@@ -66,20 +66,53 @@ export class Timeline {
         this.seek(pos)
     }
 
+    public snapToClosestPause() {
+        if (!this.line) return
+        const { currentTime } = this.line.getStatus()
+        const nextTime = this.line.findNextPauseTime()
+        const prevTime = this.line.findPrevPauseTime()
+        const closest = [nextTime, prevTime].reduce((prev, curr) =>
+            Math.abs(curr - currentTime) < Math.abs(prev - currentTime) ? curr : prev,
+        )
+        this.seek(closest)
+    }
+
     public pause() {
         this.line && this.line.pause()
     }
 
     public next() {
         if (!this.line) return
-        this.line.play()
+
+        if (this.line.getStatus().playing) {
+            this.startTurboMode()
+        }
+
+        if (this.turboMode) {
+            this.startTurboMode() // Keep turboMode timer active
+            const nextTime = this.line.findNextPauseTime()
+            this.line.pause()
+            this.line.seek(nextTime, Infinity)
+        } else {
+            this.line.play()
+        }
     }
 
     public back() {
         if (!this.line) return
-        const { currentTime } = this.line.getStatus()
-        this.line.seek(currentTime - 1000)
-        this.line.play()
+        const prevTime = this.line.findPrevPauseTime()
+        this.line.seek(prevTime, Infinity) // Infinity for skipping current pause()
+    }
+
+    private turboMode = false
+    private turboTimer: any
+    private startTurboMode() {
+        this.turboMode = true
+
+        clearTimeout(this.turboTimer)
+        this.turboTimer = setTimeout(() => {
+            this.turboMode = false
+        }, 800)
     }
 
     public getDuration() {
